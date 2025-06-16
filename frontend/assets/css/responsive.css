@@ -1,0 +1,615 @@
+/* ===================================
+   RESPONSIVE.CSS - Mobile & Tablet Styles
+   AI Agent Galaxy - Responsive design optimizations
+   =================================== */
+
+/* ===================================
+   RESPONSIVE BREAKPOINTS
+   =================================== */
+
+:root {
+    /* Responsive breakpoints */
+    --breakpoint-xs: 320px;   /* Small phones */
+    --breakpoint-sm: 480px;   /* Large phones */
+    --breakpoint-md: 768px;   /* Tablets */
+    --breakpoint-lg: 1024px;  /* Small laptops */
+    --breakpoint-xl: 1200px;  /* Desktops */
+    --breakpoint-xxl: 1400px; /* Large desktops */
+}
+
+/* ===================================
+   MOBILE-FIRST RESPONSIVE UTILITIES
+   =================================== */
+
+/* Hide/Show utilities */
+.hide-mobile { display: block; }
+.show-mobile { display: none; }
+.hide-tablet { display: block; }
+.show-tablet { display: none; }
+.hide-desktop { display: none; }
+.show-desktop { display: block; }
+
+/* ===================================
+   EXTRA SMALL DEVICES (320px and up)
+   =================================== */
+
+@media (max-width: 319px) {
+    .container {
+        padding: var(--spacing-sm);
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .header .subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .form-input {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ===================================
+   SMALL DEVICES (480px and down)
+   =================================== */
+
+@media (max-width: 480px) {
+    .hide-mobile { display: none; }
+    .show-mobile { display: block; }
+    
+    /* Container adjustments */
+    .container {
+        padding: var(--spacing-md);
+    }
+    
+    /* Typography scaling */
+    .header h1 {
+        font-size: 2rem;
+        line-height: 1.1;
+    }
+    
+    .header .subtitle {
+        font-size: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+    }
+    
+    /* Button optimizations */
+    .btn {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .btn-small {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        width: auto;
+    }
+    
+    .btn-xl {
+        padding: 16px 24px;
+        font-size: 1.1rem;
+    }
+    
+    /* Form improvements */
+    .form-input {
+        padding: 14px 16px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .input-number {
+        width: 180px;
+        font-size: 1.2rem;
+        padding: 12px 16px;
+    }
+    
+    /* Navigation optimizations */
+    .tabs {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .tab {
+        padding: var(--spacing-md);
+        font-size: 0.9rem;
+    }
+    
+    /* Grid adjustments */
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .user-stats-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    /* Modal adjustments */
+    .modal-content {
+        margin: var(--spacing-md);
+        padding: var(--spacing-lg);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    /* Card optimizations */
+    .card {
+        padding: var(--spacing-lg);
+    }
+    
+    .card-header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    
+    /* Stat card improvements */
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .stat-value.large {
+        font-size: 2rem;
+    }
+    
+    /* Table responsiveness */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        min-width: 600px;
+        font-size: 0.8rem;
+    }
+    
+    th, td {
+        padding: var(--spacing-sm);
+    }
+    
+    /* Pagination mobile */
+    .pagination {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .pagination-btn {
+        min-width: 50px;
+        padding: 8px 12px;
+    }
+    
+    /* Action buttons mobile */
+    .admin-actions,
+    .action-buttons {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .admin-action-btn,
+    .btn-small {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* ===================================
+   MEDIUM DEVICES (768px and down) - TABLETS
+   =================================== */
+
+@media (max-width: 768px) and (min-width: 481px) {
+    .hide-tablet { display: none; }
+    .show-tablet { display: block; }
+    
+    /* Container adjustments */
+    .container {
+        padding: var(--spacing-lg);
+    }
+    
+    /* Header adjustments */
+    .header {
+        padding: var(--spacing-xl) 0;
+    }
+    
+    .header h1 {
+        font-size: 2.5rem;
+    }
+    
+    /* Grid systems for tablets */
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .user-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* User info layout */
+    .user-info-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: var(--spacing-lg);
+    }
+    
+    /* Button adjustments */
+    .btn-xl {
+        padding: 18px 32px;
+        font-size: 1.2rem;
+    }
+    
+    /* Agent buttons */
+    .agent-buttons {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+    
+    /* Results grid */
+    .result-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Search box */
+    .search-box {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    /* Dropdown adjustments */
+    .dropdown-content {
+        right: auto;
+        left: 0;
+        min-width: 200px;
+    }
+    
+    /* Admin specific tablet adjustments */
+    .admin-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-lg);
+    }
+    
+    .admin-stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .admin-table-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .admin-table-controls {
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
+
+/* ===================================
+   LARGE TABLETS & SMALL LAPTOPS (1024px and down)
+   =================================== */
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    /* Reduce excessive spacing on smaller laptops */
+    .container {
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+    
+    /* Adjust grid columns */
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    /* Modal size optimization */
+    .modal-content {
+        max-width: 90vw;
+    }
+    
+    /* Table adjustments */
+    .admin-table th,
+    .admin-table td {
+        padding: var(--spacing-md);
+        font-size: 0.9rem;
+    }
+}
+
+/* ===================================
+   LANDSCAPE ORIENTATION OPTIMIZATIONS
+   =================================== */
+
+@media (orientation: landscape) and (max-height: 600px) {
+    /* Reduce vertical spacing in landscape */
+    .header {
+        padding: var(--spacing-lg) 0;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .game-section {
+        padding: var(--spacing-lg);
+    }
+    
+    .modal-content {
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+    
+    /* Compact navigation */
+    .tabs {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .tab {
+        padding: var(--spacing-sm) var(--spacing-lg);
+    }
+}
+
+/* ===================================
+   TOUCH DEVICE OPTIMIZATIONS
+   =================================== */
+
+@media (hover: none) and (pointer: coarse) {
+    /* Increase touch targets */
+    .btn {
+        min-height: 44px;
+        padding: 12px 20px;
+    }
+    
+    .btn-small {
+        min-height: 38px;
+        padding: 8px 16px;
+    }
+    
+    .form-input {
+        min-height: 44px;
+        padding: 12px 16px;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .tab {
+        min-height: 44px;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .agent-btn {
+        min-height: 60px;
+        padding: var(--spacing-lg);
+    }
+    
+    /* Remove hover effects on touch devices */
+    .btn:hover,
+    .card:hover,
+    .stat-card:hover,
+    .agent-btn:hover {
+        transform: none;
+    }
+    
+    /* Add touch feedback */
+    .btn:active,
+    .tab:active,
+    .agent-btn:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+}
+
+/* ===================================
+   HIGH DPI DISPLAYS
+   =================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Adjust for high DPI displays */
+    .spinner {
+        border-width: 2px;
+    }
+    
+    .spinner::after {
+        border-width: 1px;
+    }
+    
+    /* Sharper borders */
+    .glass-container,
+    .card,
+    .btn {
+        border-width: 0.5px;
+    }
+}
+
+/* ===================================
+   PRINT STYLES
+   =================================== */
+
+@media print {
+    /* Hide interactive elements */
+    .btn,
+    .tabs,
+    .modal-overlay,
+    .spinner,
+    .user-controls,
+    .admin-controls,
+    nav,
+    .pagination {
+        display: none !important;
+    }
+    
+    /* Optimize for print */
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12pt;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .card,
+    .glass-container {
+        border: 1px solid #000 !important;
+        background: white !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+    
+    .header h1 {
+        color: black !important;
+        font-size: 24pt;
+    }
+    
+    /* Table print optimization */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    th, td {
+        border: 1px solid #000 !important;
+        padding: 4pt !important;
+        color: black !important;
+        background: white !important;
+    }
+    
+    /* Page breaks */
+    .stats-grid {
+        page-break-inside: avoid;
+    }
+    
+    .admin-table {
+        page-break-inside: auto;
+    }
+    
+    /* Print headers/footers */
+    @page {
+        margin: 1in;
+        @top-center {
+            content: "AI Agent Galaxy Report";
+        }
+        @bottom-right {
+            content: counter(page);
+        }
+    }
+}
+
+/* ===================================
+   ACCESSIBILITY - REDUCED MOTION
+   =================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    /* Disable animations for users who prefer reduced motion */
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .spinner {
+        animation: none;
+    }
+    
+    .loading p {
+        animation: none;
+    }
+    
+    body::before {
+        animation: none;
+    }
+}
+
+/* ===================================
+   DARK MODE PREFERENCE
+   =================================== */
+
+@media (prefers-color-scheme: light) {
+    /* Future: Light mode overrides would go here */
+    /* Currently the app is designed for dark mode only */
+}
+
+/* ===================================
+   CONTRAST PREFERENCE
+   =================================== */
+
+@media (prefers-contrast: high) {
+    :root {
+        --surface-glass: rgba(255, 255, 255, 0.15);
+        --border-glass: rgba(255, 255, 255, 0.4);
+        --text-secondary: #ffffff;
+    }
+    
+    .btn,
+    .form-input,
+    .card {
+        border-width: 2px;
+    }
+    
+    /* Increase contrast for better accessibility */
+    .status-badge {
+        border-width: 2px;
+        font-weight: 700;
+    }
+}
+
+/* ===================================
+   RESPONSIVE UTILITY CLASSES
+   =================================== */
+
+/* Spacing utilities for mobile */
+@media (max-width: 480px) {
+    .mb-mobile-0 { margin-bottom: 0 !important; }
+    .mb-mobile-1 { margin-bottom: var(--spacing-xs) !important; }
+    .mb-mobile-2 { margin-bottom: var(--spacing-sm) !important; }
+    .mb-mobile-3 { margin-bottom: var(--spacing-md) !important; }
+    
+    .p-mobile-sm { padding: var(--spacing-sm) !important; }
+    .p-mobile-md { padding: var(--spacing-md) !important; }
+    .p-mobile-lg { padding: var(--spacing-lg) !important; }
+}
+
+/* Text alignment utilities */
+@media (max-width: 768px) {
+    .text-center-mobile { text-align: center !important; }
+    .text-left-mobile { text-align: left !important; }
+}
+
+/* Flex utilities for mobile */
+@media (max-width: 480px) {
+    .flex-col-mobile {
+        flex-direction: column !important;
+    }
+    
+    .justify-center-mobile {
+        justify-content: center !important;
+    }
+    
+    .align-center-mobile {
+        align-items: center !important;
+    }
+}

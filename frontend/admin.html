@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - AI Agent Galaxy</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            --surface-glass: rgba(255, 255, 255, 0.05);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8ff;
+            --text-accent: #00f5ff;
+            --success: #00ff7f;
+            --warning: #ffd700;
+            --error: #ff6b6b;
+            --shadow-glow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            --shadow-intense: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-gradient);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.3), transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.7;
+            }
+            50% { 
+                transform: translateY(-20px) rotate(5deg);
+                opacity: 1;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: var(--surface-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-glow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn {
+            background: var(--primary-gradient);
+            color: var(--text-primary);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-gradient);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00ff7f, #00d68f);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 10px 25px rgba(0, 255, 127, 0.4);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 4px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px 24px;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .tab.active {
+            background: var(--primary-gradient);
+            color: var(--text-primary);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-glow);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-intense);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            text-shadow: 0 0 15px rgba(0, 245, 255, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .data-table {
+            background: var(--surface-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow-glow);
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .table-header h2 {
+            color: var(--text-accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 16px;
+            color: var(--text-primary);
+            font-family: inherit;
+            width: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--text-accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-accent);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: rgba(0, 255, 127, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(0, 255, 127, 0.3);
+        }
+
+        .status-inactive {
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--error);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .status-admin {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-success {
+            background: rgba(0, 255, 127, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(0, 255, 127, 0.3);
+        }
+
+        .status-failed {
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--error);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .pagination-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--surface-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h3 {
+            color: var(--text-accent);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-accent);
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--text-accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            accent-color: var(--text-accent);
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--text-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(255, 107, 107, 0.15);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: var(--error);
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>👑 Admin Control Center</h1>
+                <p>Manage your AI Agent Galaxy empire</p>
+            </div>
+            <div class="header-controls">
+                <span id="adminName">Loading...</span>
+                <a href="/" class="btn btn-secondary">🌌 Back to Galaxy</a>
+                <button class="btn btn-danger" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('overview')">📊 Overview</div>
+            <div class="tab" onclick="switchTab('users')">👥 Users</div>
+            <div class="tab" onclick="switchTab('games')">🎮 Games</div>
+            <div class="tab" onclick="switchTab('database')">🗄️ Database</div>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalUsers">-</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeUsers">-</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalGames">-</div>
+                    <div class="stat-label">Total Games</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalScore">-</div>
+                    <div class="stat-label">Total Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="recentGames">-</div>
+                    <div class="stat-label">Games (7 days)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="recentUsers">-</div>
+                    <div class="stat-label">New Users (7 days)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="ddqnGames">-</div>
+                    <div class="stat-label">DDQN Games</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="d3qnGames">-</div>
+                    <div class="stat-label">D3QN Games</div>
+                </div>
+            </div>
+
+            <div class="data-table">
+                <div class="table-header">
+                    <h2>🏆 Top Players</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                <th>Total Score</th>
+                                <th>Games Played</th>
+                                <th>Prediction Accuracy</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topPlayersTable">
+                            <tr><td colspan="6" class="loading"><div class="spinner"></div>Loading top players...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="users" class="tab-content">
+            <div class="data-table">
+                <div class="table-header">
+                    <h2>👥 User Management</h2>
+                    <input type="text" class="search-box" id="userSearch" placeholder="Search users...">
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Score</th>
+                                <th>Games</th>
+                                <th>Accuracy</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <tr><td colspan="9" class="loading"><div class="spinner"></div>Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="usersPagination"></div>
+            </div>
+        </div>
+
+        <!-- Games Tab -->
+        <div id="games" class="tab-content">
+            <div class="data-table">
+                <div class="table-header">
+                    <h2>🎮 Recent Games</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Player</th>
+                                <th>Agent</th>
+                                <th>Prediction</th>
+                                <th>Actual</th>
+                                <th>Result</th>
+                                <th>Score</th>
+                                <th>Reward</th>
+                                <th>Time</th>
+                                <th>Replay</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gamesTable">
+                            <tr><td colspan="10" class="loading"><div class="spinner"></div>Loading games...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="gamesPagination"></div>
+            </div>
+        </div>
+
+        <!-- Database Tab -->
+        <div id="database" class="tab-content">
+            <div class="data-table">
+                <div class="table-header">
+                    <h2>🗄️ Database Operations</h2>
+                </div>
+                <div style="padding: 32px; text-align: center;">
+                    <p style="color: var(--text-secondary); margin-bottom: 32px; font-size: 1.1rem;">
+                        Advanced database management tools
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto;">
+                        <button class="btn btn-secondary" onclick="exportUsers()">
+                            📊 Export Users CSV
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportGames()">
+                            🎮 Export Games CSV
+                        </button>
+                        <button class="btn btn-secondary" onclick="cleanupOldVideos()">
+                            🧹 Cleanup Old Videos
+                        </button>
+                        <button class="btn btn-danger" onclick="confirmDangerousAction('backup')">
+                            💾 Backup Database
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit User Modal -->
+        <div id="editUserModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>✏️ Edit User</h3>
+                    <button class="modal-close" onclick="closeEditUserModal()">&times;</button>
+                </div>
+                <div id="editUserError" class="error-message" style="display: none;"></div>
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="editUsername" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="editEmail" readonly>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="editIsActive">
+                        <label for="editIsActive">Active Account</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="editIsAdmin">
+                        <label for="editIsAdmin">Administrator</label>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-success" style="flex: 1;">💾 Save Changes</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeEditUserModal()" style="flex: 1;">❌ Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentUsersPage = 1;
+        let currentGamesPage = 1;
+        
+        // Get base URL (handles different environments)
+        const API_BASE = window.location.origin;
+
+        // Check admin status on load
+        window.addEventListener('load', function() {
+            console.log('Admin panel loaded, checking access...');
+            checkAdminAccess();
+        });
+
+        async function checkAdminAccess() {
+            try {
+                console.log('Checking admin access...');
+                const response = await fetch(`${API_BASE}/api/me`, {
+                    credentials: 'include'
+                });
+                
+                console.log('Admin check response status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.user;
+                    
+                    console.log('Current user:', currentUser);
+                    
+                    if (!currentUser.is_admin) {
+                        console.log('User is not admin, redirecting...');
+                        alert('❌ Access denied. Admin privileges required.');
+                        window.location.href = '/';
+                        return;
+                    }
+                    
+                    document.getElementById('adminName').textContent = `Admin: ${currentUser.username}`;
+                    loadOverviewData();
+                } else {
+                    console.log('Not authenticated, redirecting...');
+                    alert('❌ Please log in first.');
+                    window.location.href = '/';
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                alert('❌ Connection error. Please check your server.');
+                window.location.href = '/';
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch(`${API_BASE}/api/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '/';
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            switch(tabName) {
+                case 'overview':
+                    loadOverviewData();
+                    break;
+                case 'users':
+                    loadUsersData();
+                    break;
+                case 'games':
+                    loadGamesData();
+                    break;
+            }
+        }
+
+        async function loadOverviewData() {
+            try {
+                console.log('Loading overview data...');
+                const response = await fetch(`${API_BASE}/api/admin/stats`, {
+                    credentials: 'include'
+                });
+                
+                console.log('Overview response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Failed to load stats:', errorText);
+                    throw new Error('Failed to load stats');
+                }
+                
+                const data = await response.json();
+                console.log('Overview data:', data);
+                
+                // Update stats
+                document.getElementById('totalUsers').textContent = data.overview.total_users;
+                document.getElementById('activeUsers').textContent = data.overview.active_users;
+                document.getElementById('totalGames').textContent = data.overview.total_games;
+                document.getElementById('totalScore').textContent = data.overview.total_score.toLocaleString();
+                document.getElementById('recentGames').textContent = data.overview.recent_games;
+                document.getElementById('recentUsers').textContent = data.overview.recent_users;
+                document.getElementById('ddqnGames').textContent = data.agent_stats.ddqn_games;
+                document.getElementById('d3qnGames').textContent = data.agent_stats.d3qn_games;
+                
+                // Update top players table
+                const topPlayersTable = document.getElementById('topPlayersTable');
+                if (data.top_players.length === 0) {
+                    topPlayersTable.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">No players yet</td></tr>';
+                } else {
+                    topPlayersTable.innerHTML = data.top_players.map((player, index) => `
+                        <tr>
+                            <td><span class="status-badge status-${index < 3 ? 'success' : 'active'}">#${index + 1}</span></td>
+                            <td>${escapeHtml(player.username)}</td>
+                            <td><strong>${player.total_score}</strong></td>
+                            <td>${player.games_played}</td>
+                            <td>${player.prediction_accuracy}%</td>
+                            <td>${new Date(player.created_at).toLocaleDateString()}</td>
+                        </tr>
+                    `).join('');
+                }
+                
+            } catch (error) {
+                console.error('Failed to load overview data:', error);
+                alert('❌ Failed to load overview data. Please check the console for details.');
+            }
+        }
+
+        async function loadUsersData(page = 1, search = '') {
+            try {
+                console.log('Loading users data, page:', page, 'search:', search);
+                const params = new URLSearchParams({ page, per_page: 20, search });
+                const response = await fetch(`${API_BASE}/api/admin/users?${params}`, {
+                    credentials: 'include'
+                });
+                
+                console.log('Users response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Failed to load users:', errorText);
+                    throw new Error('Failed to load users');
+                }
+                
+                const data = await response.json();
+                console.log('Users data:', data);
+                
+                const usersTable = document.getElementById('usersTable');
+                if (data.users.length === 0) {
+                    usersTable.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--text-secondary);">No users found</td></tr>';
+                } else {
+                    usersTable.innerHTML = data.users.map(user => `
+                        <tr>
+                            <td>${user.id}</td>
+                            <td><strong>${escapeHtml(user.username)}</strong></td>
+                            <td>${escapeHtml(user.email)}</td>
+                            <td>${user.total_score}</td>
+                            <td>${user.games_played}</td>
+                            <td>${user.prediction_accuracy}%</td>
+                            <td>
+                                <span class="status-badge status-${user.is_active ? 'active' : 'inactive'}">
+                                    ${user.is_active ? 'Active' : 'Inactive'}
+                                </span>
+                                ${user.is_admin ? '<span class="status-badge status-admin">Admin</span>' : ''}
+                            </td>
+                            <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-small" onclick="editUser(${user.id}, '${escapeHtml(user.username)}', '${escapeHtml(user.email)}', ${user.is_active}, ${user.is_admin})">✏️ Edit</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+                
+                updatePagination('usersPagination', data.pagination, 'loadUsersData');
+                currentUsersPage = page;
+                
+            } catch (error) {
+                console.error('Failed to load users data:', error);
+                document.getElementById('usersTable').innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--error);">Failed to load users</td></tr>';
+                alert('❌ Failed to load users data. Please check the console for details.');
+            }
+        }
+
+        async function loadGamesData(page = 1) {
+            try {
+                console.log('Loading games data, page:', page);
+                const params = new URLSearchParams({ page, per_page: 20 });
+                const response = await fetch(`${API_BASE}/api/admin/games?${params}`, {
+                    credentials: 'include'
+                });
+                
+                console.log('Games response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Failed to load games:', errorText);
+                    throw new Error('Failed to load games');
+                }
+                
+                const data = await response.json();
+                console.log('Games data:', data);
+                
+                const gamesTable = document.getElementById('gamesTable');
+                if (data.games.length === 0) {
+                    gamesTable.innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--text-secondary);">No games found</td></tr>';
+                } else {
+                    gamesTable.innerHTML = data.games.map(game => `
+                        <tr>
+                            <td>${game.id}</td>
+                            <td><strong>${escapeHtml(game.username)}</strong></td>
+                            <td><span class="status-badge status-active">${game.agent_type}</span></td>
+                            <td>${game.prediction === 0 ? 'Fail' : game.prediction}</td>
+                            <td>${game.actual_steps}</td>
+                            <td>
+                                <span class="status-badge status-${game.succeeded ? 'success' : 'failed'}">
+                                    ${game.succeeded ? 'Success' : 'Failed'}
+                                </span>
+                            </td>
+                            <td><strong>${game.score}</strong></td>
+                            <td>${game.total_reward.toFixed(1)}</td>
+                            <td>${new Date(game.timestamp).toLocaleString()}</td>
+                            <td>
+                                ${game.gif_url ? `<a href="${game.gif_url}" target="_blank" class="btn btn-small">🎬 View</a>` : '-'}
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+                
+                updatePagination('gamesPagination', data.pagination, 'loadGamesData');
+                currentGamesPage = page;
+                
+            } catch (error) {
+                console.error('Failed to load games data:', error);
+                document.getElementById('gamesTable').innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--error);">Failed to load games</td></tr>';
+                alert('❌ Failed to load games data. Please check the console for details.');
+            }
+        }
+
+        function updatePagination(containerId, pagination, functionName) {
+            const container = document.getElementById(containerId);
+            
+            let paginationHTML = `
+                <div class="pagination-info">
+                    Showing ${((pagination.page - 1) * pagination.per_page) + 1}-${Math.min(pagination.page * pagination.per_page, pagination.total)} of ${pagination.total}
+                </div>
+            `;
+            
+            if (pagination.pages > 1) {
+                paginationHTML += '<div style="display: flex; gap: 8px;">';
+                
+                if (pagination.has_prev) {
+                    paginationHTML += `<button class="btn btn-small" onclick="loadPage('${functionName}', ${pagination.page - 1})">← Prev</button>`;
+                }
+                
+                const startPage = Math.max(1, pagination.page - 2);
+                const endPage = Math.min(pagination.pages, pagination.page + 2);
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const activeClass = i === pagination.page ? 'btn-success' : '';
+                    paginationHTML += `<button class="btn btn-small ${activeClass}" onclick="loadPage('${functionName}', ${i})">${i}</button>`;
+                }
+                
+                if (pagination.has_next) {
+                    paginationHTML += `<button class="btn btn-small" onclick="loadPage('${functionName}', ${pagination.page + 1})">Next →</button>`;
+                }
+                
+                paginationHTML += '</div>';
+            }
+            
+            container.innerHTML = paginationHTML;
+        }
+
+        function loadPage(functionName, page) {
+            if (functionName === 'loadUsersData') {
+                loadUsersData(page, document.getElementById('userSearch').value);
+            } else if (functionName === 'loadGamesData') {
+                loadGamesData(page);
+            }
+        }
+
+        // User search functionality
+        let userSearchTimeout;
+        document.getElementById('userSearch').addEventListener('input', function() {
+            clearTimeout(userSearchTimeout);
+            userSearchTimeout = setTimeout(() => {
+                loadUsersData(1, this.value);
+            }, 500);
+        });
+
+        // Edit User Modal Functions
+        function editUser(userId, username, email, isActive, isAdmin) {
+            console.log('Editing user:', userId, username, email, isActive, isAdmin);
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editUsername').value = username;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editIsActive').checked = isActive;
+            document.getElementById('editIsAdmin').checked = isAdmin;
+            
+            document.getElementById('editUserModal').classList.add('active');
+        }
+
+        function closeEditUserModal() {
+            document.getElementById('editUserModal').classList.remove('active');
+            document.getElementById('editUserError').style.display = 'none';
+            document.getElementById('editUserForm').reset();
+        }
+
+        // Edit User Form Handler
+        document.getElementById('editUserForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const userId = document.getElementById('editUserId').value;
+            const isActive = document.getElementById('editIsActive').checked;
+            const isAdmin = document.getElementById('editIsAdmin').checked;
+            
+            console.log('Updating user:', userId, 'isActive:', isActive, 'isAdmin:', isAdmin);
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        is_active: isActive,
+                        is_admin: isAdmin
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Update response:', data);
+                
+                if (data.success) {
+                    closeEditUserModal();
+                    loadUsersData(currentUsersPage, document.getElementById('userSearch').value);
+                    alert('✅ User updated successfully!');
+                } else {
+                    document.getElementById('editUserError').textContent = data.error;
+                    document.getElementById('editUserError').style.display = 'block';
+                }
+                
+            } catch (error) {
+                console.error('Failed to update user:', error);
+                document.getElementById('editUserError').textContent = 'Failed to update user. Please try again.';
+                document.getElementById('editUserError').style.display = 'block';
+            }
+        });
+
+        // Database Operations
+        async function exportUsers() {
+            try {
+                console.log('Exporting users...');
+                const response = await fetch(`${API_BASE}/api/admin/users?per_page=10000`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) throw new Error('Failed to export users');
+                
+                const data = await response.json();
+                
+                const headers = ['ID', 'Username', 'Email', 'Total Score', 'Games Played', 'Prediction Accuracy', 'AI Success Rate', 'Is Admin', 'Is Active', 'Created At'];
+                const csvContent = [
+                    headers.join(','),
+                    ...data.users.map(user => [
+                        user.id,
+                        `"${user.username}"`,
+                        `"${user.email}"`,
+                        user.total_score,
+                        user.games_played,
+                        user.prediction_accuracy,
+                        user.ai_success_rate,
+                        user.is_admin,
+                        user.is_active,
+                        `"${user.created_at}"`
+                    ].join(','))
+                ].join('\n');
+                
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `users_export_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                alert('✅ Users exported successfully!');
+                
+            } catch (error) {
+                console.error('Failed to export users:', error);
+                alert('❌ Failed to export users');
+            }
+        }
+
+        async function exportGames() {
+            try {
+                console.log('Exporting games...');
+                const response = await fetch(`${API_BASE}/api/admin/games?per_page=10000`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) throw new Error('Failed to export games');
+                
+                const data = await response.json();
+                
+                const headers = ['ID', 'Username', 'Agent Type', 'Prediction', 'Actual Steps', 'Succeeded', 'Score', 'Total Reward', 'Timestamp', 'GIF URL'];
+                const csvContent = [
+                    headers.join(','),
+                    ...data.games.map(game => [
+                        game.id,
+                        `"${game.username}"`,
+                        game.agent_type,
+                        game.prediction,
+                        game.actual_steps,
+                        game.succeeded,
+                        game.score,
+                        game.total_reward,
+                        `"${game.timestamp}"`,
+                        `"${game.gif_url || ''}"`
+                    ].join(','))
+                ].join('\n');
+                
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `games_export_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                alert('✅ Games exported successfully!');
+                
+            } catch (error) {
+                console.error('Failed to export games:', error);
+                alert('❌ Failed to export games');
+            }
+        }
+
+        async function cleanupOldVideos() {
+            if (!confirm('🧹 This will remove old MP4 video files to save space. Continue?')) {
+                return;
+            }
+            
+            try {
+                console.log('Cleaning up old videos...');
+                const response = await fetch(`${API_BASE}/api/cleanup-old-videos`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ Cleanup completed! Removed ${data.removed_files} old video files.`);
+                } else {
+                    alert('❌ Cleanup failed: ' + (data.error || 'Unknown error'));
+                }
+                
+            } catch (error) {
+                console.error('Failed to cleanup videos:', error);
+                alert('❌ Failed to cleanup videos');
+            }
+        }
+
+        function confirmDangerousAction(action) {
+            const messages = {
+                backup: '💾 Database backup functionality would be implemented here.\n\nFor now, you can manually backup the SQLite file.'
+            };
+            
+            alert(messages[action] || 'This action is not yet implemented.');
+        }
+
+        // Utility function to escape HTML
+        function escapeHtml(text) {
+            if (typeof text !== 'string') return text;
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('editUserModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditUserModal();
+            }
+        });
+    </script>
+</body>
+</html>

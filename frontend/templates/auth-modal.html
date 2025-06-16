@@ -1,0 +1,1034 @@
+<!-- Authentication Modal Template -->
+<!-- This template can be included in any page that needs authentication -->
+
+<div id="authModal" class="modal-overlay">
+    <div class="modal-content auth-modal-content">
+        <button class="modal-close" onclick="AuthModal.close()" aria-label="Close modal">&times;</button>
+        
+        <div class="modal-header">
+            <h2 id="authModalTitle">🌌 Welcome to the Galaxy</h2>
+            <p id="authModalSubtitle">Choose your path to the stars</p>
+        </div>
+        
+        <div class="auth-tabs" role="tablist">
+            <div class="auth-tab active" data-tab="login" role="tab" tabindex="0" aria-selected="true">
+                🚀 Sign In
+            </div>
+            <div class="auth-tab" data-tab="register" role="tab" tabindex="0" aria-selected="false">
+                🌟 Join Galaxy
+            </div>
+        </div>
+        
+        <div id="authModalError" class="message message-error" style="display: none;" role="alert"></div>
+        <div id="authModalSuccess" class="message message-success" style="display: none;" role="alert"></div>
+        
+        <!-- Login Form -->
+        <form id="authModalLoginForm" class="auth-form active" role="tabpanel" aria-labelledby="loginTabLabel">
+            <div class="form-group">
+                <label for="authLoginUsername">Username or Email</label>
+                <input type="text" id="authLoginUsername" class="form-input" 
+                       placeholder="Enter username or email" required 
+                       autocomplete="username" aria-describedby="loginUsernameHelp">
+                <div id="loginUsernameHelp" class="sr-only">Enter your username or email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="authLoginPassword">Password</label>
+                <input type="password" id="authLoginPassword" class="form-input" 
+                       placeholder="Enter password" required 
+                       autocomplete="current-password" aria-describedby="loginPasswordHelp">
+                <div id="loginPasswordHelp" class="sr-only">Enter your password</div>
+            </div>
+            
+            <div class="form-group">
+                <label class="checkbox-group">
+                    <input type="checkbox" id="authRememberMe" aria-describedby="rememberMeHelp">
+                    <span>Remember me for 30 days</span>
+                </label>
+                <div id="rememberMeHelp" class="sr-only">Keep me signed in on this device</div>
+            </div>
+            
+            <button type="submit" class="auth-btn" aria-describedby="loginButtonHelp">
+                🚀 Enter Galaxy
+            </button>
+            <div id="loginButtonHelp" class="sr-only">Click to sign in to your account</div>
+            
+            <div class="forgot-password">
+                <a href="#" onclick="AuthModal.showForgotPassword(); return false;" 
+                   aria-describedby="forgotPasswordHelp">
+                    Forgot username or password?
+                </a>
+                <div id="forgotPasswordHelp" class="sr-only">Click to reset your password</div>
+            </div>
+        </form>
+        
+        <!-- Register Form -->
+        <form id="authModalRegisterForm" class="auth-form" role="tabpanel" aria-labelledby="registerTabLabel">
+            <div class="form-group">
+                <label for="authRegisterUsername">Username</label>
+                <input type="text" id="authRegisterUsername" class="form-input" 
+                       placeholder="Choose a username" required minlength="3" maxlength="30"
+                       autocomplete="username" aria-describedby="registerUsernameHelp">
+                <div id="authUsernameError" class="field-error" style="display: none;" role="alert"></div>
+                <div id="registerUsernameHelp" class="sr-only">Choose a unique username (3-30 characters, letters, numbers, underscore, dash)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="authRegisterEmail">Email</label>
+                <input type="email" id="authRegisterEmail" class="form-input" 
+                       placeholder="Enter your email" required 
+                       autocomplete="email" aria-describedby="registerEmailHelp">
+                <div id="authEmailError" class="field-error" style="display: none;" role="alert"></div>
+                <div id="registerEmailHelp" class="sr-only">Enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="authRegisterPassword">Password</label>
+                <input type="password" id="authRegisterPassword" class="form-input" 
+                       placeholder="Create a strong password" required minlength="6"
+                       autocomplete="new-password" aria-describedby="registerPasswordHelp">
+                <div class="password-strength" aria-label="Password strength indicator">
+                    <div id="authPasswordStrengthBar" class="password-strength-bar"></div>
+                </div>
+                <div id="authPasswordStrengthText" class="password-strength-text" aria-live="polite"></div>
+                <div id="registerPasswordHelp" class="sr-only">Password must be at least 6 characters long</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="authConfirmPassword">Confirm Password</label>
+                <input type="password" id="authConfirmPassword" class="form-input" 
+                       placeholder="Confirm your password" required 
+                       autocomplete="new-password" aria-describedby="confirmPasswordHelp">
+                <div id="authConfirmError" class="field-error" style="display: none;" role="alert"></div>
+                <div id="confirmPasswordHelp" class="sr-only">Re-enter your password to confirm</div>
+            </div>
+            
+            <div class="form-group">
+                <label class="checkbox-group">
+                    <input type="checkbox" id="authAcceptTerms" required aria-describedby="termsHelp">
+                    <span>I agree to the <a href="/terms" target="_blank" rel="noopener">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a></span>
+                </label>
+                <div id="termsHelp" class="sr-only">You must accept the terms to create an account</div>
+            </div>
+            
+            <button type="submit" class="auth-btn" aria-describedby="registerButtonHelp">
+                🌟 Join Galaxy
+            </button>
+            <div id="registerButtonHelp" class="sr-only">Click to create your account</div>
+        </form>
+        
+        <!-- Forgot Password Form -->
+        <form id="authModalForgotForm" class="auth-form" role="tabpanel" aria-labelledby="forgotPasswordTabLabel">
+            <div class="modal-header">
+                <h3>🔐 Reset Password</h3>
+                <p>Enter your username or email to receive a reset link</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="authForgotIdentifier">Username or Email</label>
+                <input type="text" id="authForgotIdentifier" class="form-input" 
+                       placeholder="Enter username or email" required 
+                       aria-describedby="forgotIdentifierHelp">
+                <div id="forgotIdentifierHelp" class="sr-only">Enter your username or email to receive password reset instructions</div>
+            </div>
+            
+            <button type="submit" class="auth-btn" aria-describedby="forgotSubmitHelp">
+                📧 Send Reset Link
+            </button>
+            <div id="forgotSubmitHelp" class="sr-only">Click to send password reset email</div>
+            
+            <div class="text-center" style="margin-top: var(--spacing-lg);">
+                <a href="#" onclick="AuthModal.showLogin(); return false;" 
+                   aria-describedby="backToLoginHelp">← Back to Sign In</a>
+                <div id="backToLoginHelp" class="sr-only">Return to login form</div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Auth Modal Styles -->
+<style id="authModalStyles">
+.auth-modal-content {
+    max-width: 480px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: var(--spacing-xl, 32px);
+    border-radius: var(--radius-lg, 16px);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px;
+    position: relative;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
+    text-align: center;
+    border-radius: var(--radius-md, 12px);
+    cursor: pointer;
+    transition: all var(--transition-cubic, 0.3s cubic-bezier(0.4, 0, 0.2, 1));
+    font-weight: 600;
+    color: var(--text-secondary, #a0a8ff);
+    position: relative;
+    z-index: 2;
+    border: 2px solid transparent;
+}
+
+.auth-tab:focus {
+    outline: none;
+    border-color: var(--text-accent, #00f5ff);
+}
+
+.auth-tab.active {
+    background: var(--primary-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+    color: var(--text-primary, #ffffff);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    transform: translateY(-1px);
+}
+
+.auth-tab:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary, #ffffff);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md, 16px);
+    margin-top: var(--spacing-md, 16px);
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-top: 2px;
+    transform: scale(1.2);
+    accent-color: var(--text-accent, #00f5ff);
+    flex-shrink: 0;
+}
+
+.checkbox-group span {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.checkbox-group a {
+    color: var(--text-accent, #00f5ff);
+    text-decoration: none;
+    transition: color var(--transition-normal, 0.3s ease);
+}
+
+.checkbox-group a:hover {
+    color: var(--success, #00ff7f);
+    text-decoration: underline;
+}
+
+.checkbox-group a:focus {
+    outline: 2px solid var(--text-accent, #00f5ff);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Form validation states */
+.form-group.valid .form-input {
+    border-color: var(--success, #00ff7f);
+    background: rgba(0, 255, 127, 0.05);
+}
+
+.form-group.invalid .form-input {
+    border-color: var(--error, #ff6b6b);
+    background: rgba(255, 107, 107, 0.05);
+}
+
+/* Loading state for forms */
+.auth-btn.loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+}
+
+.auth-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid var(--text-primary, #ffffff);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .auth-modal-content {
+        margin: var(--spacing-sm, 8px);
+        padding: var(--spacing-lg, 24px);
+        max-height: 95vh;
+    }
+    
+    .auth-tabs {
+        flex-direction: column;
+        gap: var(--spacing-xs, 4px);
+    }
+    
+    .auth-tab {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .checkbox-group {
+        flex-direction: column;
+        gap: var(--spacing-sm, 8px);
+    }
+    
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .modal-header p {
+        font-size: 0.9rem;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .auth-tab {
+        border: 2px solid var(--border-glass, rgba(255, 255, 255, 0.2));
+    }
+    
+    .auth-tab.active {
+        border-color: var(--text-accent, #00f5ff);
+    }
+    
+    .checkbox-group a {
+        text-decoration: underline;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .auth-form,
+    .auth-tab,
+    .auth-btn.loading::after {
+        animation: none;
+        transition: none;
+    }
+    
+    .auth-tab:hover {
+        transform: none;
+    }
+}
+</style>
+
+<!-- Auth Modal JavaScript Controller -->
+<script id="authModalScript">
+// Auth Modal Controller - Enhanced version
+class AuthModalController {
+    constructor() {
+        this.currentForm = 'login';
+        this.isInitialized = false;
+        this.focusTrap = null;
+    }
+    
+    init() {
+        if (this.isInitialized) return;
+        
+        console.log('🔐 Initializing Auth Modal...');
+        
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.doInit());
+        } else {
+            this.doInit();
+        }
+    }
+    
+    doInit() {
+        this.bindEvents();
+        this.bindValidation();
+        this.setupAccessibility();
+        this.isInitialized = true;
+        console.log('✓ Auth Modal initialized');
+    }
+    
+    bindEvents() {
+        // Tab switching with keyboard support
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabType = tab.dataset.tab;
+                if (tabType) {
+                    this.switchTab(tabType);
+                }
+            });
+            
+            tab.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const tabType = tab.dataset.tab;
+                    if (tabType) {
+                        this.switchTab(tabType);
+                    }
+                }
+            });
+        });
+        
+        // Form submissions
+        const forms = {
+            login: document.getElementById('authModalLoginForm'),
+            register: document.getElementById('authModalRegisterForm'),
+            forgot: document.getElementById('authModalForgotForm')
+        };
+        
+        Object.entries(forms).forEach(([type, form]) => {
+            if (form) {
+                form.addEventListener('submit', (e) => this.handleFormSubmit(e, type));
+            }
+        });
+        
+        // Close modal events
+        const modal = document.getElementById('authModal');
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    this.close();
+                }
+            });
+        }
+        
+        // Global keyboard events
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen()) {
+                this.close();
+            }
+        });
+    }
+    
+    bindValidation() {
+        // Real-time validation with accessibility announcements
+        const validators = [
+            { id: 'authRegisterUsername', method: 'validateUsername' },
+            { id: 'authRegisterEmail', method: 'validateEmail' },
+            { id: 'authRegisterPassword', method: 'checkPasswordStrength' },
+            { id: 'authConfirmPassword', method: 'validatePasswordConfirm' }
+        ];
+        
+        validators.forEach(({ id, method }) => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('input', () => this[method]());
+                input.addEventListener('blur', () => this[method]());
+            }
+        });
+    }
+    
+    setupAccessibility() {
+        // Set up ARIA labels and relationships
+        const tabs = document.querySelectorAll('.auth-tab');
+        tabs.forEach((tab, index) => {
+            tab.setAttribute('id', `authTab${index}`);
+            tab.setAttribute('aria-controls', `authForm${index}`);
+        });
+        
+        const forms = document.querySelectorAll('.auth-form');
+        forms.forEach((form, index) => {
+            form.setAttribute('id', `authForm${index}`);
+            form.setAttribute('aria-labelledby', `authTab${index}`);
+        });
+    }
+    
+    open(tab = 'login') {
+        const modal = document.getElementById('authModal');
+        if (modal) {
+            modal.classList.add('active');
+            this.switchTab(tab);
+            document.body.style.overflow = 'hidden';
+            
+            // Set up focus trap
+            this.setupFocusTrap(modal);
+            
+            // Announce to screen readers
+            this.announceToScreenReader('Authentication dialog opened');
+        }
+    }
+    
+    close() {
+        const modal = document.getElementById('authModal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            this.clearMessages();
+            this.resetForms();
+            
+            // Remove focus trap
+            this.removeFocusTrap();
+            
+            // Announce to screen readers
+            this.announceToScreenReader('Authentication dialog closed');
+        }
+    }
+    
+    isOpen() {
+        const modal = document.getElementById('authModal');
+        return modal && modal.classList.contains('active');
+    }
+    
+    switchTab(tab) {
+        this.currentForm = tab;
+        
+        // Update tabs with ARIA states
+        document.querySelectorAll('.auth-tab').forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+            t.setAttribute('tabindex', '-1');
+        });
+        
+        const activeTab = document.querySelector(`[data-tab="${tab}"]`);
+        if (activeTab) {
+            activeTab.classList.add('active');
+            activeTab.setAttribute('aria-selected', 'true');
+            activeTab.setAttribute('tabindex', '0');
+            activeTab.focus();
+        }
+        
+        // Update forms
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+        
+        const formIds = {
+            login: 'authModalLoginForm',
+            register: 'authModalRegisterForm',
+            forgot: 'authModalForgotForm'
+        };
+        
+        const targetForm = document.getElementById(formIds[tab]);
+        if (targetForm) {
+            targetForm.classList.add('active');
+            
+            // Focus first input
+            setTimeout(() => {
+                const firstInput = targetForm.querySelector('input');
+                if (firstInput) firstInput.focus();
+            }, 100);
+        }
+        
+        this.clearMessages();
+        this.announceToScreenReader(`Switched to ${tab} form`);
+    }
+    
+    setupFocusTrap(modal) {
+        const focusableElements = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        
+        this.focusTrap = {
+            firstElement: focusableElements[0],
+            lastElement: focusableElements[focusableElements.length - 1]
+        };
+        
+        modal.addEventListener('keydown', this.handleFocusTrap.bind(this));
+        
+        // Focus first element
+        if (this.focusTrap.firstElement) {
+            setTimeout(() => this.focusTrap.firstElement.focus(), 100);
+        }
+    }
+    
+    handleFocusTrap(e) {
+        if (e.key === 'Tab') {
+            if (e.shiftKey) {
+                if (document.activeElement === this.focusTrap.firstElement) {
+                    this.focusTrap.lastElement.focus();
+                    e.preventDefault();
+                }
+            } else {
+                if (document.activeElement === this.focusTrap.lastElement) {
+                    this.focusTrap.firstElement.focus();
+                    e.preventDefault();
+                }
+            }
+        }
+    }
+    
+    removeFocusTrap() {
+        const modal = document.getElementById('authModal');
+        if (modal) {
+            modal.removeEventListener('keydown', this.handleFocusTrap.bind(this));
+        }
+        this.focusTrap = null;
+    }
+    
+    announceToScreenReader(message) {
+        // Create a live region for screen reader announcements
+        let liveRegion = document.getElementById('authModalLiveRegion');
+        if (!liveRegion) {
+            liveRegion = document.createElement('div');
+            liveRegion.id = 'authModalLiveRegion';
+            liveRegion.setAttribute('aria-live', 'polite');
+            liveRegion.setAttribute('aria-atomic', 'true');
+            liveRegion.className = 'sr-only';
+            document.body.appendChild(liveRegion);
+        }
+        
+        liveRegion.textContent = message;
+        
+        // Clear after announcement
+        setTimeout(() => {
+            liveRegion.textContent = '';
+        }, 1000);
+    }
+    
+    clearMessages() {
+        const errorDiv = document.getElementById('authModalError');
+        const successDiv = document.getElementById('authModalSuccess');
+        
+        if (errorDiv) errorDiv.style.display = 'none';
+        if (successDiv) successDiv.style.display = 'none';
+    }
+    
+    showError(message) {
+        const errorDiv = document.getElementById('authModalError');
+        const successDiv = document.getElementById('authModalSuccess');
+        
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.focus(); // Announce to screen readers
+        }
+        
+        if (successDiv) {
+            successDiv.style.display = 'none';
+        }
+        
+        this.announceToScreenReader(`Error: ${message}`);
+    }
+    
+    showSuccess(message) {
+        const successDiv = document.getElementById('authModalSuccess');
+        const errorDiv = document.getElementById('authModalError');
+        
+        if (successDiv) {
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            successDiv.focus(); // Announce to screen readers
+        }
+        
+        if (errorDiv) {
+            errorDiv.style.display = 'none';
+        }
+        
+        this.announceToScreenReader(`Success: ${message}`);
+    }
+    
+    resetForms() {
+        document.querySelectorAll('.auth-form').forEach(form => {
+            if (form.reset) form.reset();
+            
+            form.querySelectorAll('.form-group').forEach(group => {
+                group.classList.remove('valid', 'invalid');
+            });
+            
+            form.querySelectorAll('.field-error').forEach(error => {
+                error.style.display = 'none';
+            });
+        });
+    }
+    
+    // Validation methods with accessibility
+    validateUsername() {
+        const input = document.getElementById('authRegisterUsername');
+        const errorDiv = document.getElementById('authUsernameError');
+        
+        if (!input || !errorDiv) return true;
+        
+        const isValid = window.Utils ? 
+            Utils.isValidUsername(input.value) : 
+            this.fallbackValidateUsername(input.value);
+        
+        if (input.value && !isValid) {
+            errorDiv.textContent = 'Username must be 3-30 characters, letters, numbers, _ and - only';
+            errorDiv.style.display = 'block';
+            input.parentNode.classList.add('invalid');
+            input.parentNode.classList.remove('valid');
+            input.setAttribute('aria-describedby', 'authUsernameError registerUsernameHelp');
+        } else if (input.value) {
+            errorDiv.style.display = 'none';
+            input.parentNode.classList.add('valid');
+            input.parentNode.classList.remove('invalid');
+            input.setAttribute('aria-describedby', 'registerUsernameHelp');
+        } else {
+            errorDiv.style.display = 'none';
+            input.parentNode.classList.remove('valid', 'invalid');
+            input.setAttribute('aria-describedby', 'registerUsernameHelp');
+        }
+        
+        return isValid;
+    }
+    
+    validateEmail() {
+        const input = document.getElementById('authRegisterEmail');
+        const errorDiv = document.getElementById('authEmailError');
+        
+        if (!input || !errorDiv) return true;
+        
+        const isValid = window.Utils ? 
+            Utils.isValidEmail(input.value) : 
+            this.fallbackValidateEmail(input.value);
+        
+        if (input.value && !isValid) {
+            errorDiv.textContent = 'Please enter a valid email address';
+            errorDiv.style.display = 'block';
+            input.parentNode.classList.add('invalid');
+            input.parentNode.classList.remove('valid');
+            input.setAttribute('aria-describedby', 'authEmailError registerEmailHelp');
+        } else if (input.value) {
+            errorDiv.style.display = 'none';
+            input.parentNode.classList.add('valid');
+            input.parentNode.classList.remove('invalid');
+            input.setAttribute('aria-describedby', 'registerEmailHelp');
+        } else {
+            errorDiv.style.display = 'none';
+            input.parentNode.classList.remove('valid', 'invalid');
+            input.setAttribute('aria-describedby', 'registerEmailHelp');
+        }
+        
+        return isValid;
+    }
+    
+    checkPasswordStrength() {
+        const input = document.getElementById('authRegisterPassword');
+        const strengthBar = document.getElementById('authPasswordStrengthBar');
+        const strengthText = document.getElementById('authPasswordStrengthText');
+        
+        if (!input || !strengthBar || !strengthText) return true;
+        
+        const validation = window.Utils ? 
+            Utils.validatePassword(input.value) : 
+            this.fallbackValidatePassword(input.value);
+        
+        strengthBar.className = `password-strength-bar ${validation.strength}`;
+        strengthText.textContent = validation.strength.charAt(0).toUpperCase() + validation.strength.slice(1);
+        
+        if (validation.issues.length > 0) {
+            strengthText.textContent += ` - ${validation.issues[0]}`;
+        }
+        
+        if (input.value) {
+            if (validation.isValid) {
+                input.parentNode.classList.add('valid');
+                input.parentNode.classList.remove('invalid');
+            } else {
+                input.parentNode.classList.add('invalid');
+                input.parentNode.classList.remove('valid');
+            }
+        } else {
+            input.parentNode.classList.remove('valid', 'invalid');
+        }
+        
+        return validation.isValid;
+    }
+    
+    validatePasswordConfirm() {
+        const passwordInput = document.getElementById('authRegisterPassword');
+        const confirmInput = document.getElementById('authConfirmPassword');
+        const errorDiv = document.getElementById('authConfirmError');
+        
+        if (!passwordInput || !confirmInput || !errorDiv) return true;
+        
+        const password = passwordInput.value;
+        const confirm = confirmInput.value;
+        
+        if (confirm && password !== confirm) {
+            errorDiv.textContent = 'Passwords do not match';
+            errorDiv.style.display = 'block';
+            confirmInput.parentNode.classList.add('invalid');
+            confirmInput.parentNode.classList.remove('valid');
+            confirmInput.setAttribute('aria-describedby', 'authConfirmError confirmPasswordHelp');
+            return false;
+        } else if (confirm) {
+            errorDiv.style.display = 'none';
+            confirmInput.parentNode.classList.add('valid');
+            confirmInput.parentNode.classList.remove('invalid');
+            confirmInput.setAttribute('aria-describedby', 'confirmPasswordHelp');
+            return true;
+        } else {
+            errorDiv.style.display = 'none';
+            confirmInput.parentNode.classList.remove('valid', 'invalid');
+            confirmInput.setAttribute('aria-describedby', 'confirmPasswordHelp');
+            return false;
+        }
+    }
+    
+    // Fallback validation methods
+    fallbackValidateUsername(username) {
+        return username && username.length >= 3 && username.length <= 30 && /^[a-zA-Z0-9_-]+$/.test(username);
+    }
+    
+    fallbackValidateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    
+    fallbackValidatePassword(password) {
+        const result = { isValid: false, strength: 'weak', issues: [] };
+        
+        if (!password) {
+            result.issues.push('Password is required');
+            return result;
+        }
+        
+        if (password.length < 6) {
+            result.issues.push('Password must be at least 6 characters');
+        }
+        
+        if (/[a-z]/.test(password)) score++;
+        if (/[A-Z]/.test(password)) score++;
+        if (/\d/.test(password)) score++;
+        if (/[^a-zA-Z0-9]/.test(password)) score++;
+        
+        if (score < 2) result.strength = 'weak';
+        else if (score < 4) result.strength = 'fair';
+        else if (score < 5) result.strength = 'good';
+        else result.strength = 'strong';
+        
+        result.isValid = result.issues.length === 0 && score >= 2;
+        return result;
+    }
+    
+    async handleFormSubmit(e, type) {
+        e.preventDefault();
+        
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+        }
+        
+        try {
+            let result;
+            
+            switch (type) {
+                case 'login':
+                    result = await this.handleLogin(e);
+                    break;
+                case 'register':
+                    result = await this.handleRegister(e);
+                    break;
+                case 'forgot':
+                    result = await this.handleForgotPassword(e);
+                    break;
+            }
+            
+            if (result && result.success) {
+                // Success handled in individual methods
+            }
+            
+        } catch (error) {
+            console.error(`${type} error:`, error);
+            this.showError(`${type.charAt(0).toUpperCase() + type.slice(1)} failed. Please try again.`);
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            }
+        }
+    }
+    
+    async handleLogin(e) {
+        const username = document.getElementById('authLoginUsername')?.value;
+        const password = document.getElementById('authLoginPassword')?.value;
+        const rememberMe = document.getElementById('authRememberMe')?.checked;
+        
+        if (!username || !password) {
+            this.showError('Please fill in all fields');
+            return { success: false };
+        }
+        
+        try {
+            let result;
+            if (window.Auth && window.Auth.login) {
+                result = await Auth.login(username, password, rememberMe);
+            } else {
+                // Fallback direct API call
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password, remember_me: rememberMe })
+                });
+                const data = await response.json();
+                result = { success: data.success, error: data.error };
+            }
+            
+            if (result.success) {
+                this.showSuccess('Welcome back to the galaxy! 🚀');
+                setTimeout(() => this.close(), 1000);
+                return { success: true };
+            } else {
+                this.showError(result.error || 'Login failed');
+                return { success: false };
+            }
+        } catch (error) {
+            this.showError('Login failed. Please try again.');
+            return { success: false };
+        }
+    }
+    
+    async handleRegister(e) {
+        const username = document.getElementById('authRegisterUsername')?.value;
+        const email = document.getElementById('authRegisterEmail')?.value;
+        const password = document.getElementById('authRegisterPassword')?.value;
+        const confirmPassword = document.getElementById('authConfirmPassword')?.value;
+        const acceptTerms = document.getElementById('authAcceptTerms')?.checked;
+        
+        // Validate form
+        if (!username || !email || !password || !confirmPassword) {
+            this.showError('Please fill in all fields');
+            return { success: false };
+        }
+        
+        if (password !== confirmPassword) {
+            this.showError('Passwords do not match');
+            return { success: false };
+        }
+        
+        if (!acceptTerms) {
+            this.showError('You must accept the Terms of Service');
+            return { success: false };
+        }
+        
+        try {
+            let result;
+            if (window.Auth && window.Auth.register) {
+                result = await Auth.register(username, email, password);
+            } else {
+                // Fallback direct API call
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, email, password })
+                });
+                const data = await response.json();
+                result = { success: data.success, error: data.error };
+            }
+            
+            if (result.success) {
+                this.showSuccess('Welcome to the galaxy! 🌟');
+                setTimeout(() => this.close(), 1000);
+                return { success: true };
+            } else {
+                this.showError(result.error || 'Registration failed');
+                return { success: false };
+            }
+        } catch (error) {
+            this.showError('Registration failed. Please try again.');
+            return { success: false };
+        }
+    }
+    
+    async handleForgotPassword(e) {
+        const identifier = document.getElementById('authForgotIdentifier')?.value;
+        
+        if (!identifier) {
+            this.showError('Please enter your username or email');
+            return { success: false };
+        }
+        
+        try {
+            let result;
+            if (window.Auth && window.Auth.forgotPassword) {
+                result = await Auth.forgotPassword(identifier);
+            } else {
+                // Fallback direct API call
+                const response = await fetch('/api/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier })
+                });
+                const data = await response.json();
+                result = { success: data.success, error: data.error, message: data.message };
+            }
+            
+            if (result.success) {
+                this.showSuccess(result.message || 'Password reset email sent!');
+                setTimeout(() => this.showLogin(), 2000);
+                return { success: true };
+            } else {
+                this.showError(result.error || 'Failed to send reset email');
+                return { success: false };
+            }
+        } catch (error) {
+            this.showError('Failed to send reset email. Please try again.');
+            return { success: false };
+        }
+    }
+    
+    // Public API methods
+    showForgotPassword() {
+        this.switchTab('forgot');
+    }
+    
+    showLogin() {
+        this.switchTab('login');
+    }
+    
+    showRegister() {
+        this.switchTab('register');
+    }
+}
+
+// Create global instance
+const authModalController = new AuthModalController();
+
+// Make globally available with both patterns
+window.AuthModal = authModalController;
+
+// Auto-initialize when DOM is ready
+authModalController.init();
+
+// Expose methods for onclick handlers
+window.AuthModal.close = () => authModalController.close();
+window.AuthModal.showForgotPassword = () => authModalController.showForgotPassword();
+window.AuthModal.showLogin = () => authModalController.showLogin();
+</script>

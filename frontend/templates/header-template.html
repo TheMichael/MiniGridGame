@@ -1,0 +1,697 @@
+<!-- Header Template for AI Agent Galaxy -->
+<!-- This template provides a reusable header component -->
+
+<template id="galaxyHeaderTemplate">
+    <div class="galaxy-header">
+        <h1 class="galaxy-title" data-text="🌌 AI Agent Galaxy">
+            <span class="title-text">🌌 AI Agent Galaxy</span>
+            <span class="title-shimmer" aria-hidden="true">🌌 AI Agent Galaxy</span>
+        </h1>
+        <p class="galaxy-subtitle" data-text="Predict the future. Command the stars. Rule the galaxy.">
+            <span class="subtitle-text">Predict the future. Command the stars. Rule the galaxy.</span>
+        </p>
+        <div class="galaxy-particles" aria-hidden="true">
+            <span class="particle particle-1"></span>
+            <span class="particle particle-2"></span>
+            <span class="particle particle-3"></span>
+            <span class="particle particle-4"></span>
+            <span class="particle particle-5"></span>
+            <span class="particle particle-6"></span>
+        </div>
+    </div>
+</template>
+
+<!-- Simple Header Template (for minimal pages) -->
+<template id="simpleHeaderTemplate">
+    <div class="simple-header">
+        <h1 class="simple-title">
+            <span class="title-icon">🌌</span>
+            <span class="title-text">AI Agent Galaxy</span>
+        </h1>
+        <p class="simple-subtitle">Predict the future. Command the stars. Rule the galaxy.</p>
+    </div>
+</template>
+
+<!-- Header Styles -->
+<style id="headerTemplateStyles">
+/* Galaxy Header - Main animated version */
+.galaxy-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xxl, 48px);
+    padding: var(--spacing-xxl, 48px) 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.galaxy-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    background: var(--accent-gradient, linear-gradient(135deg, #4facfe 0%, #00f2fe 100%));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: var(--spacing-md, 16px);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    position: relative;
+    display: inline-block;
+}
+
+.title-text {
+    position: relative;
+    z-index: 2;
+}
+
+.title-shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s infinite;
+    pointer-events: none;
+    z-index: 3;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+    100% { transform: translateX(100%); }
+}
+
+.galaxy-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary, #a0a8ff);
+    font-weight: 400;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out 0.3s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Floating particles effect */
+.galaxy-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--text-accent, #00f5ff);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: floatParticle 8s infinite linear;
+}
+
+.particle-1 {
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 8s;
+}
+
+.particle-2 {
+    left: 20%;
+    animation-delay: 1s;
+    animation-duration: 10s;
+}
+
+.particle-3 {
+    left: 80%;
+    animation-delay: 2s;
+    animation-duration: 7s;
+}
+
+.particle-4 {
+    left: 70%;
+    animation-delay: 3s;
+    animation-duration: 9s;
+}
+
+.particle-5 {
+    left: 40%;
+    animation-delay: 4s;
+    animation-duration: 11s;
+}
+
+.particle-6 {
+    left: 60%;
+    animation-delay: 5s;
+    animation-duration: 6s;
+}
+
+@keyframes floatParticle {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+        transform: translateY(90vh) scale(1);
+    }
+    90% {
+        opacity: 0.6;
+        transform: translateY(-10vh) scale(1);
+    }
+    100% {
+        transform: translateY(-20vh) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Simple Header - Minimal version */
+.simple-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl, 32px);
+    padding: var(--spacing-xl, 32px) 0;
+}
+
+.simple-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text-primary, #ffffff);
+    margin-bottom: var(--spacing-sm, 8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm, 8px);
+}
+
+.title-icon {
+    font-size: 1.2em;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(0, 245, 255, 0.8);
+    }
+}
+
+.simple-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary, #a0a8ff);
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .galaxy-header {
+        padding: var(--spacing-xl, 32px) 0;
+        margin-bottom: var(--spacing-xl, 32px);
+    }
+    
+    .galaxy-title {
+        font-size: 2.5rem;
+    }
+    
+    .galaxy-subtitle {
+        font-size: 1.1rem;
+        padding: 0 var(--spacing-md, 16px);
+    }
+    
+    .simple-title {
+        font-size: 2rem;
+        flex-direction: column;
+        gap: var(--spacing-xs, 4px);
+    }
+}
+
+@media (max-width: 480px) {
+    .galaxy-header {
+        padding: var(--spacing-lg, 24px) 0;
+        margin-bottom: var(--spacing-lg, 24px);
+    }
+    
+    .galaxy-title {
+        font-size: 2rem;
+    }
+    
+    .galaxy-subtitle {
+        font-size: 1rem;
+        padding: 0 var(--spacing-sm, 8px);
+    }
+    
+    .simple-title {
+        font-size: 1.8rem;
+    }
+    
+    .simple-subtitle {
+        font-size: 0.9rem;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .title-shimmer,
+    .particle,
+    .title-icon {
+        animation: none;
+    }
+    
+    .galaxy-subtitle {
+        opacity: 1;
+        transform: none;
+        animation: none;
+    }
+    
+    .galaxy-particles {
+        display: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .galaxy-title {
+        background: none;
+        -webkit-text-fill-color: var(--text-primary, #ffffff);
+        color: var(--text-primary, #ffffff);
+    }
+    
+    .particle {
+        background: var(--text-primary, #ffffff);
+    }
+}
+
+/* Print styles */
+@media print {
+    .galaxy-particles,
+    .title-shimmer {
+        display: none;
+    }
+    
+    .galaxy-header,
+    .simple-header {
+        margin-bottom: 1rem;
+        padding: 1rem 0;
+    }
+    
+    .galaxy-title,
+    .simple-title {
+        color: black !important;
+        background: none !important;
+        -webkit-text-fill-color: black !important;
+    }
+    
+    .galaxy-subtitle,
+    .simple-subtitle {
+        color: #666 !important;
+    }
+}
+
+/* Loading animation for when header first appears */
+.galaxy-header.loading .galaxy-title {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: headerAppear 1s ease-out forwards;
+}
+
+.galaxy-header.loading .galaxy-subtitle {
+    animation-delay: 0.5s;
+}
+
+@keyframes headerAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Interactive hover effects (for desktop) */
+@media (hover: hover) and (pointer: fine) {
+    .galaxy-title:hover .title-shimmer {
+        animation-duration: 1s;
+    }
+    
+    .simple-title:hover .title-icon {
+        animation-duration: 0.5s;
+    }
+}
+</style>
+
+<!-- Header Template Controller -->
+<script id="headerTemplateScript">
+class HeaderTemplateController {
+    constructor() {
+        this.instances = new Map();
+    }
+    
+    /**
+     * Render header template into target element
+     * @param {HTMLElement} targetElement - Element to render header into
+     * @param {Object} options - Configuration options
+     */
+    render(targetElement, options = {}) {
+        if (!targetElement) {
+            console.warn('HeaderTemplate: Target element is required');
+            return false;
+        }
+        
+        const config = {
+            type: 'galaxy', // 'galaxy' or 'simple'
+            title: '🌌 AI Agent Galaxy',
+            subtitle: 'Predict the future. Command the stars. Rule the galaxy.',
+            animated: true,
+            particles: true,
+            ...options
+        };
+        
+        // Remove existing header if any
+        this.remove(targetElement);
+        
+        // Get template
+        const templateId = config.type === 'simple' ? 'simpleHeaderTemplate' : 'galaxyHeaderTemplate';
+        const template = document.getElementById(templateId);
+        
+        if (!template) {
+            console.warn(`HeaderTemplate: Template '${templateId}' not found`);
+            return false;
+        }
+        
+        // Clone template content
+        const headerContent = template.content.cloneNode(true);
+        
+        // Customize content
+        this.customizeContent(headerContent, config);
+        
+        // Clear target and append new content
+        targetElement.innerHTML = '';
+        targetElement.appendChild(headerContent);
+        
+        // Initialize animations if enabled
+        if (config.animated && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            this.initializeAnimations(targetElement, config);
+        }
+        
+        // Store instance
+        this.instances.set(targetElement, config);
+        
+        console.log(`✓ Header template '${config.type}' rendered`);
+        return true;
+    }
+    
+    /**
+     * Customize template content
+     */
+    customizeContent(headerContent, config) {
+        // Update title
+        const titleElements = headerContent.querySelectorAll('[data-text]');
+        titleElements.forEach(el => {
+            const textSpans = el.querySelectorAll('.title-text, .subtitle-text');
+            const shimmerSpans = el.querySelectorAll('.title-shimmer');
+            
+            if (el.dataset.text.includes('Galaxy')) {
+                // Title element
+                textSpans.forEach(span => span.textContent = config.title);
+                shimmerSpans.forEach(span => span.textContent = config.title);
+                el.setAttribute('data-text', config.title);
+            } else {
+                // Subtitle element
+                textSpans.forEach(span => span.textContent = config.subtitle);
+                el.setAttribute('data-text', config.subtitle);
+            }
+        });
+        
+        // Handle simple header
+        const simpleTitleText = headerContent.querySelector('.simple-title .title-text');
+        const simpleSubtitle = headerContent.querySelector('.simple-subtitle');
+        
+        if (simpleTitleText) {
+            simpleTitleText.textContent = config.title.replace('🌌 ', '');
+        }
+        
+        if (simpleSubtitle) {
+            simpleSubtitle.textContent = config.subtitle;
+        }
+        
+        // Remove particles if disabled
+        if (!config.particles) {
+            const particles = headerContent.querySelector('.galaxy-particles');
+            if (particles) {
+                particles.remove();
+            }
+        }
+    }
+    
+    /**
+     * Initialize animations
+     */
+    initializeAnimations(headerElement, config) {
+        const header = headerElement.querySelector('.galaxy-header, .simple-header');
+        if (!header) return;
+        
+        // Add loading class for entrance animation
+        header.classList.add('loading');
+        
+        // Remove loading class after animation
+        setTimeout(() => {
+            header.classList.remove('loading');
+        }, 1500);
+        
+        // Initialize intersection observer for scroll animations
+        this.setupScrollAnimations(header);
+        
+        // Add interactive enhancements
+        this.addInteractiveEffects(header, config);
+    }
+    
+    /**
+     * Setup scroll-based animations
+     */
+    setupScrollAnimations(header) {
+        if (!window.IntersectionObserver) return;
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                } else {
+                    entry.target.style.opacity = '0.7';
+                    entry.target.style.transform = 'translateY(10px)';
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '50px'
+        });
+        
+        observer.observe(header);
+        
+        // Store observer for cleanup
+        header._scrollObserver = observer;
+    }
+    
+    /**
+     * Add interactive effects
+     */
+    addInteractiveEffects(header, config) {
+        // Add mouse parallax effect for galaxy header
+        if (config.type === 'galaxy' && !Utils.isMobileDevice()) {
+            this.addParallaxEffect(header);
+        }
+        
+        // Add click animation
+        const title = header.querySelector('.galaxy-title, .simple-title');
+        if (title) {
+            title.addEventListener('click', () => {
+                this.animateClick(title);
+            });
+            
+            // Add keyboard support
+            title.setAttribute('tabindex', '0');
+            title.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.animateClick(title);
+                }
+            });
+        }
+    }
+    
+    /**
+     * Add mouse parallax effect
+     */
+    addParallaxEffect(header) {
+        const particles = header.querySelector('.galaxy-particles');
+        if (!particles) return;
+        
+        header.addEventListener('mousemove', (e) => {
+            const rect = header.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            
+            const particles = header.querySelectorAll('.particle');
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.1;
+                const xOffset = (x - 0.5) * speed * 20;
+                const yOffset = (y - 0.5) * speed * 20;
+                
+                particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+        
+        header.addEventListener('mouseleave', () => {
+            const particles = header.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                particle.style.transform = '';
+            });
+        });
+    }
+    
+    /**
+     * Animate click interaction
+     */
+    animateClick(title) {
+        title.style.transform = 'scale(0.98)';
+        title.style.transition = 'transform 0.1s ease';
+        
+        setTimeout(() => {
+            title.style.transform = '';
+            setTimeout(() => {
+                title.style.transition = '';
+            }, 200);
+        }, 100);
+        
+        // Add ripple effect
+        this.createRipple(title);
+    }
+    
+    /**
+     * Create ripple effect
+     */
+    createRipple(element) {
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        `;
+        
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = rect.width / 2 - size / 2 + 'px';
+        ripple.style.top = rect.height / 2 - size / 2 + 'px';
+        
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+            style.remove();
+        }, 600);
+    }
+    
+    /**
+     * Update header content
+     */
+    updateContent(targetElement, updates = {}) {
+        const instance = this.instances.get(targetElement);
+        if (!instance) {
+            console.warn('HeaderTemplate: No instance found for target element');
+            return false;
+        }
+        
+        const config = { ...instance, ...updates };
+        return this.render(targetElement, config);
+    }
+    
+    /**
+     * Remove header from target element
+     */
+    remove(targetElement) {
+        if (!targetElement) return false;
+        
+        // Cleanup observers
+        const header = targetElement.querySelector('.galaxy-header, .simple-header');
+        if (header && header._scrollObserver) {
+            header._scrollObserver.disconnect();
+        }
+        
+        // Clear content
+        targetElement.innerHTML = '';
+        
+        // Remove instance
+        this.instances.delete(targetElement);
+        
+        return true;
+    }
+    
+    /**
+     * Get all active instances
+     */
+    getInstances() {
+        return Array.from(this.instances.entries());
+    }
+    
+    /**
+     * Cleanup all instances
+     */
+    cleanup() {
+        this.instances.forEach((config, targetElement) => {
+            this.remove(targetElement);
+        });
+    }
+}
+
+// Create global instance
+const headerTemplateController = new HeaderTemplateController();
+
+// Make globally available
+window.HeaderTemplate = headerTemplateController;
+
+// Auto-initialize method for convenience
+window.HeaderTemplate.renderGalaxyHeader = function(targetElement, options = {}) {
+    return headerTemplateController.render(targetElement, { type: 'galaxy', ...options });
+};
+
+window.HeaderTemplate.renderSimpleHeader = function(targetElement, options = {}) {
+    return headerTemplateController.render(targetElement, { type: 'simple', ...options });
+};
+
+console.log('✓ Header Template controller loaded');
+</script>

@@ -1,0 +1,888 @@
+<!-- Loading Spinner Templates -->
+<!-- Comprehensive loading components for AI Agent Galaxy -->
+
+<!-- Main Loading Spinner Template -->
+<template id="cosmicSpinnerTemplate">
+    <div class="loading-spinner-container" role="status" aria-live="polite">
+        <div class="cosmic-spinner" aria-hidden="true">
+            <div class="spinner-ring ring-1"></div>
+            <div class="spinner-ring ring-2"></div>
+            <div class="spinner-ring ring-3"></div>
+            <div class="spinner-core"></div>
+        </div>
+        <div class="loading-text">
+            <span class="loading-message">Loading...</span>
+            <div class="loading-dots" aria-hidden="true">
+                <span class="dot dot-1"></span>
+                <span class="dot dot-2"></span>
+                <span class="dot dot-3"></span>
+            </div>
+        </div>
+        <div class="sr-only">Please wait while content is loading</div>
+    </div>
+</template>
+
+<!-- Overlay Loading Template -->
+<template id="loadingOverlayTemplate">
+    <div class="loading-overlay" role="dialog" aria-modal="true" aria-labelledby="loadingTitle">
+        <div class="loading-overlay-content">
+            <div class="cosmic-spinner large" aria-hidden="true">
+                <div class="spinner-ring ring-1"></div>
+                <div class="spinner-ring ring-2"></div>
+                <div class="spinner-ring ring-3"></div>
+                <div class="spinner-core"></div>
+            </div>
+            <div class="loading-text">
+                <h2 id="loadingTitle" class="loading-title">Loading</h2>
+                <p class="loading-message">Please wait...</p>
+                <div class="loading-progress" aria-hidden="true">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Compact Spinner Template -->
+<template id="compactSpinnerTemplate">
+    <div class="loading-spinner-container compact" role="status" aria-live="polite">
+        <div class="cosmic-spinner small" aria-hidden="true">
+            <div class="spinner-ring ring-1"></div>
+            <div class="spinner-ring ring-2"></div>
+            <div class="spinner-core"></div>
+        </div>
+        <span class="loading-message">Loading...</span>
+        <div class="sr-only">Content is loading</div>
+    </div>
+</template>
+
+<!-- Inline Spinner Template -->
+<template id="inlineSpinnerTemplate">
+    <span class="loading-spinner-inline" role="status" aria-live="polite">
+        <span class="spinner-mini" aria-hidden="true"></span>
+        <span class="loading-message">Loading...</span>
+        <span class="sr-only">Loading content</span>
+    </span>
+</template>
+
+<!-- Pulse Loader Template -->
+<template id="pulseLoaderTemplate">
+    <div class="pulse-loader" role="status" aria-live="polite">
+        <div class="pulse-dot pulse-1" aria-hidden="true"></div>
+        <div class="pulse-dot pulse-2" aria-hidden="true"></div>
+        <div class="pulse-dot pulse-3" aria-hidden="true"></div>
+        <div class="pulse-dot pulse-4" aria-hidden="true"></div>
+        <div class="pulse-dot pulse-5" aria-hidden="true"></div>
+        <span class="sr-only">Loading content, please wait</span>
+    </div>
+</template>
+
+<!-- Loading Spinner Styles -->
+<style id="loadingSpinnerStyles">
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===================================
+   MAIN COSMIC SPINNER
+   =================================== */
+
+.loading-spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xxl, 48px);
+    text-align: center;
+    min-height: 200px;
+}
+
+.cosmic-spinner {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: var(--spacing-lg, 24px);
+}
+
+.spinner-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    animation: spin 2s linear infinite;
+}
+
+.ring-1 {
+    border-top-color: var(--text-accent, #00f5ff);
+    animation-duration: 2s;
+}
+
+.ring-2 {
+    border-right-color: var(--success, #00ff7f);
+    animation-duration: 3s;
+    animation-direction: reverse;
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+}
+
+.ring-3 {
+    border-bottom-color: var(--error, #ff6b6b);
+    animation-duration: 2.5s;
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 20%;
+}
+
+.spinner-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: var(--accent-gradient, linear-gradient(135deg, #4facfe 0%, #00f2fe 100%));
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 1.5s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+.loading-text {
+    color: var(--text-secondary, #a0a8ff);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.loading-message {
+    display: block;
+    margin-bottom: var(--spacing-sm, 8px);
+    animation: fadeInOut 2s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+.loading-dots {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: var(--text-accent, #00f5ff);
+    border-radius: 50%;
+    animation: bounce 1.4s ease-in-out infinite both;
+}
+
+.dot-1 { animation-delay: -0.32s; }
+.dot-2 { animation-delay: -0.16s; }
+.dot-3 { animation-delay: 0s; }
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ===================================
+   SIZE VARIATIONS
+   =================================== */
+
+/* Large spinner */
+.cosmic-spinner.large {
+    width: 120px;
+    height: 120px;
+}
+
+.cosmic-spinner.large .spinner-core {
+    width: 24px;
+    height: 24px;
+}
+
+/* Small spinner */
+.cosmic-spinner.small {
+    width: 60px;
+    height: 60px;
+    margin-bottom: var(--spacing-md, 16px);
+}
+
+.cosmic-spinner.small .spinner-core {
+    width: 12px;
+    height: 12px;
+}
+
+/* Compact container */
+.loading-spinner-container.compact {
+    padding: var(--spacing-lg, 24px);
+    min-height: 120px;
+    flex-direction: row;
+    gap: var(--spacing-md, 16px);
+}
+
+.loading-spinner-container.compact .loading-text {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+/* ===================================
+   OVERLAY LOADING
+   =================================== */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-overlay-content {
+    text-align: center;
+    color: var(--text-primary, #ffffff);
+    max-width: 400px;
+    padding: var(--spacing-xl, 32px);
+}
+
+.loading-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm, 8px);
+    color: var(--text-accent, #00f5ff);
+}
+
+.loading-progress {
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: var(--spacing-lg, 24px) auto 0;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--accent-gradient, linear-gradient(135deg, #4facfe 0%, #00f2fe 100%));
+    border-radius: 2px;
+    animation: indeterminate 2s infinite linear;
+}
+
+@keyframes indeterminate {
+    0% {
+        transform: translateX(-100%);
+        width: 30%;
+    }
+    50% {
+        width: 70%;
+    }
+    100% {
+        transform: translateX(100%);
+        width: 30%;
+    }
+}
+
+/* ===================================
+   INLINE SPINNER
+   =================================== */
+
+.loading-spinner-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm, 8px);
+    font-size: 0.9rem;
+    color: var(--text-secondary, #a0a8ff);
+}
+
+.spinner-mini {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top-color: var(--text-accent, #00f5ff);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ===================================
+   PULSE LOADER
+   =================================== */
+
+.pulse-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: var(--spacing-lg, 24px);
+}
+
+.pulse-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--text-accent, #00f5ff);
+    border-radius: 50%;
+    animation: pulseWave 1.4s ease-in-out infinite both;
+}
+
+.pulse-1 { animation-delay: 0s; }
+.pulse-2 { animation-delay: 0.1s; }
+.pulse-3 { animation-delay: 0.2s; }
+.pulse-4 { animation-delay: 0.3s; }
+.pulse-5 { animation-delay: 0.4s; }
+
+@keyframes pulseWave {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
+@media (max-width: 768px) {
+    .loading-spinner-container {
+        padding: var(--spacing-lg, 24px);
+        min-height: 150px;
+    }
+    
+    .cosmic-spinner {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .cosmic-spinner.large {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .loading-text {
+        font-size: 1rem;
+    }
+    
+    .loading-overlay-content {
+        padding: var(--spacing-lg, 24px);
+        margin: 0 var(--spacing-md, 16px);
+    }
+}
+
+@media (max-width: 480px) {
+    .loading-spinner-container {
+        padding: var(--spacing-md, 16px);
+        min-height: 120px;
+    }
+    
+    .cosmic-spinner {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .loading-spinner-container.compact {
+        flex-direction: column;
+        gap: var(--spacing-sm, 8px);
+    }
+    
+    .loading-progress {
+        width: 150px;
+    }
+}
+
+/* ===================================
+   ACCESSIBILITY & MOTION
+   =================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner-ring,
+    .spinner-core,
+    .loading-message,
+    .dot,
+    .spinner-mini,
+    .pulse-dot,
+    .progress-bar {
+        animation: none;
+    }
+    
+    .cosmic-spinner {
+        opacity: 0.8;
+    }
+    
+    .loading-dots .dot,
+    .pulse-loader .pulse-dot {
+        background: var(--text-secondary, #a0a8ff);
+        opacity: 0.6;
+    }
+    
+    .progress-bar {
+        width: 100%;
+        background: var(--text-accent, #00f5ff);
+    }
+}
+
+@media (prefers-contrast: high) {
+    .spinner-ring {
+        border-width: 4px;
+    }
+    
+    .cosmic-spinner,
+    .loading-text {
+        filter: contrast(1.5);
+    }
+}
+
+/* ===================================
+   DARK/LIGHT MODE SUPPORT
+   =================================== */
+
+@media (prefers-color-scheme: light) {
+    .loading-overlay {
+        background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .loading-overlay-content {
+        color: #333;
+    }
+    
+    .loading-title {
+        color: #0066cc;
+    }
+}
+
+/* ===================================
+   PRINT STYLES
+   =================================== */
+
+@media print {
+    .loading-spinner-container,
+    .loading-overlay,
+    .loading-spinner-inline,
+    .pulse-loader {
+        display: none !important;
+    }
+}
+</style>
+
+<!-- Loading Spinner Controller -->
+<script id="loadingSpinnerScript">
+class LoadingSpinnerController {
+    constructor() {
+        this.instances = new Map();
+        this.overlayInstance = null;
+    }
+    
+    /**
+     * Show loading spinner
+     */
+    show(targetElement, options = {}) {
+        if (!targetElement) {
+            console.warn('LoadingSpinner: Target element is required');
+            return null;
+        }
+        
+        const config = {
+            type: 'cosmic', // 'cosmic', 'compact', 'inline', 'pulse'
+            message: 'Loading...',
+            size: 'normal', // 'small', 'normal', 'large'
+            ...options
+        };
+        
+        // Remove existing spinner
+        this.hide(targetElement);
+        
+        // Get template
+        const templateId = this.getTemplateId(config.type);
+        const template = document.getElementById(templateId);
+        
+        if (!template) {
+            console.warn(`LoadingSpinner: Template '${templateId}' not found`);
+            return null;
+        }
+        
+        // Clone and customize content
+        const spinnerContent = template.content.cloneNode(true);
+        this.customizeContent(spinnerContent, config);
+        
+        // Clear target and append spinner
+        targetElement.innerHTML = '';
+        targetElement.appendChild(spinnerContent);
+        
+        // Store instance
+        const instance = {
+            element: targetElement,
+            config,
+            timestamp: Date.now()
+        };
+        this.instances.set(targetElement, instance);
+        
+        // Auto-hide after timeout if specified
+        if (config.timeout) {
+            setTimeout(() => {
+                this.hide(targetElement);
+            }, config.timeout);
+        }
+        
+        return instance;
+    }
+    
+    /**
+     * Hide loading spinner
+     */
+    hide(targetElement) {
+        if (!targetElement) return false;
+        
+        const instance = this.instances.get(targetElement);
+        if (!instance) return false;
+        
+        // Fade out animation
+        const spinner = targetElement.querySelector('[role="status"]');
+        if (spinner) {
+            spinner.style.transition = 'opacity 0.3s ease';
+            spinner.style.opacity = '0';
+            
+            setTimeout(() => {
+                targetElement.innerHTML = '';
+            }, 300);
+        } else {
+            targetElement.innerHTML = '';
+        }
+        
+        this.instances.delete(targetElement);
+        return true;
+    }
+    
+    /**
+     * Show overlay loading
+     */
+    showOverlay(options = {}) {
+        const config = {
+            message: 'Loading...',
+            title: 'Loading',
+            dismissible: false,
+            progress: false,
+            ...options
+        };
+        
+        // Remove existing overlay
+        this.hideOverlay();
+        
+        // Get template
+        const template = document.getElementById('loadingOverlayTemplate');
+        if (!template) {
+            console.warn('LoadingSpinner: Overlay template not found');
+            return null;
+        }
+        
+        // Create overlay
+        const overlayContent = template.content.cloneNode(true);
+        this.customizeOverlay(overlayContent, config);
+        
+        // Add to body
+        document.body.appendChild(overlayContent);
+        const overlay = document.querySelector('.loading-overlay:last-child');
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        // Show with animation
+        setTimeout(() => {
+            overlay.classList.add('active');
+        }, 10);
+        
+        // Store instance
+        this.overlayInstance = {
+            element: overlay,
+            config,
+            timestamp: Date.now()
+        };
+        
+        // Add dismissible functionality
+        if (config.dismissible) {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    this.hideOverlay();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    this.hideOverlay();
+                }
+            });
+        }
+        
+        return this.overlayInstance;
+    }
+    
+    /**
+     * Hide overlay loading
+     */
+    hideOverlay() {
+        if (!this.overlayInstance) return false;
+        
+        const overlay = this.overlayInstance.element;
+        overlay.classList.remove('active');
+        
+        setTimeout(() => {
+            if (overlay.parentNode) {
+                overlay.parentNode.removeChild(overlay);
+            }
+            document.body.style.overflow = '';
+        }, 300);
+        
+        this.overlayInstance = null;
+        return true;
+    }
+    
+    /**
+     * Update spinner message
+     */
+    updateMessage(targetElement, newMessage) {
+        const instance = this.instances.get(targetElement);
+        if (!instance) return false;
+        
+        const messageEl = targetElement.querySelector('.loading-message');
+        if (messageEl) {
+            messageEl.textContent = newMessage;
+            instance.config.message = newMessage;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Update overlay message
+     */
+    updateOverlayMessage(newMessage, newTitle = null) {
+        if (!this.overlayInstance) return false;
+        
+        const overlay = this.overlayInstance.element;
+        const messageEl = overlay.querySelector('.loading-message');
+        const titleEl = overlay.querySelector('.loading-title');
+        
+        if (messageEl && newMessage) {
+            messageEl.textContent = newMessage;
+        }
+        
+        if (titleEl && newTitle) {
+            titleEl.textContent = newTitle;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Check if spinner is visible
+     */
+    isVisible(targetElement) {
+        return this.instances.has(targetElement);
+    }
+    
+    /**
+     * Check if overlay is visible
+     */
+    isOverlayVisible() {
+        return this.overlayInstance !== null;
+    }
+    
+    /**
+     * Get template ID based on type
+     */
+    getTemplateId(type) {
+        const templates = {
+            cosmic: 'cosmicSpinnerTemplate',
+            compact: 'compactSpinnerTemplate',
+            inline: 'inlineSpinnerTemplate',
+            pulse: 'pulseLoaderTemplate'
+        };
+        
+        return templates[type] || templates.cosmic;
+    }
+    
+    /**
+     * Customize spinner content
+     */
+    customizeContent(content, config) {
+        // Update message
+        const messageEl = content.querySelector('.loading-message');
+        if (messageEl) {
+            messageEl.textContent = config.message;
+        }
+        
+        // Apply size class
+        if (config.size !== 'normal') {
+            const spinner = content.querySelector('.cosmic-spinner');
+            if (spinner) {
+                spinner.classList.add(config.size);
+            }
+        }
+        
+        // Update ARIA labels
+        const container = content.querySelector('[role="status"]');
+        if (container) {
+            container.setAttribute('aria-label', `Loading: ${config.message}`);
+        }
+    }
+    
+    /**
+     * Customize overlay content
+     */
+    customizeOverlay(content, config) {
+        const titleEl = content.querySelector('.loading-title');
+        const messageEl = content.querySelector('.loading-message');
+        const progressEl = content.querySelector('.loading-progress');
+        
+        if (titleEl) {
+            titleEl.textContent = config.title;
+        }
+        
+        if (messageEl) {
+            messageEl.textContent = config.message;
+        }
+        
+        if (!config.progress && progressEl) {
+            progressEl.remove();
+        }
+        
+        // Update ARIA labels
+        const overlay = content.querySelector('.loading-overlay');
+        if (overlay) {
+            overlay.setAttribute('aria-label', `${config.title}: ${config.message}`);
+        }
+    }
+    
+    /**
+     * Hide all spinners
+     */
+    hideAll() {
+        // Hide all element spinners
+        this.instances.forEach((instance, targetElement) => {
+            this.hide(targetElement);
+        });
+        
+        // Hide overlay
+        this.hideOverlay();
+    }
+    
+    /**
+     * Get all active instances
+     */
+    getActiveInstances() {
+        return {
+            elements: Array.from(this.instances.entries()),
+            overlay: this.overlayInstance
+        };
+    }
+    
+    /**
+     * Cleanup on page unload
+     */
+    cleanup() {
+        this.hideAll();
+    }
+    
+    // ===================================
+    // CONVENIENCE METHODS
+    // ===================================
+    
+    showCosmic(targetElement, message = 'Loading...') {
+        return this.show(targetElement, { type: 'cosmic', message });
+    }
+    
+    showCompact(targetElement, message = 'Loading...') {
+        return this.show(targetElement, { type: 'compact', message });
+    }
+    
+    showInline(targetElement, message = 'Loading...') {
+        return this.show(targetElement, { type: 'inline', message });
+    }
+    
+    showPulse(targetElement) {
+        return this.show(targetElement, { type: 'pulse' });
+    }
+}
+
+// Create global instance
+const loadingSpinnerController = new LoadingSpinnerController();
+
+// Make globally available
+window.LoadingSpinner = loadingSpinnerController;
+
+// Legacy function support
+window.showLoading = function(targetElement, message) {
+    return LoadingSpinner.show(targetElement, { message });
+};
+
+window.hideLoading = function(targetElement) {
+    return LoadingSpinner.hide(targetElement);
+};
+
+window.showLoadingOverlay = function(message, title) {
+    return LoadingSpinner.showOverlay({ message, title });
+};
+
+window.hideLoadingOverlay = function() {
+    return LoadingSpinner.hideOverlay();
+};
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    LoadingSpinner.cleanup();
+});
+
+console.log('✓ Loading Spinner controller loaded');
+</script>
