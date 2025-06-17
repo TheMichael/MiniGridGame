@@ -5,7 +5,7 @@ A web-based game where you predict how many steps AI agents can take to complete
 ## Quick Start
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/TheMichael/MiniGridGame.git
 cd MiniGridGame
 python -m venv venv
 venv\Scripts\activate
