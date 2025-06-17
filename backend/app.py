@@ -4,9 +4,8 @@ AI Agent Galaxy - Main Application Entry Point
 Refactored from monolithic structure to clean modular architecture.
 """
 import os
-from flask import Flask, session, request, g
+from flask import Flask
 from flask_cors import CORS
-from datetime import datetime
 
 from config import Config
 from database import init_db
@@ -21,36 +20,15 @@ def create_app(config_class=Config):
     # Setup logging first
     setup_logging(app)
     
-    # Initialize extensions
-    CORS(app, supports_credentials=True)
+    # FIXED: Proper CORS configuration for session cookies
+    CORS(app, 
+         supports_credentials=True,
+         origins=['http://localhost:5000', 'http://127.0.0.1:5000'],
+         allow_headers=['Content-Type', 'Authorization'],
+         methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
     
     # Initialize database
     init_db(app)
-    
-    # Add debugging middleware
-    @app.before_request
-    def debug_session():
-        print(f"\n=== REQUEST DEBUG ===")
-        print(f"URL: {request.url}")
-        print(f"Method: {request.method}")
-        print(f"Session data: {dict(session)}")
-        print(f"Session permanent: {session.permanent}")
-        print(f"Session modified: {session.modified}")
-        print(f"Cookies: {request.cookies}")
-        if 'user_id' in session:
-            print(f"User ID in session: {session['user_id']}")
-        else:
-            print("No user_id in session")
-        print(f"==================\n")
-    
-    @app.after_request
-    def debug_response(response):
-        print(f"\n=== RESPONSE DEBUG ===")
-        print(f"Status: {response.status}")
-        print(f"Session after request: {dict(session)}")
-        print(f"Set-Cookie headers: {response.headers.getlist('Set-Cookie')}")
-        print(f"=====================\n")
-        return response
     
     # Register routes
     from routes import register_routes

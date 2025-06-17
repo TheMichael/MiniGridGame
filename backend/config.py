@@ -42,12 +42,14 @@ class Config:
     # Game settings
     MAX_STEPS = 120
     
-    # Security settings
-    SESSION_COOKIE_SECURE = False
+    # Security settings - FIXED for session cookies
+    SESSION_COOKIE_SECURE = False  # Set to True only in HTTPS production
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
-    PERMANENT_SESSION_LIFETIME = timedelta(hours=24)  # Fixed: Changed from 86400 to timedelta
-    SESSION_PERMANENT = True  # Added: Makes sessions permanent by default
+    SESSION_COOKIE_DOMAIN = None  # Allow localhost
+    SESSION_COOKIE_PATH = '/'
+    PERMANENT_SESSION_LIFETIME = timedelta(hours=24)
+    SESSION_PERMANENT = True
     
     # Pagination settings
     DEFAULT_PAGE_SIZE = 20
@@ -57,12 +59,13 @@ class Config:
 class DevelopmentConfig(Config):
     """Development-specific configuration."""
     DEBUG = True
+    SESSION_COOKIE_SECURE = False  # Never secure in development
 
 
 class ProductionConfig(Config):
     """Production-specific configuration."""
     DEBUG = False
-    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True  # Always secure in production
     SESSION_COOKIE_SAMESITE = 'Strict'
 
 
