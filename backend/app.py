@@ -4,8 +4,9 @@ AI Agent Galaxy - Main Application Entry Point
 Refactored from monolithic structure to clean modular architecture.
 """
 import os
-from flask import Flask
+from flask import Flask, session, request, g
 from flask_cors import CORS
+from datetime import datetime
 
 from config import Config
 from database import init_db
@@ -25,6 +26,31 @@ def create_app(config_class=Config):
     
     # Initialize database
     init_db(app)
+    
+    # Add debugging middleware
+    @app.before_request
+    def debug_session():
+        print(f"\n=== REQUEST DEBUG ===")
+        print(f"URL: {request.url}")
+        print(f"Method: {request.method}")
+        print(f"Session data: {dict(session)}")
+        print(f"Session permanent: {session.permanent}")
+        print(f"Session modified: {session.modified}")
+        print(f"Cookies: {request.cookies}")
+        if 'user_id' in session:
+            print(f"User ID in session: {session['user_id']}")
+        else:
+            print("No user_id in session")
+        print(f"==================\n")
+    
+    @app.after_request
+    def debug_response(response):
+        print(f"\n=== RESPONSE DEBUG ===")
+        print(f"Status: {response.status}")
+        print(f"Session after request: {dict(session)}")
+        print(f"Set-Cookie headers: {response.headers.getlist('Set-Cookie')}")
+        print(f"=====================\n")
+        return response
     
     # Register routes
     from routes import register_routes

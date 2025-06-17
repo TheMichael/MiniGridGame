@@ -43,7 +43,7 @@ class Config:
     MAX_STEPS = 120
     
     # Security settings
-    SESSION_COOKIE_SECURE = not DEBUG
+    SESSION_COOKIE_SECURE = False
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
     PERMANENT_SESSION_LIFETIME = timedelta(hours=24)  # Fixed: Changed from 86400 to timedelta

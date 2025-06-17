@@ -10,11 +10,26 @@ from database.models import User
 
 def get_current_user():
     """Get currently logged in user from session."""
+    print(f"\n=== GET_CURRENT_USER DEBUG ===")
+    print(f"Session data: {dict(session)}")
+    print(f"Session permanent: {session.permanent}")
+    
     user_id = session.get('user_id')
+    print(f"User ID from session: {user_id}")
+    
     if user_id:
         user = User.query.get(user_id)
+        print(f"User found in DB: {user}")
+        print(f"User active: {user.is_active if user else 'N/A'}")
         if user and user.is_active:
+            print(f"Returning user: {user.username}")
             return user
+        else:
+            print("User not found or inactive")
+    else:
+        print("No user_id in session")
+    
+    print(f"==============================\n")
     return None
 
 
@@ -26,16 +41,35 @@ def admin_required():
 
 def login_user(user):
     """Log in a user by setting session."""
-    session.permanent = True  # ADDED: Make session permanent
+    print(f"\n=== LOGIN_USER DEBUG ===")
+    print(f"Logging in user: {user.username} (ID: {user.id})")
+    print(f"Session before login: {dict(session)}")
+    print(f"Session permanent before: {session.permanent}")
+    
+    session.permanent = True  # Make session permanent
     session['user_id'] = user.id
+    
+    print(f"Session after login: {dict(session)}")
+    print(f"Session permanent after: {session.permanent}")
+    print(f"Session modified: {session.modified}")
+    
     user.last_login = db.func.now()
     db.session.commit()
+    
+    print(f"User logged in successfully!")
+    print(f"========================\n")
 
 
 def logout_user():
     """Log out current user by clearing session."""
+    print(f"\n=== LOGOUT_USER DEBUG ===")
+    print(f"Session before logout: {dict(session)}")
+    
     session.pop('user_id', None)
-    session.permanent = False  # ADDED: Reset session to non-permanent
+    session.permanent = False  # Reset session to non-permanent
+    
+    print(f"Session after logout: {dict(session)}")
+    print(f"=========================\n")
 
 
 def validate_registration_data(username, email, password):
