@@ -26,6 +26,7 @@ def admin_required():
 
 def login_user(user):
     """Log in a user by setting session."""
+    session.permanent = True  # ADDED: Make session permanent
     session['user_id'] = user.id
     user.last_login = db.func.now()
     db.session.commit()
@@ -34,6 +35,7 @@ def login_user(user):
 def logout_user():
     """Log out current user by clearing session."""
     session.pop('user_id', None)
+    session.permanent = False  # ADDED: Reset session to non-permanent
 
 
 def validate_registration_data(username, email, password):
