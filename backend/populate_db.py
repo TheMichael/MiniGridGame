@@ -68,17 +68,17 @@ def register_user(username, email, password):
         if response.status_code == 200:
             data = response.json()
             if data.get('success'):
-                print(f"✅ Registered user: {username}")
+                print(f"Registered user: {username}")
                 return True
             else:
-                print(f"❌ Registration failed for {username}: {data.get('error')}")
+                print(f"Registration failed for {username}: {data.get('error')}")
                 return False
         else:
-            print(f"❌ Registration error for {username}: {response.status_code}")
+            print(f"Registration error for {username}: {response.status_code}")
             return False
-            
+
     except Exception as e:
-        print(f"❌ Registration exception for {username}: {e}")
+        print(f"Registration exception for {username}: {e}")
         return False
 
 def login_user(username, password):
@@ -92,14 +92,14 @@ def login_user(username, password):
         if response.status_code == 200:
             data = response.json()
             if data.get('success'):
-                print(f"🔑 Logged in as: {username}")
+                print(f"Logged in as: {username}")
                 return True
-            
-        print(f"❌ Login failed for {username}")
+
+        print(f"Login failed for {username}")
         return False
-        
+
     except Exception as e:
-        print(f"❌ Login exception for {username}: {e}")
+        print(f"Login exception for {username}: {e}")
         return False
 
 def generate_prediction(personality):
@@ -126,22 +126,22 @@ def play_game(agent_type, prediction):
         
         if response.status_code == 200:
             data = response.json()
-            print(f"🎮 Game played: {agent_type.upper()} agent, predicted {prediction if prediction != 0 else 'FAIL'}, "
+            print(f"Game played: {agent_type.upper()} agent, predicted {prediction if prediction != 0 else 'FAIL'}, "
                   f"actual {data['steps']} steps, scored {data['score']} points")
             return data
         else:
-            print(f"❌ Game failed: {response.status_code}")
+            print(f"Game failed: {response.status_code}")
             return None
-            
+
     except Exception as e:
-        print(f"❌ Game exception: {e}")
+        print(f"Game exception: {e}")
         return None
 
 def logout():
     """Logout current user"""
     try:
         session.post(f"{BASE_URL}/api/logout")
-        print("🚪 Logged out")
+        print("Logged out")
     except:
         pass
 
@@ -153,7 +153,7 @@ def simulate_user_session(user_data, num_games):
     personality_name = random.choice(list(PLAYER_PERSONALITIES.keys()))
     personality = PLAYER_PERSONALITIES[personality_name]
     
-    print(f"\n👤 Simulating {username} ({personality_name}): {personality['description']}")
+    print(f"\nSimulating {username} ({personality_name}): {personality['description']}")
     
     # Register user
     if not register_user(user_data["username"], user_data["email"], user_data["password"]):
@@ -186,7 +186,7 @@ def simulate_user_session(user_data, num_games):
         if random.random() < 0.3:  # 30% chance of longer break
             time.sleep(random.uniform(1, 3))
     
-    print(f"📊 {username} finished: {games_played} games, {total_score} total points")
+    print(f"{username} finished: {games_played} games, {total_score} total points")
     
     # Logout
     logout()
@@ -195,17 +195,17 @@ def simulate_user_session(user_data, num_games):
 def populate_database(num_users=None, games_per_user_range=(3, 12)):
     """Main function to populate the database"""
     
-    print("🌌 AI AGENT GALAXY - DATABASE POPULATION SCRIPT 🚀")
+    print("AI AGENT GALAXY - DATABASE POPULATION SCRIPT")
     print("=" * 60)
-    print(f"🎯 Target: {num_users or len(USERS_DATA)} users, {games_per_user_range[0]}-{games_per_user_range[1]} games each")
+    print(f"Target: {num_users or len(USERS_DATA)} users, {games_per_user_range[0]}-{games_per_user_range[1]} games each")
     print("=" * 60)
     
     # Check if server is running
     try:
         response = requests.get(f"{BASE_URL}/")
-        print("✅ Server is running and accessible")
+        print("Server is running and accessible")
     except:
-        print("❌ Error: Server not running! Start your Flask app first.")
+        print("Error: Server not running! Start your Flask app first.")
         print("   Run: python app.py")
         return
     
@@ -214,11 +214,11 @@ def populate_database(num_users=None, games_per_user_range=(3, 12)):
     
     total_users = len(users_to_create)
     total_games_estimate = sum(random.randint(*games_per_user_range) for _ in users_to_create)
-    
-    print(f"\n📋 Plan: {total_users} users, ~{total_games_estimate} games total")
-    print("⏱️  Estimated time: ~{:.1f} minutes".format(total_games_estimate * 0.5 / 60))
-    
-    input("\n▶️  Press Enter to start population (or Ctrl+C to cancel)...")
+
+    print(f"\nPlan: {total_users} users, ~{total_games_estimate} games total")
+    print("Estimated time: ~{:.1f} minutes".format(total_games_estimate * 0.5 / 60))
+
+    input("\nPress Enter to start population (or Ctrl+C to cancel)...")
     
     start_time = time.time()
     
@@ -237,28 +237,28 @@ def populate_database(num_users=None, games_per_user_range=(3, 12)):
         remaining_users = total_users - i
         eta_seconds = remaining_users * avg_time_per_user
         
-        print(f"⏱️  Progress: {i}/{total_users} users complete. ETA: {eta_seconds/60:.1f} minutes")
-    
+        print(f"Progress: {i}/{total_users} users complete. ETA: {eta_seconds/60:.1f} minutes")
+
     total_time = time.time() - start_time
-    
+
     print("\n" + "=" * 60)
-    print("🎉 DATABASE POPULATION COMPLETE! 🎉")
-    print(f"⏱️  Total time: {total_time/60:.1f} minutes")
-    print(f"👥 Users created: {total_users}")
-    print("📊 Run 'python view_db.py' to see the results!")
+    print("DATABASE POPULATION COMPLETE!")
+    print(f"Total time: {total_time/60:.1f} minutes")
+    print(f"Users created: {total_users}")
+    print("Run 'python view_db.py' to see the results!")
     print("=" * 60)
 
 def create_demo_data():
     """Create a smaller demo dataset"""
     demo_users = USERS_DATA[:5]  # First 5 users
-    
-    print("🎮 Creating demo data with 5 users...")
+
+    print("Creating demo data with 5 users...")
     populate_database(num_users=5, games_per_user_range=(2, 6))
 
 if __name__ == "__main__":
     import sys
-    
-    print("🤖 Database Population Options:")
+
+    print("Database Population Options:")
     print("1. Demo (5 users, 2-6 games each) - ~2 minutes")
     print("2. Small (7 users, 3-8 games each) - ~4 minutes") 
     print("3. Full (10 users, 3-12 games each) - ~8 minutes")

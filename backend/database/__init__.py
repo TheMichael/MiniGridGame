@@ -19,16 +19,16 @@ def init_db(app):
     with app.app_context():
         try:
             db.create_all()
-            app.logger.info("📊 Database tables created successfully!")
-            
+            app.logger.info("Database tables created successfully!")
+
             # Create default admin if no users exist
             if User.query.count() == 0:
                 create_default_admin()
-                app.logger.info("🔑 Default admin created!")
-                app.logger.warning("⚠️  PLEASE CHANGE DEFAULT ADMIN PASSWORD IMMEDIATELY!")
-            
+                app.logger.info("Default admin created!")
+                app.logger.warning("PLEASE CHANGE DEFAULT ADMIN PASSWORD IMMEDIATELY!")
+
         except Exception as e:
-            app.logger.error(f"❌ Database initialization error: {e}")
+            app.logger.error(f"Database initialization error: {e}")
             raise
 
 

@@ -37,7 +37,7 @@ def create_app(config_class=Config):
     # Ensure required directories exist
     _ensure_directories(app)
     
-    app.logger.info("🚀 AI Agent Galaxy application initialized successfully")
+    app.logger.info("AI Agent Galaxy application initialized successfully")
     return app
 
 
@@ -50,7 +50,7 @@ def _ensure_directories(app):
     
     for directory in directories:
         os.makedirs(directory, exist_ok=True)
-        app.logger.debug(f"📁 Directory ensured: {directory}")
+        app.logger.debug(f"Directory ensured: {directory}")
 
 
 def main():
@@ -58,9 +58,9 @@ def main():
     app = create_app()
     
     # Print startup information (temporarily simplified)
-    print("🚀 AI Agent Galaxy - Refactored Backend Starting...")
-    print(f"🌐 Running on: http://{app.config['HOST']}:{app.config['PORT']}")
-    print("✅ All routes registered and ready!")
+    print("AI Agent Galaxy - Refactored Backend Starting...")
+    print(f"Running on: http://{app.config['HOST']}:{app.config['PORT']}")
+    print("All routes registered and ready!")
     
     try:
         app.run(
@@ -69,12 +69,12 @@ def main():
             port=app.config['PORT']
         )
     except KeyboardInterrupt:
-        app.logger.info("🛑 Server stopped by user")
+        app.logger.info("Server stopped by user")
     except Exception as e:
-        app.logger.error(f"❌ Server error: {e}")
+        app.logger.error(f"Server error: {e}")
         raise
     finally:
-        app.logger.info("👋 Thanks for playing AI Agent Galaxy!")
+        app.logger.info("Thanks for playing AI Agent Galaxy!")
 
 
 if __name__ == '__main__':

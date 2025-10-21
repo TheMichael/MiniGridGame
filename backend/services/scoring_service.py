@@ -60,7 +60,7 @@ def get_score_explanation(prediction, actual_steps, succeeded, score):
     prediction_num = int(prediction) if prediction != 'fail' else 0
     
     if prediction_num == 0:
-        return "🎯 PERFECT! You predicted the failure correctly!" if not succeeded else "❌ The agent actually succeeded, no points this time."
+        return "PERFECT! You predicted the failure correctly!" if not succeeded else "The agent actually succeeded, no points this time."
     
     difference = abs(prediction_num - actual_steps)
     
@@ -85,5 +85,5 @@ def get_score_explanation(prediction, actual_steps, succeeded, score):
         risk_explanation = " (Failure zone bonus!)"
     else:
         risk_explanation = ""
-    
-    return f"🚀 {accuracy}{risk_explanation}"
+
+    return f"{accuracy}{risk_explanation}"

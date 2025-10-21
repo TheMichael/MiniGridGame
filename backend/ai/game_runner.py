@@ -96,7 +96,7 @@ def video_of_one_DDQN_episode(env, policy_network_path, gif_filename):
             'reward': float(reward),
             'done': bool(done),
             'truncated': bool(truncated),
-            'result': 'Goal reached! 🎯' if done else ('Max steps reached' if truncated else 'Continuing...')
+            'result': 'Goal reached!' if done else ('Max steps reached' if truncated else 'Continuing...')
         }
         steps_log.append(step_info)
         
@@ -155,7 +155,7 @@ def video_of_one_D3QN_episode(env, policy_network_path, gif_filename):
             'reward': float(reward),
             'done': bool(done),
             'truncated': bool(truncated),
-            'result': 'Goal reached! 🎯' if done else ('Max steps reached' if truncated else 'Continuing...')
+            'result': 'Goal reached!' if done else ('Max steps reached' if truncated else 'Continuing...')
         }
         steps_log.append(step_info)
 

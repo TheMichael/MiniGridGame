@@ -146,17 +146,17 @@ def admin_required():
 def send_password_reset_email(user, token):
     try:
         if not app.config['MAIL_USERNAME']:
-            print(f"🔑 Password reset token for {user.username}: {token}")
+            print(f"Password reset token for {user.username}: {token}")
             return True
             
         msg = MIMEMultipart()  # Fixed: Changed from MimeMultipart to MIMEMultipart
         msg['From'] = app.config['MAIL_USERNAME']
         msg['To'] = user.email
-        msg['Subject'] = "🌌 AI Agent Galaxy - Password Reset"
-        
+        msg['Subject'] = "AI Agent Galaxy - Password Reset"
+
         reset_link = f"http://localhost:5000/reset-password?token={token}"
         body = f"""
-        Greetings, Galaxy Commander {user.username}! 🚀
+        Greetings, Galaxy Commander {user.username}!
         
         You requested a password reset for your AI Agent Galaxy account.
         
@@ -176,7 +176,7 @@ def send_password_reset_email(user, token):
         return True
     except Exception as e:
         print(f"Email sending failed: {e}")
-        print(f"🔑 Password reset token for {user.username}: {token}")
+        print(f"Password reset token for {user.username}: {token}")
         return False
 
 # Preprocessing functions
@@ -371,7 +371,7 @@ def video_of_one_DDQN_episode(env, policy_network_path, gif_filename):
             'reward': float(reward),
             'done': bool(done),
             'truncated': bool(truncated),
-            'result': 'Goal reached! 🎯' if done else ('Max steps reached' if truncated else 'Continuing...')
+            'result': 'Goal reached!' if done else ('Max steps reached' if truncated else 'Continuing...')
         }
         steps_log.append(step_info)
         
@@ -428,7 +428,7 @@ def video_of_one_D3QN_episode(env, policy_network_path, gif_filename):
             'reward': float(reward),
             'done': bool(done),
             'truncated': bool(truncated),
-            'result': 'Goal reached! 🎯' if done else ('Max steps reached' if truncated else 'Continuing...')
+            'result': 'Goal reached!' if done else ('Max steps reached' if truncated else 'Continuing...')
         }
         steps_log.append(step_info)
 
@@ -592,7 +592,7 @@ def reset_password_page():
     <html>
     <head><title>Reset Password - AI Agent Galaxy</title></head>
     <body>
-        <h1>🔐 Reset Password</h1>
+        <h1>Reset Password</h1>
         {"<p>Invalid or expired token</p>" if not valid_token else 
          f'<form><input type="password" placeholder="New password" id="pwd"><button onclick="resetPwd()">Reset</button></form>'}
         <script>
@@ -1016,7 +1016,7 @@ if __name__ == '__main__':
     with app.app_context():
         try:
             db.create_all()
-            print("📊 Database tables created successfully!")
+            print("Database tables created successfully!")
             
             # Create default admin if no users exist
             if User.query.count() == 0:
@@ -1029,77 +1029,77 @@ if __name__ == '__main__':
                 )
                 db.session.add(admin)
                 db.session.commit()
-                print("🔑 Default admin created! Username: admin, Password: admin123")
-                print("⚠️  PLEASE CHANGE DEFAULT ADMIN PASSWORD IMMEDIATELY!")
+                print("Default admin created! Username: admin, Password: admin123")
+                print("PLEASE CHANGE DEFAULT ADMIN PASSWORD IMMEDIATELY!")
             
-            print(f"🔍 Backend directory: {BACKEND_DIR}")
-            print(f"🔍 Project root: {PROJECT_ROOT}")
-            print(f"🔍 Database location: {os.path.abspath(os.path.join(BACKEND_DIR, 'minigrid_game.db'))}")
-            print(f"🔍 Static folder: {STATIC_FOLDER}")
-            print(f"🔍 Video folder: {VIDEO_FOLDER}")
-            print(f"🔍 Model folder: {MODEL_FOLDER}")
-            print(f"🔍 Frontend folder: {FRONTEND_FOLDER}")
+            print(f"Backend directory: {BACKEND_DIR}")
+            print(f"Project root: {PROJECT_ROOT}")
+            print(f"Database location: {os.path.abspath(os.path.join(BACKEND_DIR, 'minigrid_game.db'))}")
+            print(f"Static folder: {STATIC_FOLDER}")
+            print(f"Video folder: {VIDEO_FOLDER}")
+            print(f"Model folder: {MODEL_FOLDER}")
+            print(f"Frontend folder: {FRONTEND_FOLDER}")
                             
         except Exception as e:
-            print(f"❌ Database creation error: {e}")
+            print(f"Database creation error: {e}")
             import traceback
             traceback.print_exc()
     
     print("\n" + "="*60)
-    print("🚀 Starting Enhanced MiniGrid Prediction Game Server...")
+    print("Starting Enhanced MiniGrid Prediction Game Server...")
     print("="*60)
-    print("📍 Make sure you have the trained model files:")
-    print("   📁 models/DDQN_policy_net.pth")
-    print("   📁 models/D3QN_policy_net.pth")
+    print("Make sure you have the trained model files:")
+    print("   models/DDQN_policy_net.pth")
+    print("   models/D3QN_policy_net.pth")
     print()
-    print("🌐 ACCESS POINTS:")
-    print("   🎮 Main Game: http://localhost:5000")
-    print("   👑 Admin Panel: http://localhost:5000/admin")
-    print("   🔐 Password Reset: http://localhost:5000/reset-password")
+    print("ACCESS POINTS:")
+    print("   Main Game: http://localhost:5000")
+    print("   Admin Panel: http://localhost:5000/admin")
+    print("   Password Reset: http://localhost:5000/reset-password")
     print()
-    print("📊 DATA STORAGE:")
-    print(f"   📁 GIFs saved to: {VIDEO_FOLDER}")
-    print(f"   💾 Database stored in: {os.path.join(BACKEND_DIR, 'minigrid_game.db')}")
+    print("DATA STORAGE:")
+    print(f"   GIFs saved to: {VIDEO_FOLDER}")
+    print(f"   Database stored in: {os.path.join(BACKEND_DIR, 'minigrid_game.db')}")
     print()
-    print("🔑 DEFAULT ADMIN ACCESS:")
-    print("   👤 Username: admin")
-    print("   🔒 Password: admin123")
-    print("   ⚠️  CHANGE THIS PASSWORD IMMEDIATELY!")
+    print("DEFAULT ADMIN ACCESS:")
+    print("   Username: admin")
+    print("   Password: admin123")
+    print("   CHANGE THIS PASSWORD IMMEDIATELY!")
     print()
-    print("✨ FEATURES ENABLED:")
-    print("   🔐 Password reset functionality")
-    print("   👑 Complete admin panel")
-    print("   🎯 Enhanced scoring system")
-    print("   🎬 Real-time GIF generation")
-    print("   📈 User analytics & statistics")
-    print("   🛡️  Account security & management")
+    print("FEATURES ENABLED:")
+    print("   Password reset functionality")
+    print("   Complete admin panel")
+    print("   Enhanced scoring system")
+    print("   Real-time GIF generation")
+    print("   User analytics & statistics")
+    print("   Account security & management")
     
     # Email configuration check
     if not app.config['MAIL_USERNAME']:
         print()
-        print("📧 EMAIL CONFIGURATION:")
-        print("   ⚠️  Email not configured for password reset")
-        print("   🔧 To enable email functionality:")
+        print("EMAIL CONFIGURATION:")
+        print("   Email not configured for password reset")
+        print("   To enable email functionality:")
         print("      Set MAIL_USERNAME environment variable")
         print("      Set MAIL_PASSWORD environment variable")
-        print("   💡 Reset tokens will be printed to console instead")
+        print("   Reset tokens will be printed to console instead")
     else:
         print()
-        print("📧 EMAIL CONFIGURATION:")
-        print("   ✅ Email configured for password reset")
-        print(f"   📮 SMTP Server: {app.config['MAIL_SERVER']}:{app.config['MAIL_PORT']}")
+        print("EMAIL CONFIGURATION:")
+        print("   Email configured for password reset")
+        print(f"   SMTP Server: {app.config['MAIL_SERVER']}:{app.config['MAIL_PORT']}")
     
     print("\n" + "="*60)
-    print("🎮 Ready to play! Users must register/login to start!")
+    print("Ready to play! Users must register/login to start!")
     print("="*60)
     
     try:
         app.run(debug=True, host='0.0.0.0', port=5000)
     except KeyboardInterrupt:
-        print("\n🛑 Server stopped by user")
+        print("\nServer stopped by user")
     except Exception as e:
-        print(f"\n❌ Server error: {e}")
+        print(f"\nServer error: {e}")
         import traceback
         traceback.print_exc()
     finally:
-        print("\n👋 Thanks for playing AI Agent Galaxy!")
+        print("\nThanks for playing AI Agent Galaxy!")
