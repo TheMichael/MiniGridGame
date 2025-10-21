@@ -4,6 +4,8 @@ A web-based game where you predict how many steps AI agents can take to complete
 
 ## Quick Start
 
+### Windows
+
 ```bash
 git clone https://github.com/TheMichael/MiniGridGame.git
 cd MiniGridGame
@@ -14,8 +16,23 @@ cd backend
 python app.py
 ```
 
-Open `http://localhost:5000`
-```for demonstration purposes, run python populate_db.py```
+### Mac/Linux
+
+```bash
+git clone https://github.com/TheMichael/MiniGridGame.git
+cd MiniGridGame
+python -m venv venv
+source venv/bin/activate
+pip install -r backend/requirements.txt
+cd backend
+python app.py
+```
+
+### Access the Application
+
+1. Open your browser and navigate to `http://localhost:5000`
+2. Register a new account or login
+3. (Optional) For demonstration purposes with sample data, run: `python populate_db.py`
 
 ## Features
 
@@ -47,14 +64,26 @@ Points are awarded based on:
 
 ## Development
 
+### Virtual Environment Commands
+
+**Windows:**
 ```bash
-# Virtual environment commands
 venv\Scripts\activate     # Activate
 deactivate               # Deactivate
+```
 
-# Database management
+**Mac/Linux:**
+```bash
+source venv/bin/activate  # Activate
+deactivate               # Deactivate
+```
+
+### Database Management
+
+```bash
 cd backend
-python view_db.py        # View database
+python view_db.py        # View database contents
+python populate_db.py    # Populate with sample data
 python quick_delete.py   # Reset database
 ```
 
