@@ -23,39 +23,17 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_login = db.Column(db.DateTime, default=datetime.utcnow)
     
-    # Game statistics
+    # Game statistics - SIMPLIFIED
     total_score = db.Column(db.Integer, default=0)
     games_played = db.Column(db.Integer, default=0)
-    games_won = db.Column(db.Integer, default=0)
-    good_predictions = db.Column(db.Integer, default=0)
-    
+    best_score = db.Column(db.Integer, default=0)
+
     # User status
     is_admin = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
-    
+
     # Relationships
     games = db.relationship('GameResult', backref='user', lazy=True, cascade='all, delete-orphan')
-    
-    @property
-    def ai_success_rate(self):
-        """Calculate AI agent success rate for this user's games."""
-        if self.games_played == 0:
-            return 0
-        return round((self.games_won / self.games_played) * 100, 1)
-    
-    @property
-    def prediction_accuracy(self):
-        """Calculate prediction accuracy percentage."""
-        if self.games_played == 0:
-            return 0
-        return round((self.good_predictions / self.games_played) * 100, 1)
-    
-    @property
-    def average_score_per_game(self):
-        """Calculate average score per game."""
-        if self.games_played == 0:
-            return 0
-        return round(self.total_score / self.games_played, 1)
     
     def check_password(self, password):
         """Check password against hash."""
@@ -68,9 +46,7 @@ class User(db.Model):
             'username': self.username,
             'total_score': self.total_score,
             'games_played': self.games_played,
-            'prediction_accuracy': self.prediction_accuracy,
-            'ai_success_rate': self.ai_success_rate,
-            'average_score': self.average_score_per_game,
+            'best_score': self.best_score,
             'is_admin': self.is_admin
         }
     
