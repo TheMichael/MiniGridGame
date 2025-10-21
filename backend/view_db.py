@@ -9,11 +9,11 @@ def view_database():
     conn = sqlite3.connect('minigrid_game.db')
     cursor = conn.cursor()
     
-    print("🌌 AI AGENT GALAXY - DATABASE VIEWER 🚀")
+    print("AI AGENT GALAXY - DATABASE VIEWER")
     print("=" * 50)
-    
+
     # Show all users
-    print("\n👥 REGISTERED USERS:")
+    print("\nREGISTERED USERS:")
     print("-" * 30)
     cursor.execute("""
         SELECT username, total_score, games_played, games_won, created_at
@@ -34,7 +34,7 @@ def view_database():
         print("No users registered yet.")
     
     # Show recent games
-    print(f"\n🎮 RECENT GAMES (Last 10):")
+    print(f"\nRECENT GAMES (Last 10):")
     print("-" * 40)
     cursor.execute("""
         SELECT u.username, g.agent_type, g.prediction, g.actual_steps, 
@@ -52,14 +52,14 @@ def view_database():
         for game in games:
             username, agent, pred, actual, won, score, timestamp = game
             pred_str = "FAIL" if pred == 0 else str(pred)
-            won_str = "✅" if won else "❌"
+            won_str = "YES" if won else "NO"
             time_str = timestamp[5:16] if timestamp else "Unknown"  # MM-DD HH:MM
             print(f"{username:<12} {agent.upper():<6} {pred_str:<6} {actual:<8} {won_str:<5} {score:<7} {time_str:<12}")
     else:
         print("No games played yet.")
     
     # Database statistics
-    print(f"\n📊 DATABASE STATISTICS:")
+    print(f"\nDATABASE STATISTICS:")
     print("-" * 25)
     
     cursor.execute("SELECT COUNT(*) FROM user")
@@ -104,7 +104,7 @@ def search_user(username):
         print(f"User '{username}' not found.")
         return
     
-    print(f"\n🔍 USER PROFILE: {username}")
+    print(f"\nUSER PROFILE: {username}")
     print("-" * 30)
     print(f"Total Score: {user[5]}")
     print(f"Games Played: {user[6]}")
@@ -121,7 +121,7 @@ def search_user(username):
     """, (user[0],))
     
     games = cursor.fetchall()
-    print(f"\n🎮 GAME HISTORY ({len(games)} games):")
+    print(f"\nGAME HISTORY ({len(games)} games):")
     print("-" * 70)
     
     if games:

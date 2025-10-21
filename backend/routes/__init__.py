@@ -15,5 +15,5 @@ def register_routes(app):
     app.register_blueprint(game_bp, url_prefix='/api')
     app.register_blueprint(admin_bp, url_prefix='/api/admin')
     app.register_blueprint(static_bp)
-    
-    app.logger.info("🛣️  All routes registered successfully")
+
+    app.logger.info("All routes registered successfully")
