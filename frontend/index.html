@@ -8,20 +8,19 @@
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
         
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            --surface-glass: rgba(255, 255, 255, 0.05);
-            --border-glass: rgba(255, 255, 255, 0.1);
+            --primary-color: #667eea;
+            --secondary-color: #f093fb;
+            --accent-color: #4facfe;
+            --dark-bg: #1a1a2e;
+            --surface-bg: rgba(255, 255, 255, 0.08);
+            --border-color: rgba(255, 255, 255, 0.15);
             --text-primary: #ffffff;
-            --text-secondary: #a0a8ff;
-            --text-accent: #00f5ff;
+            --text-secondary: #b0b8ff;
+            --text-accent: #4facfe;
             --success: #00ff7f;
             --warning: #ffd700;
             --error: #ff6b6b;
-            --shadow-glow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            --shadow-intense: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -36,61 +35,18 @@
 
         body {
             font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--dark-gradient);
+            background: var(--dark-bg);
             min-height: 100vh;
             color: var(--text-primary);
-            overflow-x: hidden;
-            position: relative;
             line-height: 1.6;
         }
 
-        /* Enhanced animated background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.3), transparent 50%);
-            animation: float 20s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        @keyframes float {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0.7;
-            }
-            50% { 
-                transform: translateY(-20px) rotate(5deg);
-                opacity: 1;
-            }
-        }
-
-        /* Glassmorphism container */
+        /* Simple container */
         .glass-container {
-            background: var(--surface-glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            box-shadow: var(--shadow-glow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glass-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            background: var(--surface-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
         }
 
         .container {
@@ -110,10 +66,7 @@
         .header h1 {
             font-size: clamp(2.5rem, 6vw, 4rem);
             font-weight: 700;
-            background: var(--accent-gradient);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--accent-color);
             margin-bottom: 16px;
             letter-spacing: -0.02em;
             line-height: 1.1;
@@ -135,20 +88,11 @@
         }
 
         .auth-card {
-            background: var(--surface-glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 48px;
-            box-shadow: var(--shadow-intense);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .auth-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+            background: var(--surface-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow);
         }
 
         .auth-tabs {
@@ -174,10 +118,8 @@
         }
 
         .auth-tab.active {
-            background: var(--primary-gradient);
+            background: var(--primary-color);
             color: var(--text-primary);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            transform: translateY(-1px);
         }
 
         .form-group {
@@ -220,41 +162,20 @@
 
         .auth-btn {
             width: 100%;
-            background: var(--primary-gradient);
+            background: var(--primary-color);
             border: none;
             color: var(--text-primary);
-            padding: 18px 24px;
-            border-radius: 12px;
+            padding: 16px 24px;
+            border-radius: 8px;
             font-family: inherit;
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .auth-btn:hover::before {
-            left: 100%;
+            transition: opacity 0.2s;
         }
 
         .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            opacity: 0.9;
         }
 
         .auth-btn:disabled {
@@ -1015,8 +936,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌌 AI Agent Galaxy</h1>
-            <p class="subtitle">Predict the future. Command the stars. Rule the galaxy.</p>
+            <h1>AI Agent Galaxy</h1>
+            <p class="subtitle">Predict how many steps the AI agent will take to complete the maze</p>
         </div>
 
         <!-- Authentication Section -->
@@ -1040,7 +961,7 @@
                         <label for="loginPassword">Password</label>
                         <input type="password" id="loginPassword" placeholder="Enter your password" required>
                     </div>
-                    <button type="submit" class="auth-btn">🚀 Enter Galaxy</button>
+                    <button type="submit" class="auth-btn">Login</button>
                     <div class="forgot-password">
                         <a href="#" onclick="showForgotPasswordModal()">Forgot username or password?</a>
                     </div>
@@ -1060,7 +981,7 @@
                         <label for="registerPassword">Password</label>
                         <input type="password" id="registerPassword" placeholder="Create a password" required minlength="6">
                     </div>
-                    <button type="submit" class="auth-btn">🌟 Join Galaxy</button>
+                    <button type="submit" class="auth-btn">Register</button>
                 </form>
             </div>
         </div>
@@ -1070,7 +991,7 @@
             <div class="modal-content">
                 <button class="modal-close" onclick="hideForgotPasswordModal()">&times;</button>
                 <div class="modal-header">
-                    <h2>🔐 Reset Password</h2>
+                    <h2>Reset Password</h2>
                     <p>Enter your username or email to receive a reset link</p>
                 </div>
                 <form id="forgotPasswordForm">
@@ -1078,7 +999,7 @@
                         <label for="forgotIdentifier">Username or Email</label>
                         <input type="text" id="forgotIdentifier" placeholder="Enter username or email" required>
                     </div>
-                    <button type="submit" class="auth-btn">📧 Send Reset Link</button>
+                    <button type="submit" class="auth-btn">Send Reset Link</button>
                 </form>
             </div>
         </div>
@@ -1087,7 +1008,7 @@
         <div id="gameInterface" class="game-interface">
             <div class="user-info glass-container">
                 <div class="user-welcome">
-                    <h2>Welcome, <span id="username">Agent</span>! 🚀</h2>
+                    <h2>Welcome, <span id="username">Agent</span>!</h2>
                     <div class="user-stats">
                         <div class="stat-item">
                             <div class="stat-value" id="totalScore">0</div>
@@ -1098,62 +1019,38 @@
                             <div class="stat-label">Games Played</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value" id="successRate">0%</div>
-                            <div class="stat-label">Prediction Accuracy</div>
+                            <div class="stat-value" id="bestScore">0</div>
+                            <div class="stat-label">Best Score</div>
                         </div>
                     </div>
                 </div>
                 <div class="user-controls">
                     <a href="/admin" id="adminBtn" class="admin-btn" style="display: none;">
-                        👑 Admin Panel
+                        Admin Panel
                     </a>
-                    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
             </div>
 
             <div class="game-section glass-container">
-                <div class="scoring-rules">
-                    <h3>🎯 Galactic Scoring Protocol</h3>
-                    <div class="scoring-grid">
-                        <div class="scoring-item">
-                            <strong>🎯 Perfect Prediction:</strong> 10 points
-                        </div>
-                        <div class="scoring-item">
-                            <strong>🔥 Close Range (±5):</strong> 8 points
-                        </div>
-                        <div class="scoring-item">
-                            <strong>⚡ Decent Range (±10):</strong> 5 points
-                        </div>
-                        <div class="scoring-item">
-                            <strong>💫 Failure Prediction:</strong> 3 points
-                        </div>
-                        <div class="scoring-item">
-                            <strong>❌ Off Target:</strong> 0 points
-                        </div>
-                        <div class="scoring-item">
-                            <strong>🔥 Risk Multipliers:</strong> Up to 200% bonus!
-                        </div>
-                    </div>
-                </div>
-
                 <form id="predictionForm" class="prediction-section">
                     <div class="agent-selection">
-                        <h3 class="section-title">🤖 Select Your AI Champion</h3>
+                        <h3 class="section-title">Select AI Agent</h3>
                         <div class="agent-buttons">
                             <button type="button" class="agent-btn" data-agent="ddqn">
-                                ⚡ DDQN Agent
+                                DDQN Agent
                                 <br><small>Double Deep Q-Network</small>
                             </button>
                             <button type="button" class="agent-btn" data-agent="d3qn">
-                                🔮 D3QN Agent
+                                D3QN Agent
                                 <br><small>Dueling Double DQN</small>
                             </button>
                         </div>
                     </div>
 
                     <div class="prediction-input">
-                        <h3 class="section-title">🎯 Enter Your Prediction</h3>
-                        <p class="prediction-hint">Enter steps (30-120) or 0 to predict failure</p>
+                        <h3 class="section-title">Make Your Prediction</h3>
+                        <p class="prediction-hint">Enter steps (0-120), or 0 to predict failure</p>
                         <input type="number" id="predictionInput" class="prediction-number" 
                                min="0" max="120" placeholder="Enter prediction" required 
                                oninput="updateRiskDisplay()">
@@ -1163,18 +1060,18 @@
                     </div>
 
                     <button type="submit" class="run-btn">
-                        🚀 Launch Mission
+                        Run Prediction
                     </button>
                 </form>
 
                 <div id="loading" class="loading">
                     <div class="spinner"></div>
-                    <p>🌌 AI agent navigating the cosmic maze... 🛸</p>
+                    <p>AI agent running...</p>
                 </div>
 
                 <div id="results" class="results-section">
                     <div class="score-display">
-                        <h2>⭐ Mission Score: <span id="roundScore">0</span> Points ⭐</h2>
+                        <h2>Score: <span id="roundScore">0</span> Points</h2>
                         <p id="scoreExplanation"></p>
                     </div>
 
@@ -1187,38 +1084,14 @@
                             <h3>Actual Result</h3>
                             <div class="value" id="actualResult">-</div>
                         </div>
-                        <div class="stat-card">
-                            <h3>AI Champion</h3>
-                            <div class="value" id="agentUsed">-</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Mission Status</h3>
-                            <div class="value" id="successStatus">-</div>
-                        </div>
                     </div>
 
                     <div class="video-container">
-                        <h3>🎬 Galactic Mission Replay</h3>
+                        <h3>Agent Replay</h3>
                         <div id="videoError" style="display: none;"></div>
-                        
-                        <!-- Steps Log Section -->
-                        <div class="steps-log">
-                            <button type="button" class="steps-toggle" onclick="toggleStepsLog()">
-                                📋 Show Detailed Steps Log
-                            </button>
-                            <div id="stepsContent" class="steps-content" style="display: none;">
-                                <div class="steps-header">
-                                    <h4>🔍 Agent Action Log</h4>
-                                    <p>Complete step-by-step breakdown of the AI agent's decisions</p>
-                                </div>
-                                <div id="stepsList" class="steps-list">
-                                    <!-- Steps will be populated here -->
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
-                    <button class="play-again-btn" onclick="resetGame()">🎮 Another Mission</button>
+                    <button class="play-again-btn" onclick="resetGame()">Play Again</button>
                 </div>
             </div>
         </div>
@@ -1305,7 +1178,7 @@
             document.getElementById('username').textContent = currentUser.username;
             document.getElementById('totalScore').textContent = currentUser.total_score;
             document.getElementById('gamesPlayed').textContent = currentUser.games_played;
-            document.getElementById('successRate').textContent = currentUser.prediction_accuracy + '%';
+            document.getElementById('bestScore').textContent = currentUser.best_score;
             
             // Show admin button if user is admin
             if (currentUser.is_admin) {
@@ -1370,7 +1243,7 @@
                 
                 if (data.success) {
                     currentUser = data.user;
-                    showSuccess('Welcome back to the galaxy! 🚀');
+                    showSuccess('Welcome back!');
                     setTimeout(() => showGameInterface(), 1000);
                 } else {
                     showError(data.error || 'Login failed');
@@ -1403,7 +1276,7 @@
                 
                 if (data.success) {
                     currentUser = data.user;
-                    showSuccess('Welcome to the galaxy! 🌟');
+                    showSuccess('Registration successful!');
                     setTimeout(() => showGameInterface(), 1000);
                 } else {
                     showError(data.error || 'Registration failed');
@@ -1433,47 +1306,11 @@
             }
         }
 
-        // Update risk display when user types
+        // Update risk display when user types - SIMPLIFIED
         function updateRiskDisplay() {
-            const input = document.getElementById('predictionInput');
+            // Risk indicator removed for simplicity
             const riskIndicator = document.getElementById('riskIndicator');
-            const riskText = document.getElementById('riskText');
-            
-            const value = parseInt(input.value);
-            
-            if (isNaN(value) || value < 0 || value > 120) {
-                riskIndicator.style.display = 'none';
-                return;
-            }
-            
-            let riskClass, riskMessage;
-            
-            if (value === 0) {
-                riskClass = 'risk-medium';
-                riskMessage = '💀 FAILURE PREDICTION (3 points if correct)';
-            } else if (value <= 29) {
-                riskClass = 'risk-impossible';
-                riskMessage = '🚫 IMPOSSIBLE ZONE - Agent can\'t solve this fast (10% points)';
-            } else if (30 <= value && value <= 34) {
-                riskClass = 'risk-medium';
-                riskMessage = '⚡ MINIMUM POSSIBLE - Extremely optimistic (70% points)';
-            } else if (35 <= value && value <= 55) {
-                riskClass = 'risk-safe';
-                riskMessage = '🎯 SAFE ZONE - Most predictable range (40% points)';
-            } else if (56 <= value && value <= 65) {
-                riskClass = 'risk-medium';
-                riskMessage = '🟠 PROBABLE ZONE - Still likely (70% points)';
-            } else if (66 <= value && value <= 85) {
-                riskClass = 'risk-high';
-                riskMessage = '🔥 STRUGGLE ZONE - Agent having difficulty (150% points!)';
-            } else if (value >= 86) {
-                riskClass = 'risk-high';
-                riskMessage = '💀 FAILURE ZONE - Approaching timeout (200% points!)';
-            }
-            
-            riskIndicator.className = `risk-indicator ${riskClass}`;
-            riskText.textContent = riskMessage;
-            riskIndicator.style.display = 'block';
+            riskIndicator.style.display = 'none';
         }
 
         // Agent selection
@@ -1485,89 +1322,24 @@
             });
         });
 
-        // Toggle steps log visibility
-        function toggleStepsLog() {
-            const content = document.getElementById('stepsContent');
-            const button = document.querySelector('.steps-toggle');
-            
-            if (content.style.display === 'none') {
-                content.style.display = 'block';
-                button.textContent = '📋 Hide Detailed Steps Log';
-            } else {
-                content.style.display = 'none';
-                button.textContent = '📋 Show Detailed Steps Log';
-            }
-        }
+        // Steps log removed for simplicity
 
-        // Display steps log
-        function displayStepsLog(stepsData) {
-            const stepsList = document.getElementById('stepsList');
-            currentStepsLog = stepsData;
-            
-            if (!stepsData || stepsData.length === 0) {
-                stepsList.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">No step data available</p>';
-                return;
-            }
-            
-            let stepsHTML = '';
-            stepsData.forEach((step, index) => {
-                const actionNames = {
-                    0: 'Turn Left ↶',
-                    1: 'Turn Right ↷', 
-                    2: 'Move Forward ↑',
-                    5: 'Open/Close Door 🚪'
-                };
-                
-                const actionName = actionNames[step.action] || `Action ${step.action}`;
-                const rewardClass = step.reward >= 0 ? '' : 'negative';
-                
-                stepsHTML += `
-                    <div class="step-item">
-                        <div class="step-number">${index + 1}</div>
-                        <div class="step-action">${actionName}</div>
-                        <div class="step-result">${step.result || 'Step executed'}</div>
-                        <div class="step-reward ${rewardClass}">
-                            ${step.reward >= 0 ? '+' : ''}${step.reward.toFixed(1)}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            stepsList.innerHTML = stepsHTML;
-        }
-
-        // Get score explanation based on actual score received
+        // Get score explanation - SIMPLIFIED
         function getScoreExplanation(prediction, actualSteps, succeeded, actualScore) {
             const predictionNum = parseInt(prediction);
-            
+
             if (predictionNum === 0) {
-                return !succeeded ? 
-                    "🎯 PERFECT! You predicted the failure correctly!" :
-                    "❌ The agent actually succeeded, no points this time.";
+                return !succeeded ?
+                    "Perfect! You correctly predicted the agent would fail." :
+                    "The agent succeeded. Better luck next time!";
             }
-            
+
             const difference = Math.abs(predictionNum - actualSteps);
-            
-            // Determine base accuracy
-            let accuracy = "";
-            if (difference === 0) accuracy = "BULL'S EYE! Perfect prediction!";
-            else if (difference <= 5) accuracy = `CLOSE! Only ${difference} steps off.`;
-            else if (difference <= 10) accuracy = `DECENT! ${difference} steps off.`;
-            else accuracy = `OFF TARGET - ${difference} steps difference.`;
-            
-            // Add risk zone explanation based on score
-            let riskExplanation = "";
-            if (35 <= predictionNum && predictionNum <= 55) {
-                riskExplanation = " (Safe zone penalty applied)";
-            } else if (predictionNum <= 29) {
-                riskExplanation = " (Impossible zone - heavy penalty)";
-            } else if (66 <= predictionNum && predictionNum <= 85) {
-                riskExplanation = " (Struggle zone bonus!)";
-            } else if (predictionNum >= 86) {
-                riskExplanation = " (Failure zone bonus!)";
-            }
-            
-            return `🚀 ${accuracy}${riskExplanation}`;
+
+            if (difference === 0) return "Perfect prediction! Exactly right!";
+            else if (difference <= 10) return `Close! Only ${difference} steps off.`;
+            else if (difference <= 20) return `Not bad! ${difference} steps off.`;
+            else return `Try again! You were ${difference} steps off.`;
         }
 
         // Run validation (connects to backend)
@@ -1599,14 +1371,14 @@
             e.preventDefault();
             
             const prediction = document.getElementById('predictionInput').value;
-            
+
             if (!selectedAgent) {
-                alert('🤖 Please select an AI agent first!');
+                alert('Please select an AI agent first!');
                 return;
             }
-            
+
             if (!prediction || prediction < 0 || prediction > 120) {
-                alert('🎯 Please enter a valid prediction (0-120)!');
+                alert('Please enter a valid prediction (0-120)!');
                 return;
             }
             
@@ -1620,12 +1392,12 @@
                 
                 // Use score from backend
                 const score = result.score;
-                
-                // Update user stats in real-time
+
+                // Update user stats in real-time - SIMPLIFIED
                 if (result.user_stats) {
                     document.getElementById('totalScore').textContent = result.user_stats.total_score;
                     document.getElementById('gamesPlayed').textContent = result.user_stats.games_played;
-                    document.getElementById('successRate').textContent = result.user_stats.prediction_accuracy + '%';
+                    document.getElementById('bestScore').textContent = result.user_stats.best_score;
                 }
                 
                 // Update display
@@ -1634,32 +1406,22 @@
                     getScoreExplanation(prediction, result.steps, result.succeeded, score);
                 
                 const predictionNum = parseInt(prediction);
-                document.getElementById('userPrediction').textContent = 
-                    predictionNum === 0 ? 'Will fail' : `${prediction} steps`;
+                document.getElementById('userPrediction').textContent =
+                    predictionNum === 0 ? 'Fail' : `${prediction} steps`;
                 document.getElementById('actualResult').textContent = `${result.steps} steps`;
-                document.getElementById('agentUsed').textContent = result.agent_type.toUpperCase();
-                document.getElementById('successStatus').textContent = 
-                    result.succeeded ? '🟢 SUCCESS' : '🔴 FAILED';
-                
-                // Handle GIF display
+
+                // Handle GIF display - SIMPLIFIED
                 const videoError = document.getElementById('videoError');
-                
+
                 if (result.gif_url) {
-                    videoError.innerHTML = `<img src="${result.gif_url}" style="max-width: 100%; border-radius: 15px; cursor: pointer;" alt="AI Agent Mission" onclick="this.src=this.src" title="🔄 Click to restart GIF">`;
+                    videoError.innerHTML = `<img src="${result.gif_url}" style="max-width: 100%; border-radius: 12px;" alt="AI Agent Replay">`;
                     videoError.style.display = 'block';
                     videoError.style.color = 'inherit';
                 } else {
                     videoError.style.display = 'block';
                     videoError.style.color = 'var(--error)';
-                    videoError.textContent = '❌ Mission replay failed to generate';
+                    videoError.textContent = 'Replay not available';
                 }
-                
-                // Display steps log
-                displayStepsLog(result.steps_log || []);
-                
-                // Reset steps log visibility
-                document.getElementById('stepsContent').style.display = 'none';
-                document.querySelector('.steps-toggle').textContent = '📋 Show Detailed Steps Log';
                 
                 // Show results
                 document.getElementById('loading').style.display = 'none';
@@ -1668,10 +1430,10 @@
             } catch (error) {
                 console.error('Error running validation:', error);
                 if (error.message.includes('log in')) {
-                    alert('🚨 Session expired! Please log in again.');
+                    alert('Session expired! Please log in again.');
                     showAuthInterface();
                 } else {
-                    alert('🚨 Mission failed! Make sure the backend server is running!');
+                    alert('Error! Make sure the backend server is running.');
                 }
                 document.getElementById('loading').style.display = 'none';
                 document.querySelector('.run-btn').disabled = false;

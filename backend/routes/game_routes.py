@@ -48,7 +48,7 @@ def run_validation():
             model_path = os.path.join(current_app.config['MODEL_FOLDER'], 'D3QN_policy_net.pth')
             result = video_of_one_D3QN_episode(env, model_path, gif_path)
         
-        # Parse results
+        # Parse results - SIMPLIFIED
         if len(result) == 4:
             total_reward, num_steps, gif_file, steps_log = result
             gif_url = f'/video/{os.path.basename(gif_file)}' if gif_file else None
@@ -57,51 +57,44 @@ def run_validation():
             total_reward, num_steps, steps_log = result
             gif_url = None
             gif_filename_final = None
-        
+
         # Calculate results
         ai_agent_succeeded = bool(num_steps < current_app.config['MAX_STEPS'])
         score = calculate_score(prediction, num_steps, ai_agent_succeeded)
-        is_good_prediction = score > 0
-        
-        # Save game result
+
+        # Save game result - SIMPLIFIED FIELDS
         game_result = GameResult(
             user_id=user.id,
             agent_type=agent_type,
             prediction=int(prediction) if prediction != 'fail' else 0,
             actual_steps=int(num_steps),
-            succeeded=ai_agent_succeeded,
             score=int(score),
-            total_reward=float(total_reward),
-            gif_filename=gif_filename_final,
-            steps_log=str(steps_log)
+            gif_filename=gif_filename_final
         )
-        
+
         db.session.add(game_result)
-        
-        # Update user statistics
+
+        # Update user statistics - SIMPLIFIED
         user.total_score += int(score)
         user.games_played += 1
-        if ai_agent_succeeded:
-            user.games_won += 1
-        if is_good_prediction:
-            user.good_predictions += 1
-        
+
+        # Track best score
+        if int(score) > user.best_score:
+            user.best_score = int(score)
+
         db.session.commit()
-        
+
         return jsonify({
             'steps': int(num_steps),
             'succeeded': ai_agent_succeeded,
-            'total_reward': float(total_reward),
             'gif_url': gif_url,
             'agent_type': str(agent_type),
             'score': int(score),
             'prediction': str(prediction),
-            'steps_log': steps_log,
             'user_stats': {
                 'total_score': user.total_score,
                 'games_played': user.games_played,
-                'prediction_accuracy': user.prediction_accuracy,
-                'ai_success_rate': user.ai_success_rate
+                'best_score': user.best_score
             }
         })
         

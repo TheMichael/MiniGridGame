@@ -19,22 +19,24 @@ class GameResult(db.Model):
     # Game configuration
     agent_type = db.Column(db.String(10), nullable=False)
     
-    # Prediction and results
+    # Prediction and results - SIMPLIFIED
     prediction = db.Column(db.Integer, nullable=False)
     actual_steps = db.Column(db.Integer, nullable=False)
-    succeeded = db.Column(db.Boolean, nullable=False)
-    
+
     # Scoring
     score = db.Column(db.Integer, nullable=False)
-    total_reward = db.Column(db.Float, nullable=False)
-    
-    # Media and logs
+
+    # Media
     gif_filename = db.Column(db.String(255), nullable=True)
-    steps_log = db.Column(db.Text, nullable=True)
     
     # Timestamps
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     
+    @property
+    def succeeded(self):
+        """Calculate if agent succeeded based on steps (< 120 means success)."""
+        return self.actual_steps < 120
+
     def to_dict(self):
         """Convert game result to dictionary for JSON responses."""
         return {
@@ -45,7 +47,6 @@ class GameResult(db.Model):
             'actual_steps': self.actual_steps,
             'succeeded': self.succeeded,
             'score': self.score,
-            'total_reward': self.total_reward,
             'gif_url': f'/video/{self.gif_filename}' if self.gif_filename else None,
             'timestamp': self.timestamp.isoformat()
         }

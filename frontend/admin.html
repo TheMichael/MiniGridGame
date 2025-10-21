@@ -534,7 +534,7 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>👑 Admin Control Center</h1>
+                <h1>Admin Control Center</h1>
                 <p>Manage your AI Agent Galaxy empire</p>
             </div>
             <div class="header-controls">
@@ -545,10 +545,10 @@
         </div>
 
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('overview')">📊 Overview</div>
-            <div class="tab" onclick="switchTab('users')">👥 Users</div>
-            <div class="tab" onclick="switchTab('games')">🎮 Games</div>
-            <div class="tab" onclick="switchTab('database')">🗄️ Database</div>
+            <div class="tab active" onclick="switchTab('overview')">Overview</div>
+            <div class="tab" onclick="switchTab('users')">Users</div>
+            <div class="tab" onclick="switchTab('games')">Games</div>
+            <div class="tab" onclick="switchTab('database')">Database</div>
         </div>
 
         <!-- Overview Tab -->
@@ -686,7 +686,7 @@
                     </p>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto;">
                         <button class="btn btn-secondary" onclick="exportUsers()">
-                            📊 Export Users CSV
+                            Export Users CSV
                         </button>
                         <button class="btn btn-secondary" onclick="exportGames()">
                             🎮 Export Games CSV
@@ -768,7 +768,7 @@
                     
                     if (!currentUser.is_admin) {
                         console.log('User is not admin, redirecting...');
-                        alert('❌ Access denied. Admin privileges required.');
+                        alert('Access denied. Admin privileges required.');
                         window.location.href = '/';
                         return;
                     }
@@ -777,12 +777,12 @@
                     loadOverviewData();
                 } else {
                     console.log('Not authenticated, redirecting...');
-                    alert('❌ Please log in first.');
+                    alert('Please log in first.');
                     window.location.href = '/';
                 }
             } catch (error) {
                 console.error('Auth check failed:', error);
-                alert('❌ Connection error. Please check your server.');
+                alert('Connection error. Please check your server.');
                 window.location.href = '/';
             }
         }
@@ -867,7 +867,7 @@
                 
             } catch (error) {
                 console.error('Failed to load overview data:', error);
-                alert('❌ Failed to load overview data. Please check the console for details.');
+                alert('Failed to load overview data. Please check the console for details.');
             }
         }
 
@@ -924,7 +924,7 @@
             } catch (error) {
                 console.error('Failed to load users data:', error);
                 document.getElementById('usersTable').innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--error);">Failed to load users</td></tr>';
-                alert('❌ Failed to load users data. Please check the console for details.');
+                alert('Failed to load users data. Please check the console for details.');
             }
         }
 
@@ -979,7 +979,7 @@
             } catch (error) {
                 console.error('Failed to load games data:', error);
                 document.getElementById('gamesTable').innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--error);">Failed to load games</td></tr>';
-                alert('❌ Failed to load games data. Please check the console for details.');
+                alert('Failed to load games data. Please check the console for details.');
             }
         }
 
@@ -1081,7 +1081,7 @@
                 if (data.success) {
                     closeEditUserModal();
                     loadUsersData(currentUsersPage, document.getElementById('userSearch').value);
-                    alert('✅ User updated successfully!');
+                    alert('User updated successfully!');
                 } else {
                     document.getElementById('editUserError').textContent = data.error;
                     document.getElementById('editUserError').style.display = 'block';
@@ -1133,11 +1133,11 @@
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
                 
-                alert('✅ Users exported successfully!');
+                alert('Users exported successfully!');
                 
             } catch (error) {
                 console.error('Failed to export users:', error);
-                alert('❌ Failed to export users');
+                alert('Failed to export users');
             }
         }
 
@@ -1179,11 +1179,11 @@
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
                 
-                alert('✅ Games exported successfully!');
+                alert('Games exported successfully!');
                 
             } catch (error) {
                 console.error('Failed to export games:', error);
-                alert('❌ Failed to export games');
+                alert('Failed to export games');
             }
         }
 
@@ -1204,12 +1204,12 @@
                 if (data.success) {
                     alert(`✅ Cleanup completed! Removed ${data.removed_files} old video files.`);
                 } else {
-                    alert('❌ Cleanup failed: ' + (data.error || 'Unknown error'));
+                    alert('Cleanup failed: ' + (data.error || 'Unknown error'));
                 }
                 
             } catch (error) {
                 console.error('Failed to cleanup videos:', error);
-                alert('❌ Failed to cleanup videos');
+                alert('Failed to cleanup videos');
             }
         }
 
