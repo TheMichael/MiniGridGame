@@ -7,21 +7,21 @@ A full-stack web application where users compete by predicting AI agent performa
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-## 🎮 Overview
+## Overview
 
 This project combines **reinforcement learning** with an interactive web game. Players predict how many steps AI agents (DDQN and D3QN) will take to navigate a complex multi-room maze environment, earning points based on accuracy.
 
 ### Key Features
 
-- 🤖 **Two Pre-trained RL Agents**: DDQN (Double Deep Q-Network) and D3QN (Dueling Double Deep Q-Network)
-- 🎯 **Prediction Challenge**: Guess the number of steps or predict failure
-- 🎬 **Visual Replays**: Watch GIF recordings of each AI navigation attempt
-- 👤 **User Authentication**: Secure session-based login with password reset
-- 📊 **Persistent Statistics**: Track scores, games played, and personal bests
-- 🏆 **Leaderboard System**: Compete with other players
-- 🔐 **Admin Panel**: User management and game analytics
+- **Two Pre-trained RL Agents**: DDQN (Double Deep Q-Network) and D3QN (Dueling Double Deep Q-Network)
+- **Prediction Challenge**: Guess the number of steps or predict failure
+- **Visual Replays**: Watch GIF recordings of each AI navigation attempt
+- **User Authentication**: Secure session-based login with password reset
+- **Persistent Statistics**: Track scores, games played, and personal bests
+- **Leaderboard System**: Compete with other players
+- **Admin Panel**: User management and game analytics
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -60,7 +60,7 @@ python app.py
 1. Open your browser and navigate to **http://localhost:5000**
 2. Register a new account (first user becomes admin automatically)
 3. Select an AI agent and make your prediction
-4. Watch the AI navigate and see your score!
+4. Watch the AI navigate and see your score
 
 ### Optional: Sample Data
 
@@ -69,7 +69,7 @@ cd backend
 python populate_db.py  # Creates demo users and game history
 ```
 
-## 🎲 How to Play
+## How to Play
 
 1. **Choose an AI Agent**:
    - **DDQN**: Double Deep Q-Network (faster, more aggressive)
@@ -84,13 +84,13 @@ python populate_db.py  # Creates demo users and game history
    - You'll see a GIF recording of the entire episode
 
 4. **Earn Points Based on Accuracy**:
-   - **Perfect** (0 steps off): **100 points** 🏆
-   - **Close** (1-10 steps off): **50 points** ✅
-   - **Far** (11-20 steps off): **25 points** 📉
-   - **Way Off** (21+ steps off): **0 points** ❌
-   - **Correct Failure Prediction**: **50 points** 🎯
+   - **Perfect** (0 steps off): **100 points**
+   - **Close** (1-10 steps off): **50 points**
+   - **Far** (11-20 steps off): **25 points**
+   - **Way Off** (21+ steps off): **0 points**
+   - **Correct Failure Prediction**: **50 points**
 
-## 🏗️ Architecture
+## Architecture
 
 ### Tech Stack
 
@@ -153,7 +153,7 @@ MiniGridGame/
 └── README.md
 ```
 
-## 🧠 How the AI Works
+## How the AI Works
 
 ### Reinforcement Learning Basics
 
@@ -184,7 +184,7 @@ The agents learned to navigate through **trial and error**:
 
 Both use **Convolutional Neural Networks** to process visual input from the maze.
 
-## 🛠️ Development
+## Development
 
 ### Database Management Tools
 
@@ -223,7 +223,7 @@ Edit `backend/config.py` for:
 - File storage paths
 - Environment-specific settings (dev/production)
 
-## 📊 Database Schema
+## Database Schema
 
 ### User Table
 - `id`, `username`, `email`, `password_hash`
@@ -240,43 +240,10 @@ Edit `backend/config.py` for:
 ### PasswordResetToken Table
 - `user_id`, `token`, `created_at`, `expires_at`, `used`
 
-## 🔐 Security Features
+## Security Features
 
 - **Password Hashing**: PBKDF2-SHA256 via Werkzeug
 - **Session Management**: Secure, HttpOnly cookies with 24-hour expiration
 - **CSRF Protection**: SameSite cookie attribute
 - **SQL Injection Prevention**: SQLAlchemy parameterized queries
 - **Password Reset**: Cryptographically secure tokens with expiration
-
-## 🚧 Known Limitations
-
-- **SQLite**: Not ideal for high concurrency (easily upgradeable to PostgreSQL)
-- **Synchronous AI Execution**: Game runs block the server (could add task queue)
-- **Local Storage Only**: Videos stored on server (could use cloud storage)
-- **No Real-time Features**: No WebSocket support for live multiplayer
-
-## 🎯 Future Improvements
-
-- [ ] Migrate to PostgreSQL for production
-- [ ] Add Celery task queue for async AI execution
-- [ ] Implement WebSocket for real-time multiplayer predictions
-- [ ] Add analytics dashboard with charts
-- [ ] Create API documentation with Swagger
-- [ ] Add unit tests and integration tests
-- [ ] Deploy to cloud platform (AWS, GCP, or Azure)
-- [ ] Implement caching with Redis
-
-## 📝 License
-
-MIT License - feel free to use this project for learning or portfolio purposes.
-
-## 🙏 Acknowledgments
-
-- **OpenAI Gymnasium** - MiniGrid environment
-- **PyTorch** - Deep learning framework
-- **Flask** - Web framework
-- Pre-trained models developed during university reinforcement learning coursework
-
----
-
-**Built with ❤️ as a portfolio project demonstrating full-stack development and ML integration**
