@@ -185,7 +185,6 @@ def admin_games():
                 'actual_steps': game.actual_steps,
                 'succeeded': game.succeeded,
                 'score': game.score,
-                'total_reward': game.total_reward,
                 'timestamp': game.timestamp.isoformat(),
                 'gif_url': f'/video/{game.gif_filename}' if game.gif_filename else None
             })

@@ -660,13 +660,12 @@
                                 <th>Actual</th>
                                 <th>Result</th>
                                 <th>Score</th>
-                                <th>Reward</th>
                                 <th>Time</th>
                                 <th>Replay</th>
                             </tr>
                         </thead>
                         <tbody id="gamesTable">
-                            <tr><td colspan="10" class="loading"><div class="spinner"></div>Loading games...</td></tr>
+                            <tr><td colspan="9" class="loading"><div class="spinner"></div>Loading games...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -949,7 +948,7 @@
                 
                 const gamesTable = document.getElementById('gamesTable');
                 if (data.games.length === 0) {
-                    gamesTable.innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--text-secondary);">No games found</td></tr>';
+                    gamesTable.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--text-secondary);">No games found</td></tr>';
                 } else {
                     gamesTable.innerHTML = data.games.map(game => `
                         <tr>
@@ -964,7 +963,6 @@
                                 </span>
                             </td>
                             <td><strong>${game.score}</strong></td>
-                            <td>${game.total_reward.toFixed(1)}</td>
                             <td>${new Date(game.timestamp).toLocaleString()}</td>
                             <td>
                                 ${game.gif_url ? `<a href="${game.gif_url}" target="_blank" class="btn btn-small">🎬 View</a>` : '-'}
@@ -1151,7 +1149,7 @@
                 
                 const data = await response.json();
                 
-                const headers = ['ID', 'Username', 'Agent Type', 'Prediction', 'Actual Steps', 'Succeeded', 'Score', 'Total Reward', 'Timestamp', 'GIF URL'];
+                const headers = ['ID', 'Username', 'Agent Type', 'Prediction', 'Actual Steps', 'Succeeded', 'Score', 'Timestamp', 'GIF URL'];
                 const csvContent = [
                     headers.join(','),
                     ...data.games.map(game => [
@@ -1162,7 +1160,6 @@
                         game.actual_steps,
                         game.succeeded,
                         game.score,
-                        game.total_reward,
                         `"${game.timestamp}"`,
                         `"${game.gif_url || ''}"`
                     ].join(','))
