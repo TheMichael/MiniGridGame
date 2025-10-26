@@ -107,10 +107,7 @@ def get_current_user_info():
             'username': user.username,
             'total_score': user.total_score,
             'games_played': user.games_played,
-            'games_won': user.games_won,
-            'prediction_accuracy': user.prediction_accuracy,
-            'ai_success_rate': user.ai_success_rate,
-            'average_score': user.average_score_per_game,
+            'best_score': user.best_score,
             'created_at': user.created_at.isoformat(),
             'is_admin': user.is_admin
         }

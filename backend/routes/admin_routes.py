@@ -48,7 +48,7 @@ def admin_stats():
             'username': user.username,
             'total_score': user.total_score,
             'games_played': user.games_played,
-            'prediction_accuracy': user.prediction_accuracy,
+            'best_score': user.best_score,
             'created_at': user.created_at.isoformat()
         } for user in top_players]
         
@@ -103,8 +103,7 @@ def admin_users():
                 'email': user.email,
                 'total_score': user.total_score,
                 'games_played': user.games_played,
-                'prediction_accuracy': user.prediction_accuracy,
-                'ai_success_rate': user.ai_success_rate,
+                'best_score': user.best_score,
                 'is_admin': user.is_admin,
                 'is_active': user.is_active,
                 'created_at': user.created_at.isoformat(),

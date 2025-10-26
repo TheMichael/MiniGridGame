@@ -600,7 +600,7 @@
                                 <th>Username</th>
                                 <th>Total Score</th>
                                 <th>Games Played</th>
-                                <th>Prediction Accuracy</th>
+                                <th>Best Score</th>
                                 <th>Joined</th>
                             </tr>
                         </thead>
@@ -628,7 +628,7 @@
                                 <th>Email</th>
                                 <th>Score</th>
                                 <th>Games</th>
-                                <th>Accuracy</th>
+                                <th>Best</th>
                                 <th>Status</th>
                                 <th>Joined</th>
                                 <th>Actions</th>
@@ -859,7 +859,7 @@
                             <td>${escapeHtml(player.username)}</td>
                             <td><strong>${player.total_score}</strong></td>
                             <td>${player.games_played}</td>
-                            <td>${player.prediction_accuracy}%</td>
+                            <td><strong>${player.best_score}</strong></td>
                             <td>${new Date(player.created_at).toLocaleDateString()}</td>
                         </tr>
                     `).join('');
@@ -901,7 +901,7 @@
                             <td>${escapeHtml(user.email)}</td>
                             <td>${user.total_score}</td>
                             <td>${user.games_played}</td>
-                            <td>${user.prediction_accuracy}%</td>
+                            <td><strong>${user.best_score}</strong></td>
                             <td>
                                 <span class="status-badge status-${user.is_active ? 'active' : 'inactive'}">
                                     ${user.is_active ? 'Active' : 'Inactive'}
@@ -1106,7 +1106,7 @@
                 
                 const data = await response.json();
                 
-                const headers = ['ID', 'Username', 'Email', 'Total Score', 'Games Played', 'Prediction Accuracy', 'AI Success Rate', 'Is Admin', 'Is Active', 'Created At'];
+                const headers = ['ID', 'Username', 'Email', 'Total Score', 'Games Played', 'Best Score', 'Is Admin', 'Is Active', 'Created At'];
                 const csvContent = [
                     headers.join(','),
                     ...data.users.map(user => [
@@ -1115,8 +1115,7 @@
                         `"${user.email}"`,
                         user.total_score,
                         user.games_played,
-                        user.prediction_accuracy,
-                        user.ai_success_rate,
+                        user.best_score,
                         user.is_admin,
                         user.is_active,
                         `"${user.created_at}"`
