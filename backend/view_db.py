@@ -16,20 +16,19 @@ def view_database():
     print("\nREGISTERED USERS:")
     print("-" * 30)
     cursor.execute("""
-        SELECT username, total_score, games_played, games_won, created_at
-        FROM user 
+        SELECT username, total_score, games_played, best_score, created_at
+        FROM user
         ORDER BY total_score DESC
     """)
-    
+
     users = cursor.fetchall()
     if users:
-        print(f"{'Username':<15} {'Score':<8} {'Games':<7} {'Wins':<6} {'Success%':<9} {'Joined':<12}")
-        print("-" * 70)
+        print(f"{'Username':<15} {'Score':<8} {'Games':<7} {'Best':<6} {'Joined':<12}")
+        print("-" * 60)
         for user in users:
-            username, score, games, wins, created = user
-            success_rate = (wins/games*100) if games > 0 else 0
+            username, score, games, best, created = user
             created_date = created[:10] if created else "Unknown"
-            print(f"{username:<15} {score:<8} {games:<7} {wins:<6} {success_rate:<9.1f} {created_date:<12}")
+            print(f"{username:<15} {score:<8} {games:<7} {best:<6} {created_date:<12}")
     else:
         print("No users registered yet.")
     
@@ -97,28 +96,32 @@ def search_user(username):
     conn = sqlite3.connect('minigrid_game.db')
     cursor = conn.cursor()
     
-    cursor.execute("SELECT * FROM user WHERE username = ?", (username,))
+    cursor.execute("""
+        SELECT id, username, total_score, games_played, best_score, created_at
+        FROM user WHERE username = ?
+    """, (username,))
     user = cursor.fetchone()
-    
+
     if not user:
         print(f"User '{username}' not found.")
         return
-    
+
+    user_id, username, total_score, games_played, best_score, created_at = user
+
     print(f"\nUSER PROFILE: {username}")
     print("-" * 30)
-    print(f"Total Score: {user[5]}")
-    print(f"Games Played: {user[6]}")
-    print(f"Games Won: {user[7]}")
-    print(f"Success Rate: {(user[7]/user[6]*100) if user[6] > 0 else 0:.1f}%")
-    print(f"Joined: {user[4][:10] if user[4] else 'Unknown'}")
+    print(f"Total Score: {total_score}")
+    print(f"Games Played: {games_played}")
+    print(f"Best Score: {best_score}")
+    print(f"Joined: {created_at[:10] if created_at else 'Unknown'}")
     
     # Show user's game history
     cursor.execute("""
         SELECT agent_type, prediction, actual_steps, succeeded, score, timestamp
-        FROM game_result 
+        FROM game_result
         WHERE user_id = ?
         ORDER BY timestamp DESC
-    """, (user[0],))
+    """, (user_id,))
     
     games = cursor.fetchall()
     print(f"\nGAME HISTORY ({len(games)} games):")
