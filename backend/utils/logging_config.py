@@ -40,4 +40,4 @@ def setup_logging(app):
     logging.getLogger('werkzeug').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     
-    app.logger.info("📝 Logging configuration completed")
+    app.logger.info("Logging configuration completed")
