@@ -14,29 +14,32 @@ def calculate_score(prediction, actual_steps, succeeded):
     - Close (1-10 steps off): 50 points
     - Far (11-20 steps off): 25 points
     - Way off (21+ steps off): 0 points
-    - Failure prediction bonus: +50 points if correct
+
+    Note: If agent fails (120 steps) and user predicted 120,
+    they only get points for close prediction, not perfect.
 
     Args:
-        prediction: User's prediction (string or int, 'fail' for failure prediction)
+        prediction: User's prediction (string or int)
         actual_steps: Actual steps taken by AI agent
         succeeded: Whether AI agent succeeded in reaching goal
 
     Returns:
         int: Calculated score
     """
-    # Handle failure prediction
-    if prediction == 'fail' or prediction == '0':
-        return 50 if not succeeded else 0
-
     try:
         predicted_steps = int(prediction)
 
-        # Failure prediction if they entered 0
-        if predicted_steps == 0:
-            return 50 if not succeeded else 0
+        # Validate prediction range
+        if predicted_steps < 1 or predicted_steps > 120:
+            return 0
 
         # Calculate difference
         difference = abs(predicted_steps - actual_steps)
+
+        # If agent failed (120 steps) and prediction was 120,
+        # treat as close but not perfect
+        if not succeeded and predicted_steps == 120 and actual_steps == 120:
+            return 50  # Close prediction, not perfect
 
         # Simple scoring based on accuracy
         if difference == 0:
@@ -55,19 +58,20 @@ def calculate_score(prediction, actual_steps, succeeded):
 def get_score_explanation(prediction, actual_steps, succeeded, score):
     """Generate simple explanation for the score calculation."""
     try:
-        prediction_num = int(prediction) if prediction != 'fail' else 0
+        prediction_num = int(prediction)
     except (ValueError, TypeError):
-        prediction_num = 0
+        return "Invalid prediction."
 
-    # Handle failure prediction
-    if prediction_num == 0:
-        if not succeeded:
-            return "Perfect! You correctly predicted the agent would fail."
-        else:
-            return "The agent succeeded. Better luck next time!"
+    # Validate prediction
+    if prediction_num < 1 or prediction_num > 120:
+        return "Invalid prediction range."
 
     # Calculate difference
     difference = abs(prediction_num - actual_steps)
+
+    # Special case: predicted 120 and agent failed at 120
+    if not succeeded and prediction_num == 120 and actual_steps == 120:
+        return "Agent failed at 120 steps. Close prediction!"
 
     # Simple explanations
     if difference == 0:

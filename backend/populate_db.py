@@ -25,33 +25,28 @@ USERS_DATA = [
 # Different player personalities with prediction patterns
 PLAYER_PERSONALITIES = {
     "conservative": {
-        "description": "Predicts higher numbers, avoids failure predictions",
+        "description": "Predicts higher numbers (expects longer paths)",
         "step_range": (70, 120),
-        "failure_chance": 0.05,
         "agent_preference": "ddqn"
     },
     "aggressive": {
-        "description": "Predicts lower numbers, frequent failure predictions",
+        "description": "Predicts lower numbers (optimistic about efficiency)",
         "step_range": (20, 60),
-        "failure_chance": 0.25,
         "agent_preference": "d3qn"
     },
     "analytical": {
         "description": "Well-researched predictions, balanced approach",
         "step_range": (40, 80),
-        "failure_chance": 0.15,
         "agent_preference": None  # No preference
     },
     "random": {
         "description": "Completely random predictions",
         "step_range": (1, 120),
-        "failure_chance": 0.20,
         "agent_preference": None
     },
     "optimistic": {
-        "description": "Always believes agent will succeed, predicts middle range",
+        "description": "Believes agent will succeed quickly, predicts middle range",
         "step_range": (45, 75),
-        "failure_chance": 0.02,
         "agent_preference": "ddqn"
     }
 }
@@ -104,10 +99,9 @@ def login_user(username, password):
 
 def generate_prediction(personality):
     """Generate a prediction based on personality"""
-    if random.random() < personality["failure_chance"]:
-        return 0  # Predict failure
-    else:
-        return random.randint(*personality["step_range"])
+    # Generate prediction within personality's range (1-120)
+    # No longer supporting failure predictions (0)
+    return random.randint(*personality["step_range"])
 
 def choose_agent(personality):
     """Choose agent based on personality"""
@@ -126,7 +120,7 @@ def play_game(agent_type, prediction):
         
         if response.status_code == 200:
             data = response.json()
-            print(f"Game played: {agent_type.upper()} agent, predicted {prediction if prediction != 0 else 'FAIL'}, "
+            print(f"Game played: {agent_type.upper()} agent, predicted {prediction} steps, "
                   f"actual {data['steps']} steps, scored {data['score']} points")
             return data
         else:
@@ -195,7 +189,7 @@ def simulate_user_session(user_data, num_games):
 def populate_database(num_users=None, games_per_user_range=(3, 12)):
     """Main function to populate the database"""
     
-    print("AI AGENT GALAXY - DATABASE POPULATION SCRIPT")
+    print("NEURAL NAVIGATOR - DATABASE POPULATION SCRIPT")
     print("=" * 60)
     print(f"Target: {num_users or len(USERS_DATA)} users, {games_per_user_range[0]}-{games_per_user_range[1]} games each")
     print("=" * 60)

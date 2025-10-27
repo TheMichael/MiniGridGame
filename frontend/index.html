@@ -666,14 +666,16 @@
         }
 
         .video-container img {
-            max-width: 100%;
+            max-width: 60%;
+            display: block;
+            margin: 0 auto;
             border-radius: 16px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
         }
 
         .video-container img:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
@@ -941,6 +943,10 @@
             .scoring-grid {
                 grid-template-columns: 1fr;
             }
+
+            .video-container img {
+                max-width: 90%;
+            }
         }
 
         /* Custom scrollbar */
@@ -1080,9 +1086,9 @@
 
                     <div class="prediction-input">
                         <h3 class="section-title">Make Your Prediction</h3>
-                        <p class="prediction-hint">Enter steps (0-120), or 0 to predict failure</p>
+                        <p class="prediction-hint">How many steps will the agent take? (1-120)</p>
                         <input type="number" id="predictionInput" class="prediction-number"
-                               min="0" max="120" placeholder="Steps" required
+                               min="1" max="120" placeholder="Steps" required
                                oninput="updateRiskDisplay()">
                         <div id="riskIndicator" class="risk-indicator" style="display: none;">
                             <span id="riskText"></span>
@@ -1358,10 +1364,9 @@
         function getScoreExplanation(prediction, actualSteps, succeeded, actualScore) {
             const predictionNum = parseInt(prediction);
 
-            if (predictionNum === 0) {
-                return !succeeded ?
-                    "Perfect! You correctly predicted the agent would fail." :
-                    "The agent succeeded. Better luck next time!";
+            // Special case: predicted 120 and agent failed at 120
+            if (!succeeded && predictionNum === 120 && actualSteps === 120) {
+                return "Agent failed at 120 steps. Close prediction!";
             }
 
             const difference = Math.abs(predictionNum - actualSteps);
@@ -1407,8 +1412,8 @@
                 return;
             }
 
-            if (!prediction || prediction < 0 || prediction > 120) {
-                alert('Please enter a valid prediction (0-120)!');
+            if (!prediction || prediction < 1 || prediction > 120) {
+                alert('Please enter a valid prediction (1-120)!');
                 return;
             }
             
@@ -1436,8 +1441,7 @@
                     getScoreExplanation(prediction, result.steps, result.succeeded, score);
                 
                 const predictionNum = parseInt(prediction);
-                document.getElementById('userPrediction').textContent =
-                    predictionNum === 0 ? 'Fail' : `${prediction} steps`;
+                document.getElementById('userPrediction').textContent = `${prediction} steps`;
                 document.getElementById('actualResult').textContent = `${result.steps} steps`;
 
                 // Handle GIF display - SIMPLIFIED
