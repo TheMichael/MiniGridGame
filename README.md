@@ -38,8 +38,10 @@ Run the automated startup script for your platform:
 ```bash
 git clone https://github.com/TheMichael/MiniGridGame.git
 cd MiniGridGame
-run.bat
+.\run.bat
 ```
+
+Note: In PowerShell, use `.\run.bat` to run the script. In Command Prompt, you can use just `run.bat`.
 
 #### Mac/Linux
 
