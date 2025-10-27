@@ -666,14 +666,16 @@
         }
 
         .video-container img {
-            max-width: 100%;
+            max-width: 60%;
+            display: block;
+            margin: 0 auto;
             border-radius: 16px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
         }
 
         .video-container img:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
@@ -940,6 +942,10 @@
 
             .scoring-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .video-container img {
+                max-width: 90%;
             }
         }
 
