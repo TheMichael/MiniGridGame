@@ -1,13 +1,11 @@
-﻿# Flask and web framework dependencies
+# Flask and web framework dependencies
 flask==2.3.3
 flask-cors==4.0.0
 flask-sqlalchemy>=3.0.0
-sqlalchemy>=2.0.0
 werkzeug>=2.3.0
 
 # PyTorch and ML dependencies
 torch>=2.0.0
-torchvision>=0.15.0
 
 # Game environment dependencies
 gymnasium==0.29.1
@@ -15,17 +13,10 @@ minigrid==2.3.1
 
 # Data processing and computation
 numpy>=1.25.0
-matplotlib>=3.7.0
 
 # Image and video processing
 opencv-python>=4.8.0
 imageio>=2.31.0
 
-# System and utility dependencies
-pyvirtualdisplay>=3.0
+# Utility dependencies
 requests>=2.31.0
-
-# Additional dependencies that might be needed
-pillow>=9.0.0
-python-dateutil>=2.8.0
-six>=1.16.0
