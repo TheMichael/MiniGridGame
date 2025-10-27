@@ -1,4 +1,4 @@
-# AI Agent Prediction Game
+# Neural Navigator
 
 A full-stack web application where users compete by predicting AI agent performance in reinforcement learning navigation tasks. Watch pre-trained Deep Q-Learning agents solve MiniGrid mazes and earn points based on prediction accuracy.
 

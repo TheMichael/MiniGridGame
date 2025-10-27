@@ -19,17 +19,17 @@ def send_password_reset_email(user, token):
         msg = MIMEMultipart()
         msg['From'] = current_app.config['MAIL_USERNAME']
         msg['To'] = user.email
-        msg['Subject'] = "AI Agent Galaxy - Password Reset"
+        msg['Subject'] = "Neural Navigator - Password Reset"
 
         reset_link = f"http://localhost:5000/reset-password?token={token}"
         body = f"""
-        Greetings, Galaxy Commander {user.username}!
-        
-        You requested a password reset for your AI Agent Galaxy account.
-        
+        Hello {user.username},
+
+        You requested a password reset for your Neural Navigator account.
+
         Click the link below to reset your password:
         {reset_link}
-        
+
         This link will expire in 24 hours for security.
         """
         

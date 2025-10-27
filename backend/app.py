@@ -37,7 +37,7 @@ def create_app(config_class=Config):
     # Ensure required directories exist
     _ensure_directories(app)
     
-    app.logger.info("AI Agent Galaxy application initialized successfully")
+    app.logger.info("Neural Navigator application initialized successfully")
     return app
 
 
@@ -58,7 +58,7 @@ def main():
     app = create_app()
     
     # Print startup information (temporarily simplified)
-    print("AI Agent Galaxy - Refactored Backend Starting...")
+    print("Neural Navigator - Backend Starting...")
     print(f"Running on: http://{app.config['HOST']}:{app.config['PORT']}")
     print("All routes registered and ready!")
     
@@ -74,7 +74,7 @@ def main():
         app.logger.error(f"Server error: {e}")
         raise
     finally:
-        app.logger.info("Thanks for playing AI Agent Galaxy!")
+        app.logger.info("Thanks for playing Neural Navigator!")
 
 
 if __name__ == '__main__':
