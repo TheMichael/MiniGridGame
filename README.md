@@ -29,7 +29,35 @@ This project combines **reinforcement learning** with an interactive web game. P
 - pip package manager
 - 2GB+ free disk space (for PyTorch dependencies)
 
-### Installation
+### Easy Setup (Recommended)
+
+Run the automated startup script for your platform:
+
+#### Windows
+
+```bash
+git clone https://github.com/TheMichael/MiniGridGame.git
+cd MiniGridGame
+run.bat
+```
+
+#### Mac/Linux
+
+```bash
+git clone https://github.com/TheMichael/MiniGridGame.git
+cd MiniGridGame
+./run.sh
+```
+
+The scripts will automatically:
+- Create a virtual environment (if needed)
+- Activate the virtual environment
+- Install all dependencies
+- Start the application server
+
+### Manual Installation
+
+If you prefer to run commands individually:
 
 #### Windows
 
