@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - AI Agent Galaxy</title>
+    <title>Admin Panel - Neural Navigator</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
         
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            --surface-glass: rgba(255, 255, 255, 0.05);
-            --border-glass: rgba(255, 255, 255, 0.1);
+            --primary-color: #667eea;
+            --secondary-color: #f093fb;
+            --accent-color: #4facfe;
+            --dark-bg: #1a1a2e;
+            --surface-bg: rgba(255, 255, 255, 0.08);
+            --border-color: rgba(255, 255, 255, 0.15);
             --text-primary: #ffffff;
-            --text-secondary: #a0a8ff;
-            --text-accent: #00f5ff;
+            --text-secondary: #b0b8ff;
+            --text-accent: #4facfe;
             --success: #00ff7f;
             --warning: #ffd700;
             --error: #ff6b6b;
-            --shadow-glow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            --shadow-intense: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
 
         * {
@@ -32,37 +34,10 @@
 
         body {
             font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--dark-gradient);
+            background: var(--dark-bg);
             min-height: 100vh;
             color: var(--text-primary);
             line-height: 1.6;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.3), transparent 50%);
-            animation: float 20s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        @keyframes float {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0.7;
-            }
-            50% { 
-                transform: translateY(-20px) rotate(5deg);
-                opacity: 1;
-            }
         }
 
         .container {
@@ -74,13 +49,13 @@
         }
 
         .header {
-            background: var(--surface-glass);
+            background: var(--surface-bg);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 32px;
             margin-bottom: 32px;
-            box-shadow: var(--shadow-glow);
+            box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -197,19 +172,19 @@
         }
 
         .stat-card {
-            background: var(--surface-glass);
+            background: var(--surface-bg);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 24px;
             text-align: center;
-            box-shadow: var(--shadow-glow);
+            box-shadow: var(--shadow);
             transition: all 0.3s ease;
         }
 
         .stat-card:hover {
             transform: translateY(-4px);
-            box-shadow: var(--shadow-intense);
+            box-shadow: var(--shadow);
         }
 
         .stat-value {
@@ -228,12 +203,12 @@
         }
 
         .data-table {
-            background: var(--surface-glass);
+            background: var(--surface-bg);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 32px;
-            box-shadow: var(--shadow-glow);
+            box-shadow: var(--shadow);
             overflow: hidden;
         }
 
@@ -382,9 +357,9 @@
         }
 
         .modal-content {
-            background: var(--surface-glass);
+            background: var(--surface-bg);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 32px;
             max-width: 500px;
@@ -535,12 +510,12 @@
         <div class="header">
             <div>
                 <h1>Admin Control Center</h1>
-                <p>Manage your AI Agent Galaxy empire</p>
+                <p>Manage your Neural Navigator platform</p>
             </div>
             <div class="header-controls">
                 <span id="adminName">Loading...</span>
-                <a href="/" class="btn btn-secondary">🌌 Back to Galaxy</a>
-                <button class="btn btn-danger" onclick="logout()">🚪 Logout</button>
+                <a href="/" class="btn btn-secondary">Back to Game</a>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
             </div>
         </div>
 

@@ -36,10 +36,10 @@ def reset_password_page():
     html = f"""
     <!DOCTYPE html>
     <html>
-    <head><title>Reset Password - AI Agent Galaxy</title></head>
+    <head><title>Reset Password - Neural Navigator</title></head>
     <body>
-        <h1>🔐 Reset Password</h1>
-        {"<p>Invalid or expired token</p>" if not valid_token else 
+        <h1>Reset Password</h1>
+        {"<p>Invalid or expired token</p>" if not valid_token else
          f'<form><input type="password" placeholder="New password" id="pwd"><button onclick="resetPwd()">Reset</button></form>'}
         <script>
         function resetPwd() {{
