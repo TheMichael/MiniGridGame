@@ -9,7 +9,7 @@ def view_database():
     conn = sqlite3.connect('minigrid_game.db')
     cursor = conn.cursor()
     
-    print("AI AGENT GALAXY - DATABASE VIEWER")
+    print("NEURAL NAVIGATOR - DATABASE VIEWER")
     print("=" * 50)
 
     # Show all users
@@ -36,22 +36,22 @@ def view_database():
     print(f"\nRECENT GAMES (Last 10):")
     print("-" * 40)
     cursor.execute("""
-        SELECT u.username, g.agent_type, g.prediction, g.actual_steps, 
-               g.succeeded, g.score, g.timestamp
+        SELECT u.username, g.agent_type, g.prediction, g.actual_steps,
+               g.score, g.timestamp
         FROM game_result g
         JOIN user u ON g.user_id = u.id
         ORDER BY g.timestamp DESC
         LIMIT 10
     """)
-    
+
     games = cursor.fetchall()
     if games:
         print(f"{'Player':<12} {'Agent':<6} {'Pred':<6} {'Actual':<8} {'Won':<5} {'Score':<7} {'When':<12}")
         print("-" * 65)
         for game in games:
-            username, agent, pred, actual, won, score, timestamp = game
+            username, agent, pred, actual, score, timestamp = game
             pred_str = "FAIL" if pred == 0 else str(pred)
-            won_str = "YES" if won else "NO"
+            won_str = "YES" if actual < 120 else "NO"  # Calculate success based on steps
             time_str = timestamp[5:16] if timestamp else "Unknown"  # MM-DD HH:MM
             print(f"{username:<12} {agent.upper():<6} {pred_str:<6} {actual:<8} {won_str:<5} {score:<7} {time_str:<12}")
     else:
@@ -67,7 +67,7 @@ def view_database():
     cursor.execute("SELECT COUNT(*) FROM game_result")
     total_games = cursor.fetchone()[0]
     
-    cursor.execute("SELECT COUNT(*) FROM game_result WHERE succeeded = 1")
+    cursor.execute("SELECT COUNT(*) FROM game_result WHERE actual_steps < 120")
     successful_games = cursor.fetchone()[0]
     
     cursor.execute("SELECT SUM(total_score) FROM user")
@@ -117,7 +117,7 @@ def search_user(username):
     
     # Show user's game history
     cursor.execute("""
-        SELECT agent_type, prediction, actual_steps, succeeded, score, timestamp
+        SELECT agent_type, prediction, actual_steps, score, timestamp
         FROM game_result
         WHERE user_id = ?
         ORDER BY timestamp DESC
@@ -131,8 +131,9 @@ def search_user(username):
         print(f"{'Agent':<6} {'Prediction':<12} {'Actual':<8} {'AI Result':<10} {'Pred Result':<12} {'Score':<7} {'Date':<12}")
         print("-" * 70)
         for game in games:
-            agent, pred, actual, ai_succeeded, score, timestamp = game
-            
+            agent, pred, actual, score, timestamp = game
+            ai_succeeded = actual < 120  # Calculate success based on steps
+
             # Determine prediction accuracy
             if pred == 0:  # Predicted failure
                 pred_str = "Will Fail"
@@ -148,7 +149,7 @@ def search_user(username):
                     pred_correct = "Decent"
                 else:
                     pred_correct = "Off"
-            
+
             ai_result = "Completed" if ai_succeeded else "Failed"
             date_str = timestamp[5:16] if timestamp else "Unknown"
             
