@@ -2,48 +2,7 @@
 
 This guide shows you how to deploy Neural Navigator online for free.
 
-## Option 1: Render (Recommended - Easiest)
-
-### Steps:
-
-1. **Push your code to GitHub** (you've already done this!)
-
-2. **Sign up for Render**
-   - Go to https://render.com
-   - Sign up with your GitHub account
-
-3. **Create New Web Service**
-   - Click "New +" → "Web Service"
-   - Connect your GitHub repository: `TheMichael/MiniGridGame`
-   - Choose the branch (e.g., `main`)
-
-4. **Configure Service**
-   - **Name**: `neural-navigator` (or whatever you want)
-   - **Environment**: `Python 3`
-   - **Build Command**: `pip install -r backend/requirements.txt`
-   - **Start Command**: `cd backend && python app.py`
-
-5. **Add Environment Variables**
-   - Click "Advanced" → "Add Environment Variable"
-   - Add these:
-     - `FLASK_ENV` = `production`
-     - `FLASK_HOST` = `0.0.0.0`
-     - `FLASK_PORT` = `10000`
-     - `SECRET_KEY` = (click "Generate" for random value)
-
-6. **Deploy!**
-   - Click "Create Web Service"
-   - Wait 5-10 minutes for deployment
-   - Your app will be live at: `https://neural-navigator.onrender.com`
-
-### Important Notes:
-- **Free tier limitation**: App sleeps after 15 min of inactivity (takes ~30s to wake up on first request)
-- **Database**: SQLite data persists between deploys
-- **GIF storage**: GIFs will be stored on the server
-
----
-
-## Option 2: PythonAnywhere
+## Option 1: PythonAnywhere (Recommended)
 
 ### Steps:
 
@@ -100,7 +59,7 @@ This guide shows you how to deploy Neural Navigator online for free.
 
 ---
 
-## Option 3: Fly.io (More Advanced)
+## Option 2: Fly.io (More Advanced)
 
 ### Requires Docker but offers good free tier:
 
@@ -121,7 +80,7 @@ After deploying, update `backend/app.py` to allow your production URL:
 ```python
 CORS(app,
      supports_credentials=True,
-     origins=['http://localhost:5000', 'https://your-app.onrender.com'],
+     origins=['http://localhost:5000', 'https://your-deployed-app.com'],
      allow_headers=['Content-Type', 'Authorization'],
      methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 ```
@@ -130,8 +89,8 @@ CORS(app,
 Visit your deployed app and register - the first user automatically becomes admin!
 
 ### Monitor
-- **Render**: Check logs in Render dashboard
-- **PythonAnywhere**: Check error log and server log
+- **PythonAnywhere**: Check error log and server log in the dashboard
+- **Fly.io**: Use `flyctl logs` to view application logs
 
 ---
 
@@ -139,8 +98,7 @@ Visit your deployed app and register - the first user automatically becomes admi
 
 | Service | Free Tier | Limitations | Best For |
 |---------|-----------|-------------|----------|
-| **Render** | ✅ 750 hrs/mo | Sleeps after 15 min | Quick deployment |
-| **PythonAnywhere** | ✅ 1 web app | CPU limits, always on | No sleep needed |
+| **PythonAnywhere** | ✅ 1 web app | CPU limits, always on | Easiest setup, no sleep |
 | **Fly.io** | ✅ 3 VMs | Requires Docker | Advanced users |
 
 ## Need Help?
