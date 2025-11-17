@@ -1137,6 +1137,9 @@
         let currentUser = null;
         let selectedAgent = null;
         let currentStepsLog = [];
+        const API_BASE = window.location.hostname === 'localhost' 
+            ? 'http://localhost:5000'
+            : window.location.origin;
 
         // Check if user is already logged in on page load
         window.addEventListener('load', function() {
@@ -1192,7 +1195,7 @@
 
         async function checkAuthStatus() {
             try {
-                const response = await fetch('http://localhost:5000/api/me', {
+                const response = await fetch(`${API_BASE}/api/me`, {
                     credentials: 'include'
                 });
                 
@@ -1236,7 +1239,7 @@
             const identifier = document.getElementById('forgotIdentifier').value;
             
             try {
-                const response = await fetch('http://localhost:5000/api/forgot-password', {
+                const response = await fetch(`${API_BASE}/api/forgot-password`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1266,7 +1269,7 @@
             const password = document.getElementById('loginPassword').value;
             
             try {
-                const response = await fetch('http://localhost:5000/api/login', {
+                const response = await fetch(`${API_BASE}/api/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1299,7 +1302,7 @@
             const password = document.getElementById('registerPassword').value;
             
             try {
-                const response = await fetch('http://localhost:5000/api/register', {
+                const response = await fetch(`${API_BASE}/api/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1325,7 +1328,7 @@
 
         async function logout() {
             try {
-                await fetch('http://localhost:5000/api/logout', {
+                await fetch(`${API_BASE}/api/logout`, {
                     method: 'POST',
                     credentials: 'include'
                 });
@@ -1379,7 +1382,7 @@
 
         // Run validation (connects to backend)
         async function runValidation(agentType, prediction) {
-            const response = await fetch('http://localhost:5000/api/run-validation', {
+            const response = await fetch(`${API_BASE}/api/run-validation`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
