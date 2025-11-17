@@ -19,7 +19,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')
     DEBUG = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
     HOST = os.environ.get('FLASK_HOST', '0.0.0.0')
-    PORT = int(os.environ.get('FLASK_PORT', 5000))
+    PORT = int(os.environ.get('PORT', 5000))
     
     # Database configuration
     DATABASE_PATH = BACKEND_DIR / "minigrid_game.db"
