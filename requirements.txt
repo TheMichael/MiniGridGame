@@ -20,6 +20,3 @@ imageio>=2.31.0
 
 # Utility dependencies
 requests>=2.31.0
-
-# Production server (optional, for gunicorn deployments)
-gunicorn>=21.0.0
