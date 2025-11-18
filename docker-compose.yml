@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:8080"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_HOST=0.0.0.0
+      - PORT=8080
+      - SECRET_KEY=dev-secret-key-change-in-production
+    volumes:
+      # Mount backend for live code updates (optional)
+      - ./backend:/app/backend
+      # Persist database and videos
+      - ./backend/minigrid_game.db:/app/backend/minigrid_game.db
+      - ./backend/static:/app/backend/static
+    restart: unless-stopped
