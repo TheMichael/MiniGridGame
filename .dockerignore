@@ -1,0 +1,59 @@
+# Git files
+.git
+.gitignore
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+.venv/
+.env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Database files (they'll be created in the container)
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated content (will be created at runtime)
+backend/static/videos/
+static/videos/
+
+# Logs
+*.log
+logs/
+
+# Documentation (optional - include if you want smaller images)
+README.md
+DEPLOYMENT.md
+
+# Scripts for local development only
+run.sh
+run.bat
+
+# Test files
+tests/
+test_*.py
+*_test.py
+pytest.ini
+.pytest_cache/
+
+# Coverage and linting
+.coverage
+.coveragerc
+htmlcov/
+.mypy_cache/
+.ruff_cache/
