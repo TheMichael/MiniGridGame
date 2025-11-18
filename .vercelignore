@@ -1,0 +1,46 @@
+# Vercel ignore file - exclude these from deployment
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated videos (too large for serverless)
+static/videos/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Git
+.git/
+.gitignore
+
+# Documentation (optional - include if you want)
+README.md
+DEPLOYMENT.md
+
+# Test files
+tests/
+test_*.py
+*_test.py

@@ -72,6 +72,54 @@ Free tier: 3 shared VMs, 3GB storage
 
 ---
 
+## Option 3: Vercel (Experimental - Serverless)
+
+### ⚠️ Important Limitations
+
+Vercel uses **serverless functions** which have constraints for this app:
+- **PyTorch size** (~800MB) may exceed serverless limits - deployment might fail
+- **Ephemeral filesystem** - generated GIFs and SQLite data won't persist between requests
+- **Cold starts** - first request after inactivity will be slow
+- **Not recommended** for production use with this app's architecture
+
+### Steps (if you want to try anyway):
+
+1. **Sign up for Vercel**
+   - Go to https://vercel.com
+   - Sign up with your GitHub account
+
+2. **Install Vercel CLI** (optional)
+   ```bash
+   npm install -g vercel
+   ```
+
+3. **Deploy from GitHub**
+   - Click "New Project" in Vercel dashboard
+   - Import your GitHub repository: `TheMichael/MiniGridGame`
+   - Vercel will auto-detect the `vercel.json` configuration
+   - Click "Deploy"
+
+4. **Or Deploy via CLI**
+   ```bash
+   cd MiniGridGame
+   vercel
+   ```
+
+5. **Configure Environment Variables** (in Vercel dashboard)
+   - `FLASK_ENV` = `production`
+   - `SECRET_KEY` = (generate a random secret key)
+
+### Expected Issues:
+- ❌ Deployment may fail due to PyTorch package size
+- ❌ SQLite database will reset on each deployment
+- ❌ Generated GIFs will be lost between function invocations
+- ❌ Game functionality may not work as expected
+
+### Recommendation:
+**Use PythonAnywhere or Fly.io instead** - they're better suited for this Flask + PyTorch application.
+
+---
+
 ## After Deployment
 
 ### Update CORS Settings
@@ -98,8 +146,9 @@ Visit your deployed app and register - the first user automatically becomes admi
 
 | Service | Free Tier | Limitations | Best For |
 |---------|-----------|-------------|----------|
-| **PythonAnywhere** | ✅ 1 web app | CPU limits, always on | Easiest setup, no sleep |
+| **PythonAnywhere** | ✅ 1 web app | CPU limits, always on | **Recommended** - Easiest setup |
 | **Fly.io** | ✅ 3 VMs | Requires Docker | Advanced users |
+| **Vercel** | ✅ Serverless | PyTorch too large, no persistence | ❌ Not recommended |
 
 ## Need Help?
 
