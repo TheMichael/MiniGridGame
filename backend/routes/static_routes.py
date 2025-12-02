@@ -17,6 +17,16 @@ def index():
     return send_from_directory(current_app.config['FRONTEND_FOLDER'], 'index.html')
 
 
+@static_bp.route('/favicon.ico')
+def favicon():
+    """Serve robot emoji favicon as SVG."""
+    svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+        <text y="80" font-size="80">🤖</text>
+    </svg>"""
+    from flask import Response
+    return Response(svg, mimetype='image/svg+xml')
+
+
 @static_bp.route('/admin')
 def admin_dashboard():
     """Serve admin dashboard page."""
