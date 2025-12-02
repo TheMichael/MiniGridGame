@@ -16,28 +16,39 @@ class Config:
     PROJECT_ROOT = BACKEND_DIR.parent
     
     # Flask settings
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-only-for-local-development')
     DEBUG = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
     HOST = os.environ.get('FLASK_HOST', '0.0.0.0')
     PORT = int(os.environ.get('PORT', 5000))
-    
+
+    # Base URL configuration (for email links, absolute URLs, etc.)
+    # In production, set BASE_URL env var (e.g., https://your-app.onrender.com)
+    BASE_URL = os.environ.get('BASE_URL', f'http://{HOST}:{PORT}')
+
+    # CORS configuration - additional allowed origins (comma-separated)
+    # In production, set ALLOWED_ORIGINS env var (e.g., https://your-app.onrender.com)
+    ALLOWED_ORIGINS = os.environ.get('ALLOWED_ORIGINS', '').split(',')
+
+    # File storage paths
+    # IMPORTANT: static/ folder is mounted as persistent disk in production
+    STATIC_FOLDER = BACKEND_DIR / 'static'
+    VIDEO_FOLDER = STATIC_FOLDER / 'videos'
+    MODEL_FOLDER = PROJECT_ROOT / 'models'
+    FRONTEND_FOLDER = PROJECT_ROOT / 'frontend'
+
     # Database configuration
-    DATABASE_PATH = BACKEND_DIR / "minigrid_game.db"
+    # CRITICAL: Database is stored in static/ folder so it persists with Render disk mount
+    # This ensures user data survives deployments and server restarts
+    DATABASE_PATH = STATIC_FOLDER / "minigrid_game.db"
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATABASE_PATH}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    
+
     # Email configuration
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', 587))
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    
-    # File storage paths
-    STATIC_FOLDER = PROJECT_ROOT / 'static'
-    VIDEO_FOLDER = STATIC_FOLDER / 'videos'
-    MODEL_FOLDER = PROJECT_ROOT / 'models'
-    FRONTEND_FOLDER = PROJECT_ROOT / 'frontend'
     
     # Game settings
     MAX_STEPS = 120
@@ -67,6 +78,21 @@ class ProductionConfig(Config):
     DEBUG = False
     SESSION_COOKIE_SECURE = True  # Always secure in production
     SESSION_COOKIE_SAMESITE = 'Strict'
+
+    def __init__(self):
+        super().__init__()
+        # Validate SECRET_KEY is set in production
+        if not os.environ.get('SECRET_KEY'):
+            raise ValueError(
+                "SECRET_KEY environment variable must be set in production!\n"
+                "Generate one with: python3 -c \"import secrets; print(secrets.token_hex(32))\""
+            )
+        # Warn if using default dev key
+        if self.SECRET_KEY == 'dev-secret-key-only-for-local-development':
+            raise ValueError(
+                "Cannot use default SECRET_KEY in production!\n"
+                "Set SECRET_KEY environment variable."
+            )
 
 
 # Configuration mapping

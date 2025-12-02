@@ -21,7 +21,9 @@ def send_password_reset_email(user, token):
         msg['To'] = user.email
         msg['Subject'] = "Neural Navigator - Password Reset"
 
-        reset_link = f"http://localhost:5000/reset-password?token={token}"
+        # Use BASE_URL from config (works in both dev and production)
+        base_url = current_app.config['BASE_URL']
+        reset_link = f"{base_url}/reset-password?token={token}"
         body = f"""
         Hello {user.username},
 
