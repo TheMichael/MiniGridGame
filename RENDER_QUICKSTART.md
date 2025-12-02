@@ -32,7 +32,7 @@
 - **Instance Type:** **Standard ($25/mo)** ⚠️ Required for PyTorch!
 
 ### Environment Variables:
-Click **"Advanced"** and add:
+Click **"Advanced"** and add these **required** variables:
 
 | Key | Value |
 |-----|-------|
@@ -40,6 +40,13 @@ Click **"Advanced"** and add:
 | `FLASK_ENV` | `production` |
 | `FLASK_HOST` | `0.0.0.0` |
 | `PORT` | `8080` |
+
+**Important:** After first deployment, add these **recommended** variables (you'll know your URL after Step 4):
+
+| Key | Value |
+|-----|-------|
+| `BASE_URL` | `https://neural-navigator.onrender.com` (use your actual URL) |
+| `ALLOWED_ORIGINS` | `https://neural-navigator.onrender.com` (use your actual URL) |
 
 ### Persistent Disk (IMPORTANT!):
 Scroll to **"Disk"** section:
@@ -61,38 +68,35 @@ Your app will be at: `https://neural-navigator.onrender.com`
 
 ---
 
-## Step 5: Update CORS (2 minutes)
+## Step 5: Add Production URLs (2 minutes)
 
-1. Open `backend/app.py` in your code editor
-2. Find the CORS section (around line 24)
-3. Add your Render URL:
+After your first deployment completes, you'll have your production URL. Now add it to environment variables:
 
-```python
-CORS(app,
-     supports_credentials=True,
-     origins=[
-         'http://localhost:5000',
-         'http://127.0.0.1:5000',
-         'https://neural-navigator.onrender.com'  # ← Add this
-     ],
-     allow_headers=['Content-Type', 'Authorization'],
-     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+1. Go to your Render service dashboard
+2. Click **"Environment"** tab
+3. Add these two variables:
+
+```
+BASE_URL=https://neural-navigator.onrender.com
+ALLOWED_ORIGINS=https://neural-navigator.onrender.com
 ```
 
-4. Commit and push to GitHub:
-```bash
-git add backend/app.py
-git commit -m "Add Render CORS origin"
-git push
-```
+(Replace with your actual Render URL)
 
-5. Render will auto-deploy (watch in dashboard)
+4. Click **"Save Changes"**
+5. Render will auto-redeploy (takes 2-3 minutes)
+
+**Why these are needed:**
+- `BASE_URL`: For password reset emails and redirects
+- `ALLOWED_ORIGINS`: For CORS (lets your frontend make API calls)
 
 ---
 
 ## Done! 🎉
 
 Visit your app at: `https://neural-navigator.onrender.com`
+
+**First visit:** Register an account - you'll automatically become admin!
 
 ---
 

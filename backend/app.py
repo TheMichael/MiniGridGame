@@ -19,11 +19,21 @@ def create_app(config_class=Config):
     
     # Setup logging first
     setup_logging(app)
-    
-    # FIXED: Proper CORS configuration for session cookies
-    CORS(app, 
+
+    # CORS configuration for session cookies
+    # Default origins for local development
+    allowed_origins = ['http://localhost:5000', 'http://127.0.0.1:5000']
+
+    # Add production origins from config (set via ALLOWED_ORIGINS env var)
+    # Filter out empty strings
+    additional_origins = [origin.strip() for origin in app.config['ALLOWED_ORIGINS'] if origin.strip()]
+    allowed_origins.extend(additional_origins)
+
+    app.logger.info(f"CORS allowed origins: {allowed_origins}")
+
+    CORS(app,
          supports_credentials=True,
-         origins=['http://localhost:5000', 'http://127.0.0.1:5000'],
+         origins=allowed_origins,
          allow_headers=['Content-Type', 'Authorization'],
          methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
     
