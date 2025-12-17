@@ -4,13 +4,14 @@ AI Agent Galaxy - Main Application Entry Point
 Refactored from monolithic structure to clean modular architecture.
 """
 import os
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
 from config import Config
 from database import init_db
 from utils.logging_config import setup_logging
+from services.auth_service import get_current_user
 
 
 def create_app(config_class=Config):
@@ -61,17 +62,33 @@ def create_app(config_class=Config):
     # Register Swagger UI blueprint
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
-    # Serve OpenAPI spec
+    # Add admin-only access control for Swagger UI
+    @swaggerui_blueprint.before_request
+    def require_admin_for_swagger():
+        """Require admin authentication to access Swagger UI."""
+        user = get_current_user()
+        if not user:
+            return jsonify({'error': 'Authentication required. Please log in to access API documentation.'}), 401
+        if not user.is_admin:
+            return jsonify({'error': 'Admin access required. Only administrators can access API documentation.'}), 403
+
+    # Serve OpenAPI spec (also protected - admin only)
     @app.route('/api/openapi.yaml')
     def openapi_spec():
-        """Serve the OpenAPI specification file."""
+        """Serve the OpenAPI specification file (admin only)."""
+        user = get_current_user()
+        if not user:
+            return jsonify({'error': 'Authentication required. Please log in to access API documentation.'}), 401
+        if not user.is_admin:
+            return jsonify({'error': 'Admin access required. Only administrators can access API documentation.'}), 403
+
         return send_from_directory(
             os.path.dirname(os.path.abspath(__file__)),
             'openapi.yaml',
             mimetype='text/yaml'
         )
 
-    app.logger.info("Swagger API documentation initialized at /api/docs")
+    app.logger.info("Swagger API documentation initialized at /api/docs (admin only)")
 
     # Register routes
     from routes import register_routes
