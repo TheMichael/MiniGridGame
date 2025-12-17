@@ -1,0 +1,845 @@
+openapi: 3.0.0
+info:
+  title: Neural Navigator API
+  description: |
+    REST API for Neural Navigator - An AI agent prediction game where users compete by
+    predicting reinforcement learning agent performance in MiniGrid navigation tasks.
+
+    ## Authentication
+    This API uses session-based authentication with secure cookies. After logging in,
+    the session cookie is automatically included in subsequent requests.
+
+    ## How the Game Works
+    1. Choose an AI agent (DDQN or D3QN)
+    2. Predict the number of steps it will take (1-120) or predict it will fail
+    3. Watch the AI navigate a 6-room MiniGrid maze
+    4. Earn points based on prediction accuracy
+
+    ## Scoring
+    - Perfect (0 steps off): 100 points
+    - Close (1-10 steps off): 50 points
+    - Far (11-20 steps off): 25 points
+    - Way Off (21+ steps off): 0 points
+    - Correct failure prediction: 50 points
+  version: 1.0.0
+  contact:
+    name: Neural Navigator
+    url: https://github.com/TheMichael/MiniGridGame
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:5000
+    description: Local development server
+  - url: http://localhost:5000/api
+    description: API base path
+
+tags:
+  - name: Authentication
+    description: User authentication and session management endpoints
+  - name: Game
+    description: AI agent game execution and validation endpoints
+  - name: Admin
+    description: Administrative endpoints (requires admin privileges)
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+      description: Session-based authentication using secure cookies
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: player1
+        email:
+          type: string
+          format: email
+          example: player1@example.com
+        total_score:
+          type: integer
+          example: 500
+        games_played:
+          type: integer
+          example: 10
+        best_score:
+          type: integer
+          example: 100
+        is_admin:
+          type: boolean
+          example: false
+        is_active:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+        last_login:
+          type: string
+          format: date-time
+
+    GameResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        username:
+          type: string
+        agent_type:
+          type: string
+          enum: [DDQN, D3QN]
+        prediction:
+          type: integer
+          example: 50
+        actual_steps:
+          type: integer
+          example: 48
+        score:
+          type: integer
+          example: 100
+        succeeded:
+          type: boolean
+        gif_filename:
+          type: string
+        gif_url:
+          type: string
+          example: /video/run_abc123.gif
+        timestamp:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: An error occurred
+
+    Success:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Operation successful
+
+paths:
+  /api/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Create a new user account. The first registered user automatically becomes an admin.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - email
+                - password
+              properties:
+                username:
+                  type: string
+                  example: player1
+                  minLength: 3
+                  maxLength: 50
+                email:
+                  type: string
+                  format: email
+                  example: player1@example.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: securepassword123
+      responses:
+        '200':
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticate a user and create a session cookie.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: player1
+                password:
+                  type: string
+                  format: password
+                  example: securepassword123
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Missing credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Invalid credentials or inactive account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/logout:
+    post:
+      tags:
+        - Authentication
+      summary: User logout
+      description: Clear the user's session cookie and log them out.
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+
+  /api/me:
+    get:
+      tags:
+        - Authentication
+      summary: Get current user
+      description: Retrieve information about the currently authenticated user.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: User information retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      username:
+                        type: string
+                        example: player1
+                      total_score:
+                        type: integer
+                        example: 500
+                      games_played:
+                        type: integer
+                        example: 10
+                      best_score:
+                        type: integer
+                        example: 100
+                      created_at:
+                        type: string
+                        format: date-time
+                      is_admin:
+                        type: boolean
+                        example: false
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/forgot-password:
+    post:
+      tags:
+        - Authentication
+      summary: Request password reset
+      description: Request a password reset link to be sent via email. For security, always returns success even if the user doesn't exist.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - identifier
+              properties:
+                identifier:
+                  type: string
+                  example: player1@example.com
+                  description: User's email address or username
+      responses:
+        '200':
+          description: Password reset request processed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: If the account exists, a reset link has been sent to your email.
+        '400':
+          description: Missing identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/reset-password:
+    post:
+      tags:
+        - Authentication
+      summary: Reset password
+      description: Reset a user's password using a valid reset token received via email.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+                - password
+              properties:
+                token:
+                  type: string
+                  example: abc123def456ghi789
+                  description: Password reset token from email
+                password:
+                  type: string
+                  format: password
+                  minLength: 6
+                  example: newsecurepassword123
+                  description: New password (minimum 6 characters)
+      responses:
+        '200':
+          description: Password reset successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Password reset successfully!
+        '400':
+          description: Invalid input or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/run-validation:
+    post:
+      tags:
+        - Game
+      summary: Run AI agent game
+      description: |
+        Execute an AI agent (DDQN or D3QN) to navigate a MiniGrid maze and compare with user prediction.
+
+        The agent attempts to navigate a 6-room maze environment. Players predict the number of steps
+        the agent will take (1-120) or predict it will fail.
+
+        **Scoring:**
+        - Perfect (0 steps off): 100 points
+        - Close (1-10 steps off): 50 points
+        - Far (11-20 steps off): 25 points
+        - Way Off (21+ steps off): 0 points
+        - Correct failure prediction: 50 points
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - agent_type
+                - prediction
+              properties:
+                agent_type:
+                  type: string
+                  enum: [ddqn, d3qn]
+                  example: ddqn
+                  description: |
+                    AI agent type to use:
+                    - ddqn: Double Deep Q-Network (faster, more aggressive)
+                    - d3qn: Dueling Double Deep Q-Network (more strategic)
+                prediction:
+                  type: string
+                  example: "50"
+                  description: Predicted number of steps (1-120) or "fail" if expecting the agent to fail
+      responses:
+        '200':
+          description: Game executed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  steps:
+                    type: integer
+                    example: 48
+                    description: Actual number of steps taken by the agent
+                  succeeded:
+                    type: boolean
+                    example: true
+                    description: Whether the agent reached the goal
+                  gif_url:
+                    type: string
+                    example: /video/run_abc123.gif
+                    description: URL to the GIF recording of the episode
+                  agent_type:
+                    type: string
+                    example: ddqn
+                  score:
+                    type: integer
+                    example: 100
+                    description: Points earned based on prediction accuracy
+                  prediction:
+                    type: string
+                    example: "50"
+                    description: The user's prediction
+                  user_stats:
+                    type: object
+                    properties:
+                      total_score:
+                        type: integer
+                        example: 600
+                      games_played:
+                        type: integer
+                        example: 11
+                      best_score:
+                        type: integer
+                        example: 100
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/cleanup-old-videos:
+    post:
+      tags:
+        - Game
+      summary: Clean up old videos
+      description: Remove old MP4 video files from the server to free up disk space. GIF files are preserved.
+      responses:
+        '200':
+          description: Cleanup completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  removed_files:
+                    type: integer
+                    example: 5
+                    description: Number of files removed
+                  message:
+                    type: string
+                    example: Cleaned up 5 old MP4 files
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/admin/stats:
+    get:
+      tags:
+        - Admin
+      summary: Get dashboard statistics
+      description: Retrieve comprehensive statistics for the admin dashboard including user counts, game counts, and top players.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  overview:
+                    type: object
+                    properties:
+                      total_users:
+                        type: integer
+                        example: 100
+                      active_users:
+                        type: integer
+                        example: 95
+                      total_games:
+                        type: integer
+                        example: 1000
+                      total_score:
+                        type: integer
+                        example: 50000
+                      recent_games:
+                        type: integer
+                        example: 150
+                        description: Games played in the last 7 days
+                      recent_users:
+                        type: integer
+                        example: 10
+                        description: Users registered in the last 7 days
+                  agent_stats:
+                    type: object
+                    properties:
+                      ddqn_games:
+                        type: integer
+                        example: 600
+                      d3qn_games:
+                        type: integer
+                        example: 400
+                  top_players:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Admin access required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Get all users
+      description: Retrieve a paginated list of all users with optional search filtering.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 50
+          description: Number of users per page
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search query to filter users by username or email
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        example: 1
+                      pages:
+                        type: integer
+                        example: 5
+                      per_page:
+                        type: integer
+                        example: 50
+                      total:
+                        type: integer
+                        example: 245
+                      has_next:
+                        type: boolean
+                        example: true
+                      has_prev:
+                        type: boolean
+                        example: false
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Admin access required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/admin/users/{user_id}:
+    put:
+      tags:
+        - Admin
+      summary: Update user
+      description: Update a user's admin status or active status. Cannot deactivate yourself or remove the last admin.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_active:
+                  type: boolean
+                  example: true
+                  description: Whether the user account is active
+                is_admin:
+                  type: boolean
+                  example: false
+                  description: Whether the user has admin privileges
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: User player1 updated successfully
+        '400':
+          description: Invalid operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Admin access required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/admin/games:
+    get:
+      tags:
+        - Admin
+      summary: Get all games
+      description: Retrieve a paginated list of all game results across all users.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 50
+          description: Number of games per page
+      responses:
+        '200':
+          description: Games retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  games:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GameResult'
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        example: 1
+                      pages:
+                        type: integer
+                        example: 20
+                      per_page:
+                        type: integer
+                        example: 50
+                      total:
+                        type: integer
+                        example: 1000
+                      has_next:
+                        type: boolean
+                        example: true
+                      has_prev:
+                        type: boolean
+                        example: false
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Admin access required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

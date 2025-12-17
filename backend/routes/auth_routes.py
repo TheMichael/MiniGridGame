@@ -17,7 +17,62 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    """Register a new user account."""
+    """Register a new user account.
+    ---
+    tags:
+      - Authentication
+    summary: Register a new user
+    description: Create a new user account. The first registered user automatically becomes an admin.
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        required: true
+        description: User registration data
+        schema:
+          type: object
+          required:
+            - username
+            - email
+            - password
+          properties:
+            username:
+              type: string
+              example: player1
+              minLength: 3
+              maxLength: 50
+            email:
+              type: string
+              format: email
+              example: player1@example.com
+            password:
+              type: string
+              format: password
+              minLength: 6
+              example: securepassword123
+    responses:
+      200:
+        description: Registration successful
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              example: true
+            user:
+              $ref: '#/definitions/User'
+      400:
+        description: Invalid input data
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Server error
+        schema:
+          $ref: '#/definitions/Error'
+    """
     try:
         data = request.get_json()
         username = data.get('username', '').strip()
@@ -58,7 +113,58 @@ def register():
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    """Authenticate user and create session."""
+    """Authenticate user and create session.
+    ---
+    tags:
+      - Authentication
+    summary: User login
+    description: Authenticate a user and create a session cookie.
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        required: true
+        description: Login credentials
+        schema:
+          type: object
+          required:
+            - username
+            - password
+          properties:
+            username:
+              type: string
+              example: player1
+            password:
+              type: string
+              format: password
+              example: securepassword123
+    responses:
+      200:
+        description: Login successful
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              example: true
+            user:
+              $ref: '#/definitions/User'
+      400:
+        description: Missing credentials
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Invalid credentials or inactive account
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Server error
+        schema:
+          $ref: '#/definitions/Error'
+    """
     try:
         data = request.get_json()
         username = data.get('username', '').strip()
@@ -89,14 +195,75 @@ def login():
 
 @auth_bp.route('/logout', methods=['POST'])
 def logout():
-    """Clear user session and logout."""
+    """Clear user session and logout.
+    ---
+    tags:
+      - Authentication
+    summary: User logout
+    description: Clear the user's session cookie and log them out.
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Logout successful
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              example: true
+    """
     logout_user()
     return jsonify({'success': True})
 
 
 @auth_bp.route('/me', methods=['GET'])
 def get_current_user_info():
-    """Get current user information."""
+    """Get current user information.
+    ---
+    tags:
+      - Authentication
+    summary: Get current user
+    description: Retrieve information about the currently authenticated user.
+    produces:
+      - application/json
+    security:
+      - SessionAuth: []
+    responses:
+      200:
+        description: User information retrieved successfully
+        schema:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                username:
+                  type: string
+                  example: player1
+                total_score:
+                  type: integer
+                  example: 500
+                games_played:
+                  type: integer
+                  example: 10
+                best_score:
+                  type: integer
+                  example: 100
+                created_at:
+                  type: string
+                  format: date-time
+                is_admin:
+                  type: boolean
+                  example: false
+      401:
+        description: Not authenticated
+        schema:
+          $ref: '#/definitions/Error'
+    """
     user = get_current_user()
     if not user:
         return jsonify({'error': 'Not logged in'}), 401
@@ -116,7 +283,51 @@ def get_current_user_info():
 
 @auth_bp.route('/forgot-password', methods=['POST'])
 def forgot_password():
-    """Request password reset link."""
+    """Request password reset link.
+    ---
+    tags:
+      - Authentication
+    summary: Request password reset
+    description: Request a password reset link to be sent via email. For security, always returns success even if the user doesn't exist.
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        required: true
+        description: Email or username for password reset
+        schema:
+          type: object
+          required:
+            - identifier
+          properties:
+            identifier:
+              type: string
+              example: player1@example.com
+              description: User's email address or username
+    responses:
+      200:
+        description: Password reset request processed (always returns success for security)
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              example: true
+            message:
+              type: string
+              example: If the account exists, a reset link has been sent to your email.
+      400:
+        description: Missing identifier
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Server error
+        schema:
+          $ref: '#/definitions/Error'
+    """
     try:
         data = request.get_json()
         email_or_username = data.get('identifier', '').strip()
@@ -155,7 +366,58 @@ def forgot_password():
 
 @auth_bp.route('/reset-password', methods=['POST'])
 def reset_password():
-    """Reset password using token."""
+    """Reset password using token.
+    ---
+    tags:
+      - Authentication
+    summary: Reset password
+    description: Reset a user's password using a valid reset token received via email.
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        required: true
+        description: Reset token and new password
+        schema:
+          type: object
+          required:
+            - token
+            - password
+          properties:
+            token:
+              type: string
+              example: abc123def456ghi789
+              description: Password reset token from email
+            password:
+              type: string
+              format: password
+              minLength: 6
+              example: newsecurepassword123
+              description: New password (minimum 6 characters)
+    responses:
+      200:
+        description: Password reset successful
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              example: true
+            message:
+              type: string
+              example: Password reset successfully!
+      400:
+        description: Invalid input or expired token
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Server error
+        schema:
+          $ref: '#/definitions/Error'
+    """
     try:
         data = request.get_json()
         token = data.get('token', '').strip()
