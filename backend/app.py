@@ -63,14 +63,15 @@ def create_app(config_class=Config):
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
     # Add admin-only access control for Swagger UI
-    @swaggerui_blueprint.before_request
+    @app.before_request
     def require_admin_for_swagger():
         """Require admin authentication to access Swagger UI."""
-        user = get_current_user()
-        if not user:
-            return jsonify({'error': 'Authentication required. Please log in to access API documentation.'}), 401
-        if not user.is_admin:
-            return jsonify({'error': 'Admin access required. Only administrators can access API documentation.'}), 403
+        if request.path.startswith('/api/docs'):
+            user = get_current_user()
+            if not user:
+                return jsonify({'error': 'Authentication required. Please log in to access API documentation.'}), 401
+            if not user.is_admin:
+                return jsonify({'error': 'Admin access required. Only administrators can access API documentation.'}), 403
 
     # Serve OpenAPI spec (also protected - admin only)
     @app.route('/api/openapi.yaml')
