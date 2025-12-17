@@ -165,6 +165,11 @@ paths:
                   format: password
                   minLength: 6
                   example: securepassword123
+                skip_auto_login:
+                  type: boolean
+                  default: false
+                  example: false
+                  description: Set to true to skip automatic login (useful for admin testing in Swagger UI)
       responses:
         '200':
           description: Registration successful
@@ -214,6 +219,11 @@ paths:
                   type: string
                   format: password
                   example: securepassword123
+                skip_auto_login:
+                  type: boolean
+                  default: false
+                  example: false
+                  description: Set to true to skip automatic login (useful for admin testing in Swagger UI)
       responses:
         '200':
           description: Login successful
@@ -252,6 +262,18 @@ paths:
         - Authentication
       summary: User logout
       description: Clear the user's session cookie and log them out.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skip_auto_login:
+                  type: boolean
+                  default: false
+                  example: false
+                  description: Set to true to skip actual logout (useful for admin testing in Swagger UI)
       responses:
         '200':
           description: Logout successful

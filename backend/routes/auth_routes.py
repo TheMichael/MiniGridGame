@@ -78,12 +78,13 @@ def register():
         username = data.get('username', '').strip()
         email = data.get('email', '').strip()
         password = data.get('password', '').strip()
-        
+        skip_auto_login = data.get('skip_auto_login', False)
+
         # Validate input
         errors = validate_registration_data(username, email, password)
         if errors:
             return jsonify({'error': '; '.join(errors)}), 400
-        
+
         # Create new user
         user = User(
             username=username,
@@ -91,22 +92,23 @@ def register():
             password_hash=generate_password_hash(password),
             last_login=datetime.utcnow()
         )
-        
+
         # Make first user an admin
         if User.query.count() == 0:
             user.is_admin = True
-        
+
         db.session.add(user)
         db.session.commit()
-        
-        # Log in the user
-        login_user(user)
-        
+
+        # Log in the user (unless skip_auto_login is true for testing)
+        if not skip_auto_login:
+            login_user(user)
+
         return jsonify({
             'success': True,
             'user': user.to_dict()
         })
-        
+
     except Exception as e:
         return jsonify({'error': 'Registration failed'}), 500
 
@@ -169,26 +171,28 @@ def login():
         data = request.get_json()
         username = data.get('username', '').strip()
         password = data.get('password', '').strip()
-        
+        skip_auto_login = data.get('skip_auto_login', False)
+
         if not username or not password:
             return jsonify({'error': 'Username and password required'}), 400
-        
+
         user = User.query.filter_by(username=username).first()
-        
+
         if not user or not user.check_password(password):
             return jsonify({'error': 'Invalid username or password'}), 401
-        
+
         if not user.is_active:
             return jsonify({'error': 'Account has been deactivated'}), 401
-        
-        # Log in the user
-        login_user(user)
-        
+
+        # Log in the user (unless skip_auto_login is true for testing)
+        if not skip_auto_login:
+            login_user(user)
+
         return jsonify({
             'success': True,
             'user': user.to_dict()
         })
-        
+
     except Exception as e:
         return jsonify({'error': 'Login failed'}), 500
 
@@ -213,7 +217,13 @@ def logout():
               type: boolean
               example: true
     """
-    logout_user()
+    data = request.get_json() if request.is_json else {}
+    skip_auto_login = data.get('skip_auto_login', False)
+
+    # Log out the user (unless skip_auto_login is true for testing)
+    if not skip_auto_login:
+        logout_user()
+
     return jsonify({'success': True})
 
 
