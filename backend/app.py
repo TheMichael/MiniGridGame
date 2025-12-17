@@ -4,8 +4,9 @@ AI Agent Galaxy - Main Application Entry Point
 Refactored from monolithic structure to clean modular architecture.
 """
 import os
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from config import Config
 from database import init_db
@@ -39,7 +40,39 @@ def create_app(config_class=Config):
     
     # Initialize database
     init_db(app)
-    
+
+    # Configure Swagger UI
+    SWAGGER_URL = '/api/docs'
+    API_URL = '/api/openapi.yaml'
+
+    swaggerui_blueprint = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={
+            'app_name': "Neural Navigator API",
+            'docExpansion': 'list',
+            'defaultModelsExpandDepth': 3,
+            'displayRequestDuration': True,
+            'filter': True,
+            'tryItOutEnabled': True
+        }
+    )
+
+    # Register Swagger UI blueprint
+    app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
+    # Serve OpenAPI spec
+    @app.route('/api/openapi.yaml')
+    def openapi_spec():
+        """Serve the OpenAPI specification file."""
+        return send_from_directory(
+            os.path.dirname(os.path.abspath(__file__)),
+            'openapi.yaml',
+            mimetype='text/yaml'
+        )
+
+    app.logger.info("Swagger API documentation initialized at /api/docs")
+
     # Register routes
     from routes import register_routes
     register_routes(app)

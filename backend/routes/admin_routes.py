@@ -24,7 +24,71 @@ def require_admin():
 
 @admin_bp.route('/stats', methods=['GET'])
 def admin_stats():
-    """Get admin dashboard statistics."""
+    """Get admin dashboard statistics.
+    ---
+    tags:
+      - Admin
+    summary: Get dashboard statistics
+    description: Retrieve comprehensive statistics for the admin dashboard including user counts, game counts, and top players.
+    produces:
+      - application/json
+    security:
+      - SessionAuth: []
+    responses:
+      200:
+        description: Statistics retrieved successfully
+        schema:
+          type: object
+          properties:
+            overview:
+              type: object
+              properties:
+                total_users:
+                  type: integer
+                  example: 100
+                active_users:
+                  type: integer
+                  example: 95
+                total_games:
+                  type: integer
+                  example: 1000
+                total_score:
+                  type: integer
+                  example: 50000
+                recent_games:
+                  type: integer
+                  example: 150
+                  description: Games played in the last 7 days
+                recent_users:
+                  type: integer
+                  example: 10
+                  description: Users registered in the last 7 days
+            agent_stats:
+              type: object
+              properties:
+                ddqn_games:
+                  type: integer
+                  example: 600
+                d3qn_games:
+                  type: integer
+                  example: 400
+            top_players:
+              type: array
+              items:
+                $ref: '#/definitions/User'
+      401:
+        description: Not authenticated
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Admin access required
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Server error
+        schema:
+          $ref: '#/definitions/Error'
+    """
     auth_check = require_admin()
     if auth_check:
         return auth_check
@@ -74,7 +138,75 @@ def admin_stats():
 
 @admin_bp.route('/users', methods=['GET'])
 def admin_users():
-    """Get paginated list of users."""
+    """Get paginated list of users.
+    ---
+    tags:
+      - Admin
+    summary: Get all users
+    description: Retrieve a paginated list of all users with optional search filtering.
+    produces:
+      - application/json
+    security:
+      - SessionAuth: []
+    parameters:
+      - name: page
+        in: query
+        type: integer
+        default: 1
+        description: Page number for pagination
+      - name: per_page
+        in: query
+        type: integer
+        default: 50
+        description: Number of users per page
+      - name: search
+        in: query
+        type: string
+        description: Search query to filter users by username or email
+    responses:
+      200:
+        description: Users retrieved successfully
+        schema:
+          type: object
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/definitions/User'
+            pagination:
+              type: object
+              properties:
+                page:
+                  type: integer
+                  example: 1
+                pages:
+                  type: integer
+                  example: 5
+                per_page:
+                  type: integer
+                  example: 50
+                total:
+                  type: integer
+                  example: 245
+                has_next:
+                  type: boolean
+                  example: true
+                has_prev:
+                  type: boolean
+                  example: false
+      401:
+        description: Not authenticated
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Admin access required
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Server error
+        schema:
+          $ref: '#/definitions/Error'
+    """
     auth_check = require_admin()
     if auth_check:
         return auth_check
@@ -128,7 +260,72 @@ def admin_users():
 
 @admin_bp.route('/users/<int:user_id>', methods=['PUT'])
 def admin_update_user(user_id):
-    """Update user properties (admin/active status)."""
+    """Update user properties (admin/active status).
+    ---
+    tags:
+      - Admin
+    summary: Update user
+    description: Update a user's admin status or active status. Cannot deactivate yourself or remove the last admin.
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    security:
+      - SessionAuth: []
+    parameters:
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+        description: ID of the user to update
+      - name: body
+        in: body
+        required: true
+        description: User properties to update
+        schema:
+          type: object
+          properties:
+            is_active:
+              type: boolean
+              example: true
+              description: Whether the user account is active
+            is_admin:
+              type: boolean
+              example: false
+              description: Whether the user has admin privileges
+    responses:
+      200:
+        description: User updated successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+              example: true
+            message:
+              type: string
+              example: User player1 updated successfully
+      400:
+        description: Invalid operation (e.g., deactivating yourself, removing last admin)
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Not authenticated
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Admin access required
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: User not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Server error
+        schema:
+          $ref: '#/definitions/Error'
+    """
     auth_check = require_admin()
     if auth_check:
         return auth_check
@@ -162,7 +359,99 @@ def admin_update_user(user_id):
 
 @admin_bp.route('/games', methods=['GET'])
 def admin_games():
-    """Get paginated list of game results."""
+    """Get paginated list of game results.
+    ---
+    tags:
+      - Admin
+    summary: Get all games
+    description: Retrieve a paginated list of all game results across all users.
+    produces:
+      - application/json
+    security:
+      - SessionAuth: []
+    parameters:
+      - name: page
+        in: query
+        type: integer
+        default: 1
+        description: Page number for pagination
+      - name: per_page
+        in: query
+        type: integer
+        default: 50
+        description: Number of games per page
+    responses:
+      200:
+        description: Games retrieved successfully
+        schema:
+          type: object
+          properties:
+            games:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: player1
+                  agent_type:
+                    type: string
+                    example: DDQN
+                  prediction:
+                    type: integer
+                    example: 50
+                  actual_steps:
+                    type: integer
+                    example: 48
+                  succeeded:
+                    type: boolean
+                    example: true
+                  score:
+                    type: integer
+                    example: 100
+                  timestamp:
+                    type: string
+                    format: date-time
+                  gif_url:
+                    type: string
+                    example: /video/run_abc123.gif
+            pagination:
+              type: object
+              properties:
+                page:
+                  type: integer
+                  example: 1
+                pages:
+                  type: integer
+                  example: 20
+                per_page:
+                  type: integer
+                  example: 50
+                total:
+                  type: integer
+                  example: 1000
+                has_next:
+                  type: boolean
+                  example: true
+                has_prev:
+                  type: boolean
+                  example: false
+      401:
+        description: Not authenticated
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Admin access required
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Server error
+        schema:
+          $ref: '#/definitions/Error'
+    """
     auth_check = require_admin()
     if auth_check:
         return auth_check
