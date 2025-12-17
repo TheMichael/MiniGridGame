@@ -25,9 +25,6 @@ info:
   contact:
     name: Neural Navigator
     url: https://github.com/TheMichael/MiniGridGame
-  license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://neural-navigator.onrender.com
