@@ -282,7 +282,7 @@ MIT License - see LICENSE file for details
 
 **Michael Ohayon**
 Technical Product Manager | Digital Health
-[LinkedIn](https://linkedin.com/in/michaelohayon) | [Email](mailto:michael@example.com)
+[LinkedIn](https://www.linkedin.com/in/michael-ohayon-511163272/) | [Email](mailto:Michmich6@gmail.com)
 
 ---
 
